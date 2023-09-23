@@ -1,0 +1,28 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "KeyWithIntAndDouble" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Number %lld is %.2f"
+          }
+        }
+      }
+    },
+    "KeyWithString" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Updated at: %@"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

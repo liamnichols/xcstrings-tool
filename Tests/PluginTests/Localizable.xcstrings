@@ -1,0 +1,18 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "demo.basic" : {
+      "comment" : "This is just a basic string with no arguments",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A basic string"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
