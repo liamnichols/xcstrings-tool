@@ -29,7 +29,8 @@ let package = Package(
                 .target(name: "StringCatalog"),
                 .target(name: "StringExtractor"),
                 .target(name: "StringGenerator"),
-                .target(name: "StringResource")
+                .target(name: "StringResource"),
+                .target(name: "StringValidator")
             ]
         ),
 
@@ -72,7 +73,14 @@ let package = Package(
                 .target(name: "SwiftIdentifier")
             ]
         ),
-        
+
+        .target(
+            name: "StringValidator",
+            dependencies: [
+                .target(name: "StringResource")
+            ]
+        ),
+
         .testTarget(
             name: "LocalizationTests",
             dependencies: [

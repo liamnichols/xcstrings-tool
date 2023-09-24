@@ -4,6 +4,7 @@ import StringExtractor
 import struct StringResource.Resource
 import StringCatalog
 import StringGenerator
+import StringValidator
 
 struct GenerateCommand: ParsableCommand {
     @Argument(
@@ -36,7 +37,7 @@ struct GenerateCommand: ParsableCommand {
 
             // Extract resources from it
             let resources = try catalog.resources
-            try validateResources(resources)
+            try ResourceValidator.validateResources(resources, in: input)
 
             // Generate the associated Swift source
             return StringGenerator.generateSource(
@@ -88,29 +89,28 @@ struct GenerateCommand: ParsableCommand {
             try fileManager.createDirectory(at: outputDirectory, withIntermediateDirectories: true)
         }
     }
+}
 
-    // MARK: - Validation
+extension ResourceValidator {
+    static func validateResources(_ resources: [Resource], in fileURL: URL) throws {
+        let issues: [ResourceValidator.Issue] = validateResources(resources)
 
-    struct ValidationError: LocalizedError {
-        var errorDescription: String? {
-            "Conflicting keys need to be corrected"
-        }
-    }
-
-    func validateResources(_ resources: [Resource]) throws {
-        let conflictingResources = Dictionary(grouping: resources, by: \.identifier)
-            .filter { $0.value.count > 1 }
-
-        for (id, resources) in conflictingResources {
-            let keys = resources
-                .map { "‘\($0.key)‘" }
-                .formatted(.list(type: .and))
-
-            print("error: The keys \(keys) from ‘\(input.lastPathComponent)‘ produce the same identifier ‘\(id)‘ which is not supported with generated constants.")
+        if issues.isEmpty {
+            return
         }
 
-        if !conflictingResources.isEmpty {
-            throw ValidationError()
+        for issue in issues {
+            warning(issue.description, sourceFile: fileURL)
         }
+
+        throw Diagnostic(
+            severity: .error,
+            sourceFile: fileURL,
+            message: String(
+                AttributedString(
+                    localized: "^[\(issues.count) issues](inflect: true) found while processing ‘\(fileURL.lastPathComponent)‘"
+                ).characters
+            )
+        )
     }
 }
