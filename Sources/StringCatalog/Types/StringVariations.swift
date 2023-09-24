@@ -1,13 +1,12 @@
 import Foundation
 
-public struct StringVariations: RawRepresentable {
-    public let rawValue: [String: StringVariationValues]
+public struct StringVariations: Codable {
+    public let device: DictionaryWrapper<DeviceKey, StringVariation>?
+    public let plural: DictionaryWrapper<PluralKey, StringVariation>?
+}
 
-    public init(rawValue: [String: StringVariationValues]) {
-        self.rawValue = rawValue
-    }
-
-    public struct Key: Codable, Hashable, RawRepresentable, ExpressibleByStringLiteral {
+extension StringVariations {
+    public struct DeviceKey: Codable, Hashable, RawRepresentable, ExpressibleByStringLiteral {
         public let rawValue: String
 
         public init(rawValue: String) {
@@ -18,25 +17,32 @@ public struct StringVariations: RawRepresentable {
             self.init(rawValue: value)
         }
 
-        /// A key for device variations
-        public static let device = Self(rawValue: "device")
-
-        /// A key for plural rule variations
-        public static let plural = Self(rawValue: "plural")
+        public static let iPhone = Self(rawValue: "iphone")
+        public static let iPod = Self(rawValue: "ipod")
+        public static let iPad = Self(rawValue: "ipad")
+        public static let appleWatch = Self(rawValue: "applewatch")
+        public static let appleTV = Self(rawValue: "appletv")
+        public static let appleVision = Self(rawValue: "applevision")
+        public static let mac = Self(rawValue: "mac")
+        public static let other = Self(rawValue: "other")
     }
 
-    /// Returns variation values based on the underlying raw data for a given key
-    public subscript(_ key: Key) -> StringVariationValues {
-        rawValue[key.rawValue] ?? StringVariationValues(rawValue: [:])
-    }
-}
+    public struct PluralKey: Codable, Hashable, RawRepresentable, ExpressibleByStringLiteral {
+        public let rawValue: String
 
-extension StringVariations: Codable {
-    public init(from decoder: Decoder) throws {
-        self.init(rawValue: try Dictionary<String, StringVariationValues>(from: decoder))
-    }
+        public init(rawValue: String) {
+            self.rawValue = rawValue
+        }
 
-    public func encode(to encoder: Encoder) throws {
-        try rawValue.encode(to: encoder)
+        public init(stringLiteral value: StringLiteralType) {
+            self.init(rawValue: value)
+        }
+
+        public static let zero = Self(rawValue: "zero")
+        public static let one = Self(rawValue: "one")
+        public static let two = Self(rawValue: "two")
+        public static let few = Self(rawValue: "few")
+        public static let many = Self(rawValue: "many")
+        public static let other = Self(rawValue: "other")
     }
 }

@@ -11,12 +11,12 @@ extension StringCatalog {
 
             for (key, value) in strings {
                 // Only process manual strings
-                guard case .manual = value.extractionState else {
+                guard value.extractionState == .manual else {
                     continue
                 }
 
                 // Retrieve the source localization for the given key. If it's missing, we skip it
-                guard let localization = value.localizations[sourceLanguage] else {
+                guard let localization = value.localizations?[sourceLanguage] else {
                     continue
                 }
 
@@ -126,32 +126,30 @@ extension Resource {
         from stringUnit: StringUnit?,
         variations: StringVariations?
     ) -> StringUnit? {
-        // If there was a StringUnit, use that
         if let stringUnit {
             return stringUnit
         }
 
-        if let variations {
-            // For either devices or plurals
-            for values in variations.rawValue.values {
-                // First try using the 'other' variation as this is most common
-                if let other = values[.other] {
-                    return other.stringUnit
-                }
-
-                // Otherwise try the 'one' assuming that this might be plural variations
-                if let one = values[.one] {
-                    return one.stringUnit
-                }
-
-                // Failing that, just return any value in this set if there are any
-                if let first = values.rawValue.values.first {
-                    return first.stringUnit
-                }
-            }
+        if let deviceVariation = variations?.device?.preferredDeviceVariation {
+            return deviceVariation.stringUnit
         }
 
-        // No appropriate variation found
+        if let pluralVariation = variations?.plural?.preferredPluralVariation {
+            return pluralVariation.stringUnit
+        }
+
         return nil
+    }
+}
+
+private extension DictionaryWrapper where Key == StringVariations.DeviceKey, Value == StringVariation {
+    var preferredDeviceVariation: StringVariation? {
+        self[.other] ?? self.values.first
+    }
+}
+
+private extension DictionaryWrapper where Key == StringVariations.PluralKey, Value == StringVariation {
+    var preferredPluralVariation: StringVariation? {
+        self[.other] ?? self[.one] ?? self.values.first
     }
 }

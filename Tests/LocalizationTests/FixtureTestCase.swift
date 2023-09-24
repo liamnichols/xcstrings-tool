@@ -14,7 +14,11 @@ class FixtureTestCase: XCTestCase {
     func eachFixture(_ test: (URL) throws -> Void) throws {
         for fileURL in fixtures {
             try XCTContext.runActivity(named: fileURL.lastPathComponent) { activity in
-                try test(fileURL)
+                do {
+                    try test(fileURL)
+                } catch {
+                    throw error
+                }
             }
         }
     }

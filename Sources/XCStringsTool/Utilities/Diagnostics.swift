@@ -101,7 +101,7 @@ extension DecodingError: CustomDebugStringConvertible {
 
         let codingPath = context.codingPath
             .map { $0.intValue.flatMap({ "[\($0.description)]" }) ?? $0.stringValue }
-            .joined(separator: ".")
+            .joined(separator: " → ")
 
         return "Decoding error at ‘\(codingPath)‘ - \(localizedDescription)"
     }

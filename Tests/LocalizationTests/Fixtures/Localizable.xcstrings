@@ -1,6 +1,13 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Empty" : {
+      "extractionState" : "manual"
+    },
+    "Empty.Comment" : {
+      "comment" : "Value is empty but there is a comment",
+      "extractionState" : "manual"
+    },
     "Key" : {
       "comment" : "This is a comment",
       "extractionState" : "manual",

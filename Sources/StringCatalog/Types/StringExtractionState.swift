@@ -14,4 +14,6 @@ public struct StringExtractionState: Codable, Hashable, RawRepresentable, Expres
     public static let manual = Self(rawValue: "manual")
 
     public static let automatic = Self(rawValue: "automatic")
+
+    public static let migrated = Self(rawValue: "migrated")
 }

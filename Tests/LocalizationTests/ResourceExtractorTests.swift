@@ -11,7 +11,10 @@ final class StringExtractorTests: FixtureTestCase {
             let catalog = try StringCatalog(contentsOf: fileURL)
             let resources = try catalog.resources
 
-            let expected = catalog.strings.filter { $0.value.extractionState == .manual }.count
+            let expected = catalog.strings
+                .filter { $0.value.extractionState == .manual && $0.value.localizations != nil }
+                .count
+
             XCTAssertEqual(resources.count, expected)
         }
     }

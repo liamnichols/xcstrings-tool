@@ -1,10 +1,9 @@
 import Foundation
 
 public struct StringEntry: Codable {
-    public var comment: String?
-    
-    public var extractionState: StringExtractionState
+    public typealias Localizations = DictionaryWrapper<StringLanguage, StringLocalization>
 
-    @StringKey
-    public var localizations: [StringLanguage: StringLocalization]
+    public var comment: String?
+    public var extractionState: StringExtractionState?
+    public var localizations: Localizations?
 }
