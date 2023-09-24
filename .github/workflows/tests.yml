@@ -9,6 +9,17 @@ on:
     - main
 
 jobs:
+  validate-spi-manifest:
+    name: Validate SPI Manifest
+    runs-on: macos-13
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_15.0.app/Contents/Developer
+      VALIDATE_SPI_MANIFEST: YES
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v3
+    - name: Validate SPI Manifest
+      run: swift package plugin validate-spi-manifest
   unit-test:
     name: Unit Tests (Xcode ${{ matrix.xcode }})
     strategy:
@@ -25,4 +36,4 @@ jobs:
     - name: Checkout Repo
       uses: actions/checkout@v3
     - name: Run Tests
-      run: xcodebuild test -scheme xcstrings-tool -destination platform=macOS
+      run: xcodebuild clean test -scheme xcstrings-tool -destination platform=macOS
