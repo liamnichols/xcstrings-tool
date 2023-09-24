@@ -1,0 +1,28 @@
+name: "Tests"
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+
+jobs:
+  unit-test:
+    name: Unit Tests (Xcode ${{ matrix.xcode }})
+    strategy:
+      fail-fast: false
+      matrix:
+        xcode: ["15.0"]
+        include:
+        - xcode: "15.0"
+          macos: macOS-13
+    runs-on: ${{ matrix.macos }}
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode }}.app/Contents/Developer
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v3
+    - name: Run Tests
+      run: xcodebuild test -scheme xcstrings-tool -destination platform=macOS

@@ -1,5 +1,7 @@
 # XCStrings Tool
 
+[![Test Status](https://github.com/liamnichols/xcstrings-tool/workflows/Tests/badge.svg)](https://github.com/liamnichols/xcstrings-tool/actions/workflows/tests.yml)
+
 A plugin to generate Swift constants for your String Catalogs.
 
 ## Motivation
@@ -19,11 +21,11 @@ struct ContentView: View {
         )
     }
 }
-``` 
+```
 
 If you modularize your project and need to start referencing a different strings table or bundle, you soon find that your View code becomes verbose and hard to follow and if you try to create your own extensions or helpers, you find that the Swift Compiler might no longer be able to reliably extract your strings keys.
 
-This is where using the Strings Catalog (.xcstrings file) as a source of truth starts to become an appealing option however by doing so, you'll soon find that you have to define any constants in your code yourself. XCStrings Tool is a tool designed to fill this gap in your localization workflows. 
+This is where using the Strings Catalog (.xcstrings file) as a source of truth starts to become an appealing option however by doing so, you'll soon find that you have to define any constants in your code yourself. XCStrings Tool is a tool designed to fill this gap in your localization workflows.
 
 ```swift
 struct ContentView: View {
@@ -31,13 +33,13 @@ struct ContentView: View {
         Text(.appCore.contentViewTitle)
     }
 }
-``` 
+```
 
 ## Getting Started
 
 It's easy to get started, in the following 5 steps:
 
-1. [🆕 Add a String Catalog to your project](#-add-a-string-catalog-to-your-project) 
+1. [🆕 Add a String Catalog to your project](#-add-a-string-catalog-to-your-project)
 2. [📝 Populate your String Catalog with localizations](#-populate-your-string-catalog-with-localizations)
 3. [🧑‍💻 Integrate the XCStringsToolPlugin](#-integrate-the-xcstringstoolplugin)
 4. [⚙️ Build your project](#%EF%B8%8F-build-your-project)
@@ -47,10 +49,10 @@ It's easy to get started, in the following 5 steps:
 
 A String Catalog can be added to any Xcode or Swift Package Manager targets. In Xcode 15 or later, locate your Target in the Xcode Project Navigator then right click on it's folder and select **New File...**
 
-In the template window, scroll down to the **Resources** section, and select **String Catalog**. 
+In the template window, scroll down to the **Resources** section, and select **String Catalog**.
 
 ### 📝 Populate your String Catalog with localizations
- 
+
 By default, your String Catalog will likely be empty. In the bottom-left of the window, you can click the **+** button to add your source language. After doing so, you can then click another **+** at the top of the window to start adding strings.
 
 Unlike other documentation might suggest, you manually create your string definitions in the Catalog via the **+** button rather than relying on the compiler to discover them in your app. When you add a new string, be sure to define the key using a format such as `lowerCamelCase` so that it feels natural when you reference it in Swift code.
@@ -126,14 +128,14 @@ and in SwiftUI:
 Text(.localizable.myKey)
 ```
 
-By default, the generated code has the `internal` access level. If you wish to generate `public` constants instead, please refer to [**Changing the Access Level**](#changing-the-access-level) 
+By default, the generated code has the `internal` access level. If you wish to generate `public` constants instead, please refer to [**Changing the Access Level**](#changing-the-access-level)
 
 > [!NOTE]
 > While `LocalizedStringResource` is widely supported in SwiftUI, there are still some methods that don't accept it. In those instances, you should use the `LocalizedStringKey` overload of the method by using string interpolation like so:
 >
 > ```swift
 > Button("\(.localizable.myKey)", action: { print("button tapped") })
-> ``` 
+> ```
 
 ## Advanced
 
@@ -164,7 +166,7 @@ let package = Package(
         )
     ]
 )
-``` 
+```
 
 In an Xcode project, head to the **Build Settings** section for your target, click the **+** and then **Add User-Defined Setting**. Add a new setting with the name `XCSTRINGS_ACCESS_LEVEL_PUBLIC` and value `YES`.
 
