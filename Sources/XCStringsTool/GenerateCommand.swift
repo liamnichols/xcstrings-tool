@@ -27,24 +27,34 @@ struct GenerateCommand: ParsableCommand {
     var `public`: Bool?
 
     // MARK: - Program
-
+    
     func run() throws {
-        // Load the String Catalog file
-        let catalog = try StringCatalog(contentsOf: input)
-        
-        // Extract resources from it
-        let resources = try catalog.resources
-        try validateResources(resources)
+        // Load the source ensuring that errors are thrown in a diagnostic format for the input
+        let source = try withThrownErrorsAsDiagnostics(at: input) {
+            // Load the String Catalog file
+            let catalog = try StringCatalog(contentsOf: input)
 
-        // Generate the associated Swift source
-        let source = StringGenerator.generateSource(for: resources, tableName: tableName, accessLevel: accessLevel)
+            // Extract resources from it
+            let resources = try catalog.resources
+            try validateResources(resources)
 
-        // Create the directory if it doesn't exist
-        try createOutputDirectoryIfNeeded()
+            // Generate the associated Swift source
+            return StringGenerator.generateSource(
+                for: resources,
+                tableName: tableName,
+                accessLevel: accessLevel
+            )
+        }
 
-        // Write the source to disk
-        try source.write(to: output, atomically: true, encoding: .utf8)
-        print("note: Successfully written output to ‘\(output.path(percentEncoded: false))‘")
+        // Write the output and catch errors in a diagnostic format
+        try withThrownErrorsAsDiagnostics {
+            // Create the directory if it doesn't exist
+            try createOutputDirectoryIfNeeded()
+
+            // Write the source to disk
+            try source.write(to: output, atomically: true, encoding: .utf8)
+            note("Output written to ‘\(output.path(percentEncoded: false))‘")
+        }
     }
 
     var tableName: String {
