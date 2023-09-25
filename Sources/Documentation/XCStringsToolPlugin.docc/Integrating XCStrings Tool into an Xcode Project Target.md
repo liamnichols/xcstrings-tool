@@ -16,7 +16,7 @@ In Xcode, click **File** → **Add Package Dependencies…** and in the search b
 
 ![A screenshot of the Xcode "Add Package" window after searching for the xcstrings-tool dependency](Xcode-AddPackage)
 
-Select the **xcstrings-tool** package from the list of results, ensure that **Add to Project** is correctly set to your project and click **Add Package**. 
+Select the **xcstrings-tool** package from the list of results, ensure that **Add to Project** is correctly set to your project and click **Add Package**.
 
 When promoted, ensure that the **XCStringsTool** product _is not added_ to your target by changing **Add to Target** to **None**:
 
@@ -28,29 +28,29 @@ Click **Add Package** again and the dependency will be imported into your projec
 
 The Build Tool plugin is the main component of XCStrings Tool. Once integrated within a target, it'll tell the build system to invoke the generator whenever the Strings Catalogs in the target are modified. The generator then writes the Swift code to your derived sources which are then available for you to use within your other source files.
 
-To integrate the plugin, navigate to your project settings, click on your desired target and navigate to the **Build Phases** tab. 
+To integrate the plugin, navigate to your project settings, click on your desired target and navigate to the **Build Phases** tab.
 
 Expand the **Run Build Tool Plug-ins** group and click the **+** button. In the list under xcstrings-tool, select **XCStringsToolPlugin** and then click the **Add** button:
 
 ![A screenshot of the Build Phases screen after adding the XCStringsToolPlugin](Xcode-AddedBuildToolPlugin)
 
-### Review your Strings Catalog
+### Review your Strings Catalog
 
 Before building the product, let's just review our Strings Catalog quickly:
 
 ![A screenshot of the Strings Catalog specifically highlighting that the phrases are set to manual](Xcode-StringsCatalog)
 
-When working XCStrings Tool, it's recommended that each string has it's **Key** set to a lowerCamelCase identifier so that it matches the generated Swift code. 
+When working XCStrings Tool, it's recommended that each string has it's **Key** set to a lowerCamelCase identifier so that it matches the generated Swift code.
 
 Additionally, you need to make sure that your strings have their **Managed** setting set to **Manually**. This will be the case already if you added the string with the **+** button, but if the compiler pre-populated the contents of the catalog, you might need to change this value.
 
-### Build your Project
+### Build your Project
 
 The first time that you build your project, you'll be presented with the following alert:
 
 ![A screenshot of the alert shown that asks you to trust the plugin before using it](Xcode-TrustPlugin)
 
-Review the plugin and once you are ready, press **Trust & Enable All**. Your project should now build. 
+Review the plugin and once you are ready, press **Trust & Enable All**. Your project should now build.
 
 After building, in the left sidebar, open **Report navigator**, select the last build and review the build log for your target. You should spot a message similar to **Run custom shell script 'XCStringsTool: Generate Swift code for ‘Localizable.xcstrings‘'**:
 
