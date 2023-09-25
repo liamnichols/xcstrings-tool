@@ -6,9 +6,9 @@ Integrate generated Swift constants for your localized strings in a Swift Packag
 
 The XCStrings Tool plugin integrates directly into Swift Package Manager providing a seamless integration into any of your Swift Package targets that contain Strings Catalog files.
 
-> Note: Strings Catalogs are only supported on Apple Platforms
+> Note: Strings Catalogs are only supported on Apple Platforms.
 
-If you haven't already, open up an Swift Package which contains the Strings Catalog files that you wish generate source code constants for.
+If you haven't already, open up a Swift Package which contains the Strings Catalog files that you wish generate source code constants for.
 
 ### Updating Package.swift
 
@@ -34,7 +34,7 @@ let package = Package(
     ],
     dependencies: [
         // 1. Add the xcstrings-tool Package dependency
-        .package(url: "https://github.com/liamnichols/xcstrings-tool.git", branch: "main")
+        .package(url: "https://github.com/liamnichols/xcstrings-tool.git", from: "0.0.1")
     ],
     targets: [
         .target(
@@ -55,7 +55,7 @@ Before building the product, let's just review our Strings Catalog quickly:
 
 ![A screenshot of the Strings Catalog specifically highlighting that the phrases are set to manual](SPM-StringsCatalog)
 
-When working XCStrings Tool, it's recommended that each string has it's **Key** set to a lowerCamelCase identifier so that it matches the generated Swift code. 
+When working with XCStrings Tool, it's recommended that each string has it's **Key** set to a lowerCamelCase identifier so that it matches the generated Swift code.
 
 Additionally, you need to make sure that your strings have their **Managed** setting set to **Manually**. This will be the case already if you added the string with the **+** button, but if the compiler pre-populated the contents of the catalog, you might need to change this value.
 
@@ -65,7 +65,7 @@ The first time that you build your project, you'll be presented with the followi
 
 ![A screenshot of the alert shown that asks you to trust the plugin before using it](Xcode-TrustPlugin)
 
-Review the plugin and once you are ready, press **Trust & Enable All**. Your project should now build. 
+Review the plugin and once you are ready, press **Trust & Enable All**. Your project should now build.
 
 After building, in the left sidebar, open **Report navigator**, select the last build and review the build log for your target. You should spot a message similar to **Run custom shell script 'XCStringsTool: Generate Swift code for ‘Localizable.xcstrings‘'**:
 
