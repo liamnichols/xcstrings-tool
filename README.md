@@ -1,6 +1,8 @@
 # XCStrings Tool
 
 [![Test Status](https://github.com/liamnichols/xcstrings-tool/workflows/Tests/badge.svg)](https://github.com/liamnichols/xcstrings-tool/actions/workflows/tests.yml)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fliamnichols%2Fxcstrings-tool%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/liamnichols/xcstrings-tool)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fliamnichols%2Fxcstrings-tool%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/liamnichols/xcstrings-tool)
 
 A plugin to generate Swift constants for your String Catalogs.
 
