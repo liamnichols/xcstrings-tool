@@ -6,8 +6,8 @@ import SwiftSyntax
 import SwiftSyntaxBuilder
 
 public struct StringGenerator {
-    public enum AccessLevel {
-        case `internal`, `public`
+    public enum AccessLevel: String, CaseIterable {
+        case `internal`, `public`, `package`
     }
 
     let tableName: String
@@ -189,6 +189,7 @@ extension StringGenerator.AccessLevel {
         switch self {
         case .internal: .keyword(.internal)
         case .public: .keyword(.public)
+        case .package: .keyword(.package)
         }
     }
 }

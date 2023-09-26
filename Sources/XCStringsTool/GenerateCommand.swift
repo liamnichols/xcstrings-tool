@@ -22,10 +22,10 @@ struct GenerateCommand: ParsableCommand {
     var output
 
     @Option(
-        name: [.customShort("p"), .customLong("public")],
-        help: "Uses the ‘public‘ access level for generated constants"
+        name: .shortAndLong,
+        help: "Modify the Access Control for the generated source code"
     )
-    var `public`: Bool?
+    var accessLevel: StringGenerator.AccessLevel?
 
     // MARK: - Program
     
@@ -43,7 +43,7 @@ struct GenerateCommand: ParsableCommand {
             return StringGenerator.generateSource(
                 for: resources,
                 tableName: tableName,
-                accessLevel: accessLevel
+                accessLevel: resolvedAccessLevel
             )
         }
 
@@ -62,20 +62,25 @@ struct GenerateCommand: ParsableCommand {
         input.lastPathComponent.replacingOccurrences(of: ".\(input.pathExtension)", with: "")
     }
 
-    var accessLevel: StringGenerator.AccessLevel {
-        let argValue = self.public
-        if argValue == true {
-            return .public
+    var resolvedAccessLevel: StringGenerator.AccessLevel {
+        if let accessLevel = self.accessLevel {
+            return accessLevel
         }
 
         let environment = ProcessInfo.processInfo.environment
-        if environment["XCSTRINGS_ACCESS_LEVEL_PUBLIC"]?.isTruthy == true {
-            return .public
+        let buildSetting = environment["XCSTRINGS_TOOL_ACCESS_LEVEL"]?.lowercased()
+        if let accessLevel = buildSetting.flatMap(StringGenerator.AccessLevel.init(rawValue:)) {
+            return accessLevel
         }
 
-        if let swiftSettings = environment["SWIFT_ACTIVE_COMPILATION_CONDITIONS"],
-           swiftSettings.contains("XCSTRINGS_ACCESS_LEVEL_PUBLIC") {
-            return .public
+        if let swiftSettings = environment["SWIFT_ACTIVE_COMPILATION_CONDITIONS"] {
+            if swiftSettings.contains("XCSTRINGS_TOOL_ACCESS_LEVEL_INTERNAL") {
+                return .internal
+            } else if swiftSettings.contains("XCSTRINGS_TOOL_ACCESS_LEVEL_PUBLIC") {
+                return .public
+            } else if swiftSettings.contains("XCSTRINGS_TOOL_ACCESS_LEVEL_PACKAGE") {
+                return .package
+            }
         }
 
         return .internal
@@ -113,4 +118,7 @@ extension ResourceValidator {
             )
         )
     }
+}
+
+extension StringGenerator.AccessLevel: ExpressibleByArgument {
 }

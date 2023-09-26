@@ -106,7 +106,7 @@ let package = Package(
                 .target(name: "XCStringsToolPlugin")
             ],
             swiftSettings: [
-                .define("XCSTRINGS_ACCESS_LEVEL_PUBLIC")
+                .define("XCSTRINGS_TOOL_ACCESS_LEVEL_PUBLIC")
             ]
         )
     ]
