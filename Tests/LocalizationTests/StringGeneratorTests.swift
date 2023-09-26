@@ -17,6 +17,20 @@ final class StringGeneratorTests: XCTestCase {
         XCTAssertNotNil(output)
     }
 
+    func testGenerateMultilineComment() {
+        let output = generate([
+            Resource(
+                key: "foo",
+                comment: "A comment\n\nA comment that covers many lines.",
+                identifier: "foo",
+                arguments: [],
+                defaultValue: [.string("FOO")]
+            )
+        ])
+
+        XCTAssertNotNil(output)
+    }
+
     private func generate(
         _ resources: [Resource],
         tableName: String = "Localizable",

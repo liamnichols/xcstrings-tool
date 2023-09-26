@@ -252,17 +252,16 @@ extension Resource {
     }
 
     var leadingTrivia: Trivia {
-        let commentTrivia: [TriviaPiece] = if let comment {
-            comment
-                .components(separatedBy: .newlines)
-                .map { TriviaPiece.docLineComment("/// \($0)") }
-        } else {
-            []
+        var trivia: Trivia = .newlines(2)
+
+        if let commentLines = comment?.components(separatedBy: .newlines), !commentLines.isEmpty {
+            for line in commentLines {
+                trivia = trivia.appending(Trivia.docLineComment("/// \(line)"))
+                trivia = trivia.appending(.newline)
+            }
         }
 
-        return .newlines(2)
-            .merging(Trivia(pieces: commentTrivia))
-            .merging(.newline)
+        return trivia
     }
 
     func statements(table: String, bundle: TokenSyntax) -> CodeBlockItemListSyntax {
