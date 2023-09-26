@@ -51,15 +51,6 @@ extension Resource {
         )
     }
 
-    // TODO: Improve this a lot.
-    static func sanitize(key: String) -> String {
-        if let firstChar = key.first, firstChar.isUppercase {
-            return firstChar.lowercased() + String(key.dropFirst())
-        } else {
-            return key
-        }
-    }
-
     static func extract(
         from localization: StringLocalization,
         key: String
