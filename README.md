@@ -50,7 +50,7 @@ To see XCStrings Tool in action, check out the [Dog Tracker demo project](https:
 
 [**View the documentation on the Swift Package Index**](https://swiftpackageindex.com/liamnichols/xcstrings-tool/documentation/documentation)
 
-If you have an improvement for the documentation, you can [modify it here](./Sources/Documentation/XCStringsToolPlugin.docc)
+If you have an improvement for the documentation, you can [modify it here](./Sources/Documentation/XCStringsToolPlugin.docc).
 
 ## Contributing
 
@@ -59,38 +59,3 @@ Contributions to XCStrings Tool are welcome!
 - For ideas and questions: [Visit the Discussions](https://github.com/liamnichols/xcstrings-tool/discussions)
 - For bugs: [Open an Issue](https://github.com/liamnichols/xcstrings-tool/issues/choose)
 - For contributions: [Open a Pull Request](https://github.com/liamnichols/xcstrings-tool/compare) 
-
-## Advanced
-
-### Changing the Access Level
-
-If you want the generated source code to have a `public` access level, you must set the `XCSTRINGS_ACCESS_LEVEL_PUBLIC` build setting or Swift active compilation condition.
-
-In a Swift Package, this can be achieved like so:
-
-```swift
-// swift-tools-version: 5.9
-// The swift-tools-version declares the minimum version of Swift required to build this package.
-
-import PackageDescription
-
-let package = Package(
-    // ...
-    targets: [
-        // ...
-        .target(
-            name: "AppResources",
-            dependencies: [
-                .target(name: "XCStringsToolPlugin")
-            ],
-            swiftSettings: [
-                .define("XCSTRINGS_ACCESS_LEVEL_PUBLIC")
-            ]
-        )
-    ]
-)
-```
-
-In an Xcode project, head to the **Build Settings** section for your target, click the **+** and then **Add User-Defined Setting**. Add a new setting with the name `XCSTRINGS_ACCESS_LEVEL_PUBLIC` and value `YES`.
-
-Build your target again and the source code should update to reflect the change.

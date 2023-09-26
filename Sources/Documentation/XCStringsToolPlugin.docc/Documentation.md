@@ -50,3 +50,7 @@ Text(.localizable.contentSummary(dogs.count, totalRating, dogs.count * 10))
 
 - <doc:Integrating-XCStrings-Tool-into-an-Xcode-Project-Target>
 - <doc:Integrating-XCStrings-Tool-into-a-Swift-Package-Target>
+
+### Advanced
+
+- <doc:Changing-the-Access-Level>
