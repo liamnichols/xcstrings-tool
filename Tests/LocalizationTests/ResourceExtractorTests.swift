@@ -9,7 +9,8 @@ final class StringExtractorTests: FixtureTestCase {
     func testParsingOnlyParsesManualStrings() throws {
         try eachFixture { fileURL in
             let catalog = try StringCatalog(contentsOf: fileURL)
-            let resources = try catalog.resources
+            let result = try StringExtractor.extractResources(from: catalog)
+            let resources = result.resources
 
             let expected = catalog.strings
                 .filter { $0.value.extractionState == .manual && $0.value.localizations != nil }
@@ -21,7 +22,8 @@ final class StringExtractorTests: FixtureTestCase {
 
     func testSimple() throws {
         let catalog = try catalog(named: "Simple")
-        let resources = try catalog.resources
+        let result = try StringExtractor.extractResources(from: catalog)
+        let resources = result.resources
 
         XCTAssertEqual(resources.count, 1)
         XCTAssertNoDifference([
@@ -39,7 +41,8 @@ final class StringExtractorTests: FixtureTestCase {
 
     func testArguments() throws {
         let catalog = try catalog(named: "Arguments")
-        let resources = try catalog.resources
+        let result = try StringExtractor.extractResources(from: catalog)
+        let resources = result.resources
 
         XCTAssertEqual(resources.count, 2)
         XCTAssertNoDifference([
@@ -87,7 +90,8 @@ final class StringExtractorTests: FixtureTestCase {
 
     func testPluralVariation() throws {
         let catalog = try catalog(named: "PluralVariation")
-        let resources = try catalog.resources
+        let result = try StringExtractor.extractResources(from: catalog)
+        let resources = result.resources
 
         XCTAssertEqual(resources.count, 1)
         XCTAssertNoDifference([
@@ -113,7 +117,8 @@ final class StringExtractorTests: FixtureTestCase {
 
     func testSubstitution() throws {
         let catalog = try catalog(named: "Substitution")
-        let resources = try catalog.resources
+        let result = try StringExtractor.extractResources(from: catalog)
+        let resources = result.resources
 
         XCTAssertEqual(resources.count, 1)
         XCTAssertNoDifference([

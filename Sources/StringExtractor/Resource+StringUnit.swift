@@ -3,40 +3,6 @@ import StringCatalog
 import StringResource
 import SwiftIdentifier
 
-extension StringCatalog {
-    /// A sorted array of resources that can be extracted from the given catalog
-    public var resources: [Resource] {
-        get throws {
-            var resources: [Resource] = []
-
-            for (key, value) in strings {
-                // Only process manual strings
-                guard value.extractionState == .manual else {
-                    continue
-                }
-
-                // Retrieve the source localization for the given key. If it's missing, we skip it
-                guard let localization = value.localizations?[sourceLanguage] else {
-                    continue
-                }
-
-                // Attempt to process the resource from the catalog data
-                resources.append(
-                    try Resource(
-                        key: key,
-                        comment: value.comment,
-                        sourceLocalization: localization
-                    )
-                )
-            }
-            
-            return resources.sorted {
-                $0.identifier.localizedStandardCompare($1.identifier) == .orderedAscending
-            }
-        }
-    }
-}
-
 extension Resource {
     init(key: String, comment: String?, sourceLocalization: StringLocalization) throws {
         let extracted = try Self.extract(from: sourceLocalization, key: key)

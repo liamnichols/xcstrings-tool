@@ -36,12 +36,15 @@ struct GenerateCommand: ParsableCommand {
             let catalog = try StringCatalog(contentsOf: input)
 
             // Extract resources from it
-            let resources = try catalog.resources
-            try ResourceValidator.validateResources(resources, in: input)
+            let result = try StringExtractor.extractResources(from: catalog)
+
+            // Validate the extraction result
+            result.issues.forEach { warning($0.description, sourceFile: input) }
+            try ResourceValidator.validateResources(result.resources, in: input)
 
             // Generate the associated Swift source
             return StringGenerator.generateSource(
-                for: resources,
+                for: result.resources,
                 tableName: tableName,
                 accessLevel: resolvedAccessLevel
             )
