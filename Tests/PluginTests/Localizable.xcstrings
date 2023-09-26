@@ -12,6 +12,18 @@
           }
         }
       }
+    },
+    "multiline" : {
+      "comment" : "A comment that is also\nusing two lines",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A string that\nspans %lld lines"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
