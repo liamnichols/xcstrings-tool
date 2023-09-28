@@ -43,7 +43,7 @@ jobs:
         jq --null-input \
           --arg version "$version" \
           --arg tool_name "$tool_name" \
-          --arg output_path "$output_path" \
+          --arg path "$tool_name-$version-macos/bin/$tool_name" \
           '{
             schemaVersion: "1.0.0",
             artifacts: {
@@ -52,7 +52,7 @@ jobs:
                 type: "executable",
                 variants: [
                   {
-                    path: $output_path,
+                    path: $path,
                     supportedTriples: ["x86_64-apple-macosx", "arm64-apple-macosx"]
                   }
                 ]
@@ -64,6 +64,10 @@ jobs:
         zip_path="$bundle_name.zip"
         zip -r "$zip_path" "$bundle_name"
         echo "zip_path=$zip_path" >> $GITHUB_ENV
+
+        # Calculate Checksum
+        checksum=$(shasum -a 256 "$zip_path" | awk '{ print $1 }')
+        echo "checksum=$checksum" >> $GITHUB_ENV
 
     - uses: actions/upload-artifact@v3
       name: Upload Artifact Bundle
