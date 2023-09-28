@@ -1,0 +1,42 @@
+name: "Release"
+
+on:
+  release:
+    types:
+    - created
+
+jobs:
+  build-artifactbundle:
+    name: "Build Artifact Bundle"
+    uses: ./.github/workflows/build.yml
+
+  upload-artifactbundle:
+    name: Upload Artifact Bundle
+    runs-on: macos-13
+    needs: build-artifactbundle
+    env:
+      bundle_name: xcstrings-tool.artifactbundle.zip
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v3
+
+    - name: Download Artifact Bundle
+      uses: actions/download-artifact@v3
+      with:
+        name: ${{ env.bundle_name }}
+
+    - name: Compute Checksum
+      run: |-
+        checksum=$(shasum -a 256 "${{ env.bundle_name }}" | awk '{ print $1 }')
+        echo "checksum=$checksum" >> $GITHUB_ENV
+
+    - name: Upload Artifact Bundle
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ./${{ env.bundle_name }}
+        asset_name: ${{ env.bundle_name }}
+        asset_content_type: application/zip
+
