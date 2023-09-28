@@ -25,6 +25,7 @@ import PackageDescription
 
 let package = Package(
     name: "DogKit",
+    defaultLocalization: "en",
     platforms: [.iOS(.v17)],
     products: [
         .library(
