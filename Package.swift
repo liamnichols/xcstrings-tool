@@ -15,6 +15,7 @@ let package = Package(
         .visionOS(.v1)
     ],
     products: [
+        .executable(name: "xcstrings-tool", targets: ["XCStringsTool"]),
         .plugin(name: "XCStringsToolPlugin", targets: ["XCStringsToolPlugin"])
     ],
     dependencies: [
@@ -27,7 +28,7 @@ let package = Package(
         .target(
             name: "Documentation"
         ),
-        
+
         .executableTarget(
             name: "XCStringsTool",
             dependencies: [
