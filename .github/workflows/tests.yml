@@ -36,4 +36,4 @@ jobs:
     - name: Checkout Repo
       uses: actions/checkout@v3
     - name: Run Tests
-      run: xcodebuild clean test -scheme xcstrings-tool -destination platform=macOS
+      run: xcodebuild clean test -scheme XCStringsTool -destination platform=macOS

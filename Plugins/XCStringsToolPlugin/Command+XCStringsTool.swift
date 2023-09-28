@@ -17,7 +17,7 @@ extension Command {
     static func xcstringstool(for file: File, using context: PluginContextProtocol) throws -> Command {
         .buildCommand(
             displayName: "XCStringsTool: Generate Swift code for ‘\(file.path.lastComponent)‘",
-            executable: try context.tool(named: "XCStringsTool").path,
+            executable: try context.tool(named: "xcstrings-tool").path,
             arguments: [
                 file.path,
                 context.outputPath(for: file)

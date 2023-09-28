@@ -5,7 +5,7 @@ import Foundation
 import PackageDescription
 
 let package = Package(
-    name: "xcstrings-tool",
+    name: "XCStringsTool",
     platforms: [
         .macOS(.v13),
         .iOS(.v16),
@@ -15,6 +15,7 @@ let package = Package(
         .visionOS(.v1)
     ],
     products: [
+        .executable(name: "xcstrings-tool", targets: ["xcstrings-tool"]),
         .plugin(name: "XCStringsToolPlugin", targets: ["XCStringsToolPlugin"])
     ],
     dependencies: [
@@ -27,9 +28,9 @@ let package = Package(
         .target(
             name: "Documentation"
         ),
-        
+
         .executableTarget(
-            name: "XCStringsTool",
+            name: "xcstrings-tool",
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 .target(name: "StringCatalog"),
@@ -44,7 +45,7 @@ let package = Package(
             name: "XCStringsToolPlugin",
             capability: .buildTool(),
             dependencies: [
-                .target(name: "XCStringsTool")
+                .target(name: "xcstrings-tool")
             ]
         ),
 

@@ -1,0 +1,73 @@
+name: "Build"
+
+on:
+  workflow_call: {}
+  push:
+    branches:
+    - main
+
+jobs:
+  build-artifactbundle:
+    name: Build Executable
+    runs-on: macos-13
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_15.0.app/Contents/Developer
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v3
+
+    - name: Build Package
+      run: |-
+        xcrun swift build -c release --arch arm64 --arch x86_64
+
+        executable_path=$(xcrun swift build -c release --arch arm64 --arch x86_64 --show-bin-path)/xcstrings-tool
+        echo "executable_path=$executable_path" >> $GITHUB_ENV
+
+        version=$($executable_path --version)
+        echo "version=$version" >> $GITHUB_ENV
+
+    - name: Create Artifact Bundle
+      run: |-
+        tool_name="xcstrings-tool"
+        bundle_name="$tool_name.artifactbundle"
+        output_path="$bundle_name/$tool_name-$version-macos/bin/$tool_name"
+
+        # Move executable to expected location
+        mkdir -p "$(dirname $output_path)"
+        mv "$executable_path" "$output_path"
+
+        # Copy LICENSE
+        cp LICENSE "$bundle_name/LICENSE"
+
+        # Create info.json
+        jq --null-input \
+          --arg version "$version" \
+          --arg tool_name "$tool_name" \
+          --arg output_path "$output_path" \
+          '{
+            schemaVersion: "1.0.0",
+            artifacts: {
+              ($tool_name): {
+                version: $version,
+                type: "executable",
+                variants: [
+                  {
+                    path: $output_path,
+                    supportedTriples: ["x86_64-apple-macosx", "arm64-apple-macosx"]
+                  }
+                ]
+              }
+            }
+          }' > "$bundle_name/info.json"
+
+        # Compress
+        zip_path="$bundle_name.zip"
+        zip -r "$zip_path" "$bundle_name"
+        echo "zip_path=$zip_path" >> $GITHUB_ENV
+
+    - uses: actions/upload-artifact@v3
+      name: Upload Artifact Bundle
+      with:
+        name: xcstrings-tool.artifactbundle.zip
+        path: ${{ env.zip_path }}
+        if-no-files-found: error
