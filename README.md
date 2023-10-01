@@ -1,6 +1,6 @@
 # XCStrings Tool
 
-[![Test Status](https://github.com/liamnichols/xcstrings-tool/workflows/Tests/badge.svg)](https://github.com/liamnichols/xcstrings-tool/actions/workflows/tests.yml)
+[![Tests](https://github.com/liamnichols/xcstrings-tool/actions/workflows/tests.yml/badge.svg)](https://github.com/liamnichols/xcstrings-tool/actions/workflows/tests.yml)
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fliamnichols%2Fxcstrings-tool%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/liamnichols/xcstrings-tool)
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fliamnichols%2Fxcstrings-tool%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/liamnichols/xcstrings-tool)
 
@@ -10,17 +10,17 @@ A plugin to generate Swift constants for your String Catalogs.
 
 Hardcoding localized strings in your code and then having the compiler automatically extract them into the Strings Catalog (or legacy .strings files) works great on smaller projects, but over time you will often find that this approach doesn't scale well.
 
-You usually find yourself compromising on either code quality, translator comments or boilerplate code from having to define your own constants, but it doesn't have to be this way!  
+You usually find yourself compromising on either code quality, translator comments or boilerplate code from having to define your own constants, but it doesn't have to be this way!
 
 ```swift
 struct ContentView: View {
     @Query var items: [Item]
-    
+
     var body: some View {
         List {
             Section {
                 ForEach(items) { item in
-                    ItemView(item) 
+                    ItemView(item)
                 }
             } footer: {
                 Text(.localizable.footerText(items.count))
@@ -58,4 +58,4 @@ Contributions to XCStrings Tool are welcome!
 
 - For ideas and questions: [Visit the Discussions](https://github.com/liamnichols/xcstrings-tool/discussions)
 - For bugs: [Open an Issue](https://github.com/liamnichols/xcstrings-tool/issues/choose)
-- For contributions: [Open a Pull Request](https://github.com/liamnichols/xcstrings-tool/compare) 
+- For contributions: [Open a Pull Request](https://github.com/liamnichols/xcstrings-tool/compare)

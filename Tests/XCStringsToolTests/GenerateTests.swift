@@ -71,7 +71,7 @@ private extension GenerateTests {
         }
 
         // Run the generator
-        try GenerateCommand.parse(arguments).run()
+        try Generate.parse(arguments).run()
 
         // Read the file back and return it
         return try String(contentsOf: outputURL)
