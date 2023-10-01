@@ -8,7 +8,7 @@ class FixtureTestCase: XCTestCase {
         try super.setUpWithError()
 
         let bundle = Bundle.module
-        fixtures = try XCTUnwrap(bundle.urls(forResourcesWithExtension: "xcstrings", subdirectory: "Fixtures"))
+        fixtures = try XCTUnwrap(bundle.urls(forResourcesWithExtension: "xcstrings", subdirectory: "__Fixtures__"))
     }
 
     func eachFixture(_ test: (URL) throws -> Void) throws {
@@ -26,7 +26,7 @@ class FixtureTestCase: XCTestCase {
     func fixture(named name: String) throws -> URL {
         let bundle = Bundle.module
         return try XCTUnwrap(
-            bundle.url(forResource: name, withExtension: "xcstrings", subdirectory: "Fixtures")
+            bundle.url(forResource: name, withExtension: "xcstrings", subdirectory: "__Fixtures__")
         )
     }
 }

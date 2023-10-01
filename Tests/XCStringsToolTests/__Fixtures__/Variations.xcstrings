@@ -1,6 +1,30 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "String.Device" : {
+      "comment" : "A string that should have a macOS variation to replace 'Tap' with 'Click'",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "device" : {
+              "mac" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Click to open"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Tap to open"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "String.Plural" : {
       "extractionState" : "manual",
       "localizations" : {

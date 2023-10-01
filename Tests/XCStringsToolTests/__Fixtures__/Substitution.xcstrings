@@ -2,6 +2,7 @@
   "sourceLanguage" : "en",
   "strings" : {
     "substitutions_example.string" : {
+      "comment" : "A string that uses substitutions as well as arguments",
       "extractionState" : "manual",
       "localizations" : {
         "en" : {

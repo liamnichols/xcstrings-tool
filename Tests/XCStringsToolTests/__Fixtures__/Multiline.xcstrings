@@ -1,0 +1,18 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "multiline" : {
+      "comment" : "This example tests the following:\n1. That line breaks in the defaultValue are supported\n2. That line breaks in the comment are supported",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Options:\n- One\n- Two\n- Three"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

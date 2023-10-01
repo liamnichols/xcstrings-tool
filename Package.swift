@@ -21,7 +21,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.2.3"),
         .package(url: "https://github.com/apple/swift-syntax.git", from: "509.0.0"),
-        .package(url: "https://github.com/pointfreeco/swift-custom-dump.git", from: "1.1.0"),
+        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.13.0"),
         .package(url: "https://github.com/apple/swift-docc-plugin.git", from: "1.0.0"),
     ],
     targets: [
@@ -89,15 +89,16 @@ let package = Package(
         ),
 
         .testTarget(
-            name: "LocalizationTests",
+            name: "XCStringsToolTests",
             dependencies: [
-                .target(name: "StringCatalog"),
-                .target(name: "StringExtractor"),
-                .target(name: "StringGenerator"),
-                .product(name: "CustomDump", package: "swift-custom-dump")
+                .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
+                .target(name: "xcstrings-tool"),
+            ],
+            exclude: [
+                "__Snapshots__"
             ],
             resources: [
-                .copy("Fixtures")
+                .copy("__Fixtures__")
             ]
         ),
 
