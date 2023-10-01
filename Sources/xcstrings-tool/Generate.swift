@@ -6,7 +6,7 @@ import StringCatalog
 import StringGenerator
 import StringValidator
 
-struct GenerateCommand: ParsableCommand {
+struct Generate: ParsableCommand {
     @Argument(
         help: "Path to xcstrings String Catalog file",
         completion: .file(extensions: ["xcstrings"]),
