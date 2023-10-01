@@ -12,15 +12,11 @@ If you haven't already, open up an Xcode project which contains the Strings Cata
 
 Before integrating with any targets, you need to add the XCStrings Tool package dependency to your project.
 
-In Xcode, click **File** → **Add Package Dependencies…** and in the search box, type **github.com/liamnichols/xcstrings-tool**
+In Xcode, click **File** → **Add Package Dependencies…** and in the search box, type **github.com/liamnichols/xcstrings-tool-plugin**
 
 ![A screenshot of the Xcode "Add Package" window after searching for the xcstrings-tool dependency](Xcode-AddPackage)
 
-Select the **xcstrings-tool** package from the list of results, ensure that **Add to Project** is correctly set to your project and click **Add Package**.
-
-When promoted, ensure that the **XCStringsTool** product _is not added_ to your target by changing **Add to Target** to **None**:
-
-![A screenshot of the Xcode "Choose Package Products" window after removing the XCStringsTool executable from any targets](Xcode-ChooseProducts)
+Select the **xcstrings-tool-plugin** package from the list of results, ensure that **Add to Project** is correctly set to your project and click **Add Package**.
 
 Click **Add Package** again and the dependency will be imported into your project.
 
