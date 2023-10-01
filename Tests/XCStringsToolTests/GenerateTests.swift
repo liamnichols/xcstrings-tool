@@ -40,7 +40,7 @@ private extension GenerateTests {
             as: .sourceCode,
             named: inputURL.stem,
             record: record,
-            file: file, 
+            file: file,
             testName: testName,
             line: line
         )

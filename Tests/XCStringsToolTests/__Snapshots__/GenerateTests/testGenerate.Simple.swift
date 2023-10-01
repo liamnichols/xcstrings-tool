@@ -1,13 +1,6 @@
 import Foundation
 
-#if SWIFT_PACKAGE
-private let bundleDescription: LocalizedStringResource.BundleDescription = .atURL(Bundle.module.bundleURL)
-#else
-private class BundleLocator {
-}
-private let bundleDescription: LocalizedStringResource.BundleDescription = .forClass(BundleLocator.self)
-#endif
-
+@available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)
 extension LocalizedStringResource {
     /// Constant values for the Simple Strings Catalog
     ///
@@ -27,7 +20,7 @@ extension LocalizedStringResource {
                 "SimpleKey",
                 defaultValue: ###"My Value"###,
                 table: "Simple",
-                bundle: bundleDescription
+                bundle: .current
             )
         }
     }
@@ -43,4 +36,20 @@ extension LocalizedStringResource {
     /// Text(.simple.simpleKey)
     /// ```
     internal static let simple = Simple()
+}
+
+@available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)
+private extension LocalizedStringResource.BundleDescription {
+    #if !SWIFT_PACKAGE
+    private class BundleLocator {
+    }
+    #endif
+
+    static var current: Self {
+        #if SWIFT_PACKAGE
+        .atURL(Bundle.module.bundleURL)
+        #else
+        .forClass(BundleLocator.self)
+        #endif
+    }
 }

@@ -1,13 +1,6 @@
 import Foundation
 
-#if SWIFT_PACKAGE
-private let bundleDescription: LocalizedStringResource.BundleDescription = .atURL(Bundle.module.bundleURL)
-#else
-private class BundleLocator {
-}
-private let bundleDescription: LocalizedStringResource.BundleDescription = .forClass(BundleLocator.self)
-#endif
-
+@available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)
 extension LocalizedStringResource {
     /// Constant values for the Variations Strings Catalog
     ///
@@ -27,7 +20,7 @@ extension LocalizedStringResource {
                 "String.Device",
                 defaultValue: ###"Tap to open"###,
                 table: "Variations",
-                bundle: bundleDescription
+                bundle: .current
             )
         }
 
@@ -36,7 +29,7 @@ extension LocalizedStringResource {
                 "String.Plural",
                 defaultValue: ###"I have \###(arg1) strings"###,
                 table: "Variations",
-                bundle: bundleDescription
+                bundle: .current
             )
         }
     }
@@ -52,4 +45,20 @@ extension LocalizedStringResource {
     /// Text(.variations.stringDevice)
     /// ```
     internal static let variations = Variations()
+}
+
+@available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)
+private extension LocalizedStringResource.BundleDescription {
+    #if !SWIFT_PACKAGE
+    private class BundleLocator {
+    }
+    #endif
+
+    static var current: Self {
+        #if SWIFT_PACKAGE
+        .atURL(Bundle.module.bundleURL)
+        #else
+        .forClass(BundleLocator.self)
+        #endif
+    }
 }

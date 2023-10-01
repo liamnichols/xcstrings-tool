@@ -36,10 +36,10 @@ public struct StringGenerator {
             generateImports()
                 .with(\.trailingTrivia, .newlines(2))
 
-            generateBundleAccessor()
+            generateLocalizedStringResourceExtension()
                 .with(\.trailingTrivia, .newlines(2))
 
-            generateExtension()
+            generateBundleDescriptionExtension()
         }
     }
 
@@ -53,38 +53,12 @@ public struct StringGenerator {
         )
     }
 
-    func generateBundleAccessor() -> IfConfigDeclSyntax {
-        IfConfigDeclSyntax(
-            clauses: [
-                IfConfigClauseSyntax(
-                    poundKeyword: .poundIfToken(),
-                    condition: DeclReferenceExprSyntax(baseName: .identifier("SWIFT_PACKAGE")),
-                    elements: .statements(CodeBlockItemListSyntax {
-                        bundleDecl(".atURL(Bundle.module.bundleURL)")
-                    })
-                ),
-                IfConfigClauseSyntax(
-                    poundKeyword: .poundElseToken(),
-                    elements: .statements(CodeBlockItemListSyntax {
-                        ClassDeclSyntax(
-                            modifiers: [
-                                DeclModifierSyntax(name: .keyword(.private))
-                            ],
-                            name: .identifier("BundleLocator"),
-                            memberBlock: MemberBlockSyntax(members: [])
-                        )
-
-                        bundleDecl(".forClass(BundleLocator.self)")
-                    })
-                )
-            ],
-            trailingTrivia: .newlines(2)
-        )
-
-    }
-
-    func generateExtension() -> ExtensionDeclSyntax {
+    func generateLocalizedStringResourceExtension() -> ExtensionDeclSyntax {
         ExtensionDeclSyntax(
+            attributes: [
+                .attribute(.init(availability: .wwdc2022))
+                    .with(\.trailingTrivia, .newline)
+            ],
             extendedType: IdentifierTypeSyntax(name: "LocalizedStringResource"),
             memberBlock: MemberBlockSyntax {
                 // Table struct
@@ -96,7 +70,7 @@ public struct StringGenerator {
                     name: structToken,
                     memberBlockBuilder: {
                         for resource in resources {
-                            resource.declaration(tableName: tableName, bundle: bundleToken, accessLevel: accessLevel.token)
+                            resource.declaration(tableName: tableName, accessLevel: accessLevel.token)
                         }
                     },
                     trailingTrivia: .newlines(2)
@@ -119,6 +93,61 @@ public struct StringGenerator {
                             rightParen: .rightParenToken()
                         )
                     )
+                )
+            }
+        )
+    }
+
+    func generateBundleDescriptionExtension() -> ExtensionDeclSyntax {
+        ExtensionDeclSyntax(
+            attributes: [
+                .attribute(.init(availability: .wwdc2022))
+                    .with(\.trailingTrivia, .newline)
+            ],
+            modifiers: [
+                DeclModifierSyntax(name: .keyword(.private))
+            ],
+            extendedType: IdentifierTypeSyntax(name: "LocalizedStringResource.BundleDescription"),
+            memberBlock: MemberBlockSyntax {
+                IfConfigDeclSyntax(
+                    prefixOperator: "!",
+                    reference: "SWIFT_PACKAGE",
+                    elements: .decls([
+                        .init(decl: DeclSyntax("private class BundleLocator {}"))
+                    ])
+                )
+                .with(\.trailingTrivia, .newlines(2))
+
+                VariableDeclSyntax(
+                    modifiers: [
+                        DeclModifierSyntax(name: .keyword(.static))
+                    ],
+                    bindingSpecifier: .keyword(.var),
+                    bindings: [
+                        PatternBindingSyntax(
+                            pattern: IdentifierPatternSyntax(identifier: "current"),
+                            typeAnnotation: TypeAnnotationSyntax(type: IdentifierTypeSyntax(name: "Self")),
+                            accessorBlock: AccessorBlockSyntax(
+                                accessors: .getter([
+                                    CodeBlockItemSyntax(
+                                        item: .decl(
+                                            DeclSyntax(
+                                                IfConfigDeclSyntax(
+                                                    reference: "SWIFT_PACKAGE",
+                                                    elements: .statements([
+                                                        CodeBlockItemSyntax(item: .expr(ExprSyntax(".atURL(Bundle.module.bundleURL)")))
+                                                    ]),
+                                                    else: .statements([
+                                                        CodeBlockItemSyntax(item: .expr(ExprSyntax(".forClass(BundleLocator.self)")))
+                                                    ])
+                                                )
+                                            )
+                                        )
+                                    )
+                                ])
+                            )
+                        )
+                    ]
                 )
             }
         )
@@ -167,21 +196,6 @@ public struct StringGenerator {
     var bundleToken: TokenSyntax {
         .identifier("bundleDescription")
     }
-
-    func bundleDecl(_ expr: ExprSyntax) -> VariableDeclSyntax {
-        VariableDeclSyntax(
-            modifiers: [DeclModifierSyntax(name: .keyword(.private))],
-            .let,
-            name: PatternSyntax(IdentifierPatternSyntax(identifier: bundleToken)),
-            type: TypeAnnotationSyntax(
-                type: MemberTypeSyntax(
-                    baseType: IdentifierTypeSyntax(name: .identifier("LocalizedStringResource")),
-                    name: .identifier("BundleDescription")
-                )
-            ),
-            initializer: InitializerClauseSyntax(value: expr)
-        )
-    }
 }
 
 extension StringGenerator.AccessLevel {
@@ -197,7 +211,6 @@ extension StringGenerator.AccessLevel {
 extension Resource {
     func declaration(
         tableName: String,
-        bundle: TokenSyntax,
         accessLevel: TokenSyntax
     ) -> DeclSyntaxProtocol {
         if arguments.isEmpty {
@@ -212,7 +225,7 @@ extension Resource {
                         pattern: IdentifierPatternSyntax(identifier: name),
                         typeAnnotation: TypeAnnotationSyntax(type: type),
                         accessorBlock: AccessorBlockSyntax(
-                            accessors: .getter(statements(table: tableName, bundle: bundle))
+                            accessors: .getter(statements(table: tableName))
                         )
                     )
                 ]
@@ -238,7 +251,7 @@ extension Resource {
                     ),
                     returnClause: ReturnClauseSyntax(type: type)
                 ),
-                body: CodeBlockSyntax(statements: statements(table: tableName, bundle: bundle))
+                body: CodeBlockSyntax(statements: statements(table: tableName))
             )
         }
     }
@@ -264,7 +277,7 @@ extension Resource {
         return trivia
     }
 
-    func statements(table: String, bundle: TokenSyntax) -> CodeBlockItemListSyntax {
+    func statements(table: String) -> CodeBlockItemListSyntax {
         CodeBlockItemListSyntax {
             CodeBlockItemSyntax(
                 item: .expr(
@@ -292,7 +305,10 @@ extension Resource {
 
                                 LabeledExprSyntax(
                                     label: "bundle",
-                                    expression: DeclReferenceExprSyntax(baseName: bundle)
+                                    expression: MemberAccessExprSyntax(
+                                        period: .periodToken(),
+                                        name: .identifier("current")
+                                    )
                                 )
                                 .with(\.leadingTrivia, .newline)
                             ],
