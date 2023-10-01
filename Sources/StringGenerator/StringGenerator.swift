@@ -143,7 +143,7 @@ public struct StringGenerator {
             .newlines(1),
             .docLineComment("/// let value = String(localized: \(exampleAccessor))"),
             .newlines(1),
-            .docLineComment("/// value // \"\(exampleValue)\""),
+            .docLineComment("/// value // \"\(exampleValue.replacingOccurrences(of: "\n", with: "\\n"))\""),
             .newlines(1),
             .docLineComment("///"),
             .newlines(1),
