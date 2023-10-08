@@ -46,37 +46,14 @@ extension Resource {
         // Parse the raw segments
         let segments = StringParser.parse(stringUnit.value, expandingSubstitutions: substitutions ?? [:])
 
-        // Populate the default values using the raw parser result
-        var arguments: [Argument] = []
-        var defaultValue: [StringSegment] = []
-
         // Calculate labels from substitutions
         let labelSequence = localization.substitutions?.map {
             ($0.value.argNum, SwiftIdentifier.variableIdentifier(for: $0.key))
-        } ?? []
-        let labels = Dictionary(uniqueKeysWithValues: labelSequence)
-
-        // Convert the parsed string into a default value and extract the arguments
-        for segment in segments {
-            let argNum = arguments.count + 1
-            let argName = "arg\(argNum)"
-
-            switch segment {
-            case .string(let contents):
-                defaultValue.append(.string(contents))
-            case .placeholder(let placeholder):
-                defaultValue.append(.interpolation(argName))
-                arguments.append(
-                    Argument(
-                        label: labels[argNum],
-                        name: argName,
-                        type: placeholder.type
-                    )
-                )
-            }
         }
+        let labels = Dictionary(uniqueKeysWithValues: labelSequence ?? [])
 
-        return (arguments, defaultValue)
+        // Convert the parsed arguments and labels into the correct data
+        return try extract(from: segments, labels: labels)
     }
 
     private static func preferredStringUnit(
