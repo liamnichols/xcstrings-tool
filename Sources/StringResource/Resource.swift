@@ -30,3 +30,9 @@ public struct Resource: Equatable {
         self.defaultValue = defaultValue
     }
 }
+
+extension Resource: Comparable {
+    public static func < (lhs: Resource, rhs: Resource) -> Bool {
+        lhs.identifier.localizedStandardCompare(rhs.identifier) == .orderedAscending
+    }
+}

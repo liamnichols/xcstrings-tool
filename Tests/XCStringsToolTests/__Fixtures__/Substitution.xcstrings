@@ -8,7 +8,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@! There %#@total.strings@ and you have %#@remaining.strings@ remaining"
+            "value" : "%@! There %#@total.strings@ and you have %#@remaining.strings@ remaining"
           },
           "substitutions" : {
             "remaining.strings" : {

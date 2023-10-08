@@ -6,8 +6,30 @@ import XCTest
 final class GenerateTests: FixtureTestCase {
     func testGenerate() throws {
         try eachFixture { inputURL in
-            try snapshot(for: inputURL)
+            if !inputURL.lastPathComponent.hasPrefix("!") {
+                try snapshot(for: inputURL)
+            }
         }
+    }
+
+    func testGenerateInvalid() throws {
+        // Scenario where positional specifiers are repeated, but don't use the same type
+        assertError(
+            for: try fixture(named: "!MismatchingArgumentType"),
+            localizedDescription: """
+            String ‘Key‘ was corrupt: The argument at position 1 was specified multiple \
+            times but with different data types. First ‘Int‘, then ‘String‘.
+            """
+        )
+
+        // Scenario where specifiers contain explicit positions that result in a missed argument
+        assertError(
+            for: try fixture(named: "!MissingArgument"),
+            localizedDescription: """
+            String ‘Key‘ was corrupt: The argument at position 1 was not included in the \
+            source localization and it's type cannot be inferred.
+            """
+        )
     }
 
     func testGenerateWithPublicAccessLevel() throws {
@@ -44,6 +66,23 @@ private extension GenerateTests {
             testName: testName,
             line: line
         )
+    }
+
+    func assertError(
+        for inputURL: URL,
+        localizedDescription expected: String,
+        file: StaticString = #file,
+        line: UInt = #line
+    ) {
+        XCTAssertThrowsError(try run(for: inputURL), file: file, line: line) { error in
+            let actual = if let error = error as? Diagnostic {
+                error.message
+            } else {
+                error.localizedDescription
+            }
+
+            XCTAssertEqual(expected, actual, file: file, line: line)
+        }
     }
 
     // Helper for running the generate command

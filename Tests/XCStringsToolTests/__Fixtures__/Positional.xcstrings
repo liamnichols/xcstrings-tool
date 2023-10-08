@@ -1,0 +1,42 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "reorder" : {
+      "comment" : "A string where the second argument is at the front of the string and the first argument is at the end",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Second: %2$@ - First: %1$lld"
+          }
+        }
+      }
+    },
+    "repeatExplicit" : {
+      "comment" : "A string that uses the same argument twice",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld, I repeat: %1$lld"
+          }
+        }
+      }
+    },
+    "repeatImplicit" : {
+      "comment" : "A string that uses the same argument twice implicitly because a positional specifier wasn't provided in one instance",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@, are you there? %1$@?"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

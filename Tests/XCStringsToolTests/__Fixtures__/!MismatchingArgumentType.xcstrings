@@ -1,0 +1,18 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Key" : {
+      "comment" : "Referencing the same argument but with two different format specifiers ",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld or %1$@"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
