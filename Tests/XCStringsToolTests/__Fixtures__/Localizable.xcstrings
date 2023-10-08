@@ -78,7 +78,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$lld: People liked %#@count@ posts"
+            "value" : "%lld: People liked %#@count@ posts"
           },
           "substitutions" : {
             "count" : {
@@ -88,7 +88,7 @@
                 "plural" : {
                   "one" : {
                     "stringUnit" : {
-                      "state" : "needs_review",
+                      "state" : "translated",
                       "value" : "%arg"
                     }
                   },
