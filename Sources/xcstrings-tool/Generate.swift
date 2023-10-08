@@ -53,7 +53,7 @@ struct Generate: ParsableCommand {
         // Write the output and catch errors in a diagnostic format
         try withThrownErrorsAsDiagnostics {
             // Create the directory if it doesn't exist
-            try createOutputDirectoryIfNeeded()
+            try createDirectoryIfNeeded(for: output)
 
             // Write the source to disk
             try source.write(to: output, atomically: true, encoding: .utf8)
@@ -66,62 +66,6 @@ struct Generate: ParsableCommand {
     }
 
     var resolvedAccessLevel: StringGenerator.AccessLevel {
-        if let accessLevel = self.accessLevel {
-            return accessLevel
-        }
-
-        let environment = ProcessInfo.processInfo.environment
-        let buildSetting = environment["XCSTRINGS_TOOL_ACCESS_LEVEL"]?.lowercased()
-        if let accessLevel = buildSetting.flatMap(StringGenerator.AccessLevel.init(rawValue:)) {
-            return accessLevel
-        }
-
-        if let swiftSettings = environment["SWIFT_ACTIVE_COMPILATION_CONDITIONS"] {
-            if swiftSettings.contains("XCSTRINGS_TOOL_ACCESS_LEVEL_INTERNAL") {
-                return .internal
-            } else if swiftSettings.contains("XCSTRINGS_TOOL_ACCESS_LEVEL_PUBLIC") {
-                return .public
-            } else if swiftSettings.contains("XCSTRINGS_TOOL_ACCESS_LEVEL_PACKAGE") {
-                return .package
-            }
-        }
-
-        return .internal
+        .resolveFromEnvironment(or: accessLevel) ?? .internal
     }
-
-    func createOutputDirectoryIfNeeded() throws {
-        let outputDirectory = output.deletingLastPathComponent()
-
-        let fileManager = FileManager.default
-        if !fileManager.fileExists(atPath: outputDirectory.path(percentEncoded: false)) {
-            try fileManager.createDirectory(at: outputDirectory, withIntermediateDirectories: true)
-        }
-    }
-}
-
-extension ResourceValidator {
-    static func validateResources(_ resources: [Resource], in fileURL: URL) throws {
-        let issues: [ResourceValidator.Issue] = validateResources(resources)
-
-        if issues.isEmpty {
-            return
-        }
-
-        for issue in issues {
-            warning(issue.description, sourceFile: fileURL)
-        }
-
-        throw Diagnostic(
-            severity: .error,
-            sourceFile: fileURL,
-            message: String(
-                AttributedString(
-                    localized: "^[\(issues.count) issues](inflect: true) found while processing ‘\(fileURL.lastPathComponent)‘"
-                ).characters
-            )
-        )
-    }
-}
-
-extension StringGenerator.AccessLevel: ExpressibleByArgument {
 }
