@@ -33,6 +33,7 @@ let package = Package(
                 .target(name: "StringExtractor"),
                 .target(name: "StringGenerator"),
                 .target(name: "StringResource"),
+                .target(name: "StringSource"),
                 .target(name: "StringValidator"),
                 .target(name: "XCStringsToolConstants")
             ]
@@ -63,6 +64,13 @@ let package = Package(
         ),
 
         .target(
+            name: "StringSource",
+            dependencies: [
+                .target(name: "StringCatalog"),
+            ]
+        ),
+
+        .target(
             name: "StringCatalog"
         ),
 
@@ -79,6 +87,7 @@ let package = Package(
             dependencies: [
                 .target(name: "StringCatalog"),
                 .target(name: "StringResource"),
+                .target(name: "StringSource"),
                 .target(name: "SwiftIdentifier")
             ]
         ),
