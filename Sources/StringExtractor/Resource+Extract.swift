@@ -3,7 +3,8 @@ import StringResource
 extension Resource {
     static func extract(
         from segments: [StringParser.ParsedSegment],
-        labels: [Int: String] = [:]
+        labels: [Int: String] = [:],
+        key: String
     ) throws -> (arguments: [Argument], defaultValue: [StringSegment]) {
         var defaultValue: [StringSegment] = [], arguments: [Int: Argument] = [:]
         var nextUnspecifiedPosition = 1
@@ -34,8 +35,16 @@ extension Resource {
                 // If the same argument is represented by many placeholders,
                 // ensure that they use the same type
                 if let existing = arguments[position], existing.type != argument.type {
-                    // TODO: Raise error.
-                    assertionFailure("Repeated argument has mismatching placeholder types")
+                    throw ExtractionError.localizationCorrupt(
+                        ExtractionError.Context(
+                            key: key,
+                            debugDescription: """
+                            The argument at position \(position) was specified multiple \
+                            times but with different data types. First ‘\(existing.type)‘, \
+                            then ‘\(argument.type)‘.
+                            """
+                        )
+                    )
                 }
 
                 defaultValue.append(.interpolation(name))
@@ -43,7 +52,20 @@ extension Resource {
             }
         }
 
-        // TODO: Raise error for missing arguments
+        // Ensure that all arguments are accounted for
+        if !arguments.isEmpty {
+            for argNum in 1 ... arguments.count where !arguments.keys.contains(argNum) {
+                throw ExtractionError.localizationCorrupt(
+                    ExtractionError.Context(
+                        key: key,
+                        debugDescription: """
+                        The argument at position \(argNum) was not included in the \
+                        source localization and it's type cannot be inferred.
+                        """
+                    )
+                )
+            }
+        }
 
         return (arguments.sorted(by: { $0.key < $1.key }).map(\.value), defaultValue)
     }

@@ -53,7 +53,7 @@ extension Resource {
         let labels = Dictionary(uniqueKeysWithValues: labelSequence ?? [])
 
         // Convert the parsed arguments and labels into the correct data
-        return try extract(from: segments, labels: labels)
+        return try extract(from: segments, labels: labels, key: key)
     }
 
     private static func preferredStringUnit(

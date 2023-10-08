@@ -1,0 +1,18 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Key" : {
+      "comment" : "A string that contains positional specifiers that results in the first argument to be missing",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%2$@, %3$@"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
