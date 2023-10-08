@@ -5,7 +5,7 @@ import RegexBuilder
 struct StringParser {
     enum ParsedSegment: Equatable {
         case string(contents: String)
-        case placeholder(PlaceholderType)
+        case placeholder(PlaceholderType, position: Int?)
     }
 
     /// Parse the given input string including the expansion of the given substitutions
@@ -31,8 +31,8 @@ struct StringParser {
             }
 
             // Now create a segment for the match itself
-            let output: (_, placeholder: PlaceholderType) = match.output
-            segments.append(.placeholder(output.placeholder))
+            let output: (_, position: Int?, placeholder: PlaceholderType) = match.output
+            segments.append(.placeholder(output.placeholder, position: output.position))
 
             // Update the last index for the next iteration
             lastIndex = match.range.upperBound
@@ -55,7 +55,11 @@ extension StringParser {
 
         // Optional, positional information
         Optionally {
-            OneOrMore(.digit)
+            TryCapture {
+                OneOrMore(.digit)
+            } transform: { rawValue in
+                Int(rawValue)
+            }
             "$"
         }
 
