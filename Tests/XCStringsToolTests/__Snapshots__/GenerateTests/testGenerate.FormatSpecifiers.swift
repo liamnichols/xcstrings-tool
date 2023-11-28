@@ -84,6 +84,16 @@ extension LocalizedStringResource {
             )
         }
 
+        /// %o should convert to a UInt argument
+        internal func o(_ arg1: UInt) -> LocalizedStringResource {
+            LocalizedStringResource(
+                "o",
+                defaultValue: ###"Test \###(arg1)"###,
+                table: "FormatSpecifiers",
+                bundle: .current
+            )
+        }
+
         /// %p should convert to an UnsafeRawPointer argument
         internal func p(_ arg1: UnsafeRawPointer) -> LocalizedStringResource {
             LocalizedStringResource(
@@ -98,6 +108,26 @@ extension LocalizedStringResource {
         internal func s(_ arg1: UnsafePointer<CChar>) -> LocalizedStringResource {
             LocalizedStringResource(
                 "s",
+                defaultValue: ###"Test \###(arg1)"###,
+                table: "FormatSpecifiers",
+                bundle: .current
+            )
+        }
+
+        /// %u should convert to a UInt argument
+        internal func u(_ arg1: UInt) -> LocalizedStringResource {
+            LocalizedStringResource(
+                "u",
+                defaultValue: ###"Test \###(arg1)"###,
+                table: "FormatSpecifiers",
+                bundle: .current
+            )
+        }
+
+        /// %x should convert to a UInt argument
+        internal func x(_ arg1: UInt) -> LocalizedStringResource {
+            LocalizedStringResource(
+                "x",
                 defaultValue: ###"Test \###(arg1)"###,
                 table: "FormatSpecifiers",
                 bundle: .current
