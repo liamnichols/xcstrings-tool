@@ -58,4 +58,4 @@ Text(.localizable.contentSummary(dogs.count, totalRating, dogs.count * 10))
 
 ## Contributing
 
-- <doc:CONTRIBUTING.md>
+- <doc:CONTRIBUTING>
