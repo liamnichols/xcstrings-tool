@@ -55,3 +55,7 @@ Text(.localizable.contentSummary(dogs.count, totalRating, dogs.count * 10))
 
 - <doc:Changing-the-Access-Level>
 - <doc:Moving-Away-from-XCStrings-Tool>
+
+## Contributing
+
+- <doc:CONTRIBUTING.md>
