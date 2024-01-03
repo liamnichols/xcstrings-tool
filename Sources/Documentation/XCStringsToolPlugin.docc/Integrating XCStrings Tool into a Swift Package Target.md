@@ -35,7 +35,7 @@ let package = Package(
     ],
     dependencies: [
         // 1. Add the xcstrings-tool Package dependency
-        .package(url: "https://github.com/liamnichols/xcstrings-tool-package.git", from: "0.1.0")
+        .package(url: "https://github.com/liamnichols/xcstrings-tool-plugin.git", from: "0.1.0")
     ],
     targets: [
         .target(
