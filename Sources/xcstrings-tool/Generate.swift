@@ -56,7 +56,7 @@ struct Generate: ParsableCommand {
             try createDirectoryIfNeeded(for: output)
 
             // Write the source to disk
-            try source.write(to: output, atomically: true, encoding: .utf8)
+            try source.write(to: output, atomically: false, encoding: .utf8)
             note("Output written to ‘\(output.path(percentEncoded: false))‘")
         }
     }
