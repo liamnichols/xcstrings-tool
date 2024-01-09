@@ -45,6 +45,12 @@ final class GenerateTests: FixtureTestCase {
             accessLevel: "package"
         )
     }
+
+    func testGenerateWithLegacyStrings() throws {
+        try snapshot(
+            for: try fixture(named: "Legacy", extension: "strings")
+        )
+    }
 }
 
 // MARK: - Helpers

@@ -1,0 +1,18 @@
+//
+//  Legacy.strings
+//
+
+/* No arguments */
+"Key1" = "This is a simple string";
+
+/* A single argument */
+"Key2" = "This string contains %lld integer";
+
+/* Multiple arguments */
+"Key3" = "Hello %@! This string %lld arguments";
+
+/* Positional specifiers mixed in with a regular specifier */
+"Key4" = "Second: %2$@, First: %1$@, First: %@";
+
+/* Repeating an argument using positional specifiers */
+"Key5" = "First: %@, First: %1$@";
