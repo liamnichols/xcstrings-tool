@@ -11,9 +11,9 @@ on:
 jobs:
   validate-spi-manifest:
     name: Validate SPI Manifest
-    runs-on: macos-13
+    runs-on: macos-14
     env:
-      DEVELOPER_DIR: /Applications/Xcode_15.0.app/Contents/Developer
+      DEVELOPER_DIR: /Applications/Xcode_15.2.app/Contents/Developer
       VALIDATE_SPI_MANIFEST: YES
     steps:
     - name: Checkout Repo
@@ -25,10 +25,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        xcode: ["15.0"]
+        xcode: ["15.0", "15.2"]
         include:
         - xcode: "15.0"
           macos: macOS-13
+        - xcode: "15.2"
+          macos: macOS-14
     runs-on: ${{ matrix.macos }}
     env:
       DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode }}.app/Contents/Developer
