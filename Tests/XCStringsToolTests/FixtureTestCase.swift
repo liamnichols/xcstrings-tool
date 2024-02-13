@@ -2,17 +2,13 @@ import Foundation
 import XCTest
 
 class FixtureTestCase: XCTestCase {
-    var fixtures: [URL]!
+    let bundle: Bundle = .module
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
-
-        let bundle = Bundle.module
-        fixtures = try XCTUnwrap(bundle.urls(forResourcesWithExtension: "xcstrings", subdirectory: "__Fixtures__"))
-    }
-
-    func eachFixture(_ test: (URL) throws -> Void) throws {
-        for fileURL in fixtures {
+    func eachFixture(
+        withExtension ext: String = "xcstrings",
+        test: (URL) throws -> Void
+    ) throws {
+        for fileURL in try fixtures(withExtension: ext) {
             try XCTContext.runActivity(named: fileURL.lastPathComponent) { activity in
                 do {
                     try test(fileURL)
@@ -23,10 +19,15 @@ class FixtureTestCase: XCTestCase {
         }
     }
 
-    func fixture(named name: String) throws -> URL {
-        let bundle = Bundle.module
-        return try XCTUnwrap(
-            bundle.url(forResource: name, withExtension: "xcstrings", subdirectory: "__Fixtures__")
+    func fixtures(withExtension ext: String) throws -> [URL] {
+        try XCTUnwrap(
+            bundle.urls(forResourcesWithExtension: ext, subdirectory: "__Fixtures__")
+        )
+    }
+
+    func fixture(named name: String, extension ext: String = "xcstrings") throws -> URL {
+        try XCTUnwrap(
+            bundle.url(forResource: name, withExtension: ext, subdirectory: "__Fixtures__")
         )
     }
 }

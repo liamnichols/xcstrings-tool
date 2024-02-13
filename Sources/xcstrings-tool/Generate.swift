@@ -4,12 +4,13 @@ import StringExtractor
 import struct StringResource.Resource
 import StringCatalog
 import StringGenerator
+import StringSource
 import StringValidator
 
 struct Generate: ParsableCommand {
     @Argument(
         help: "Path to xcstrings String Catalog file",
-        completion: .file(extensions: ["xcstrings"]),
+        completion: .file(extensions: ["xcstrings", "strings"]),
         transform: { URL(filePath: $0, directoryHint: .notDirectory) }
     )
     var input
@@ -32,11 +33,9 @@ struct Generate: ParsableCommand {
     func run() throws {
         // Load the source ensuring that errors are thrown in a diagnostic format for the input
         let source = try withThrownErrorsAsDiagnostics(at: input) {
-            // Load the String Catalog file
-            let catalog = try StringCatalog(contentsOf: input)
-
-            // Extract resources from it
-            let result = try StringExtractor.extractResources(from: catalog)
+            // Load the source content and extract the resources
+            let source = try StringSource(contentsOf: input)
+            let result = try StringExtractor.extractResources(from: source)
 
             // Validate the extraction result
             result.issues.forEach { warning($0.description, sourceFile: input) }
