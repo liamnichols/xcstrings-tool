@@ -12,14 +12,14 @@ struct Generate: ParsableCommand {
         completion: .file(extensions: ["xcstrings"]),
         transform: { URL(filePath: $0, directoryHint: .notDirectory) }
     )
-    var input
+    var input: URL
 
     @Argument(
         help: "Path to write generated Swift output",
         completion: .file(extensions: ["swift"]),
         transform: { URL(filePath: $0, directoryHint: .notDirectory) }
     )
-    var output
+    var output: URL
 
     @Option(
         name: .shortAndLong,
