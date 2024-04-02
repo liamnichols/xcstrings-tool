@@ -117,6 +117,9 @@ let package = Package(
             name: "StringCatalogTests",
             dependencies: [
                 .target(name: "StringCatalog")
+            ],
+            resources: [
+                .copy("__Fixtures__")
             ]
         )
     ]

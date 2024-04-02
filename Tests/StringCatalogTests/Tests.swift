@@ -10,4 +10,16 @@ class FixtureTestCase: XCTestCase {
             ])),
         ], version: "1.0")
     }
+
+    func testParseCatalogz() throws {
+        let fixtureUrl = try fixture(named: "Localizable")
+        _ = try StringCatalog(contentsOf: fixtureUrl)
+    }
+
+    func fixture(named name: String) throws -> URL {
+        let bundle = Bundle.module
+        return try XCTUnwrap(
+            bundle.url(forResource: name, withExtension: "xcstrings", subdirectory: "__Fixtures__")
+        )
+    }
 }
