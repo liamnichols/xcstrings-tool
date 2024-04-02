@@ -3,6 +3,11 @@ import Foundation
 public struct StringVariations: Codable {
     public let device: DictionaryWrapper<DeviceKey, StringVariation>?
     public let plural: DictionaryWrapper<PluralKey, StringVariation>?
+
+    public init(device: DictionaryWrapper<DeviceKey, StringVariation>?, plural: DictionaryWrapper<PluralKey, StringVariation>?) {
+        self.device = device
+        self.plural = plural
+    }
 }
 
 extension StringVariations {

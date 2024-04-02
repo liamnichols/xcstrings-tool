@@ -4,6 +4,12 @@ public struct StringCatalog: Codable {
     public var sourceLanguage: StringLanguage
     public var strings: [String: StringEntry]
     public var version: String // TODO: Use a Version type?
+
+    public init(sourceLanguage: StringLanguage, strings: [String : StringEntry], version: String) {
+        self.sourceLanguage = sourceLanguage
+        self.strings = strings
+        self.version = version
+    }
 }
 
 // MARK: - Init
