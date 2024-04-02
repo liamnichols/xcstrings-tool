@@ -111,6 +111,13 @@ let package = Package(
             swiftSettings: [
                 .define("XCSTRINGS_TOOL_ACCESS_LEVEL_PUBLIC")
             ]
+        ),
+
+        .testTarget(
+            name: "StringCatalogTests",
+            dependencies: [
+                .target(name: "StringCatalog")
+            ]
         )
     ]
 )
