@@ -17,7 +17,7 @@ let package = Package(
     products: [
         .executable(name: "xcstrings-tool", targets: ["xcstrings-tool"]),
         .plugin(name: "XCStringsToolPlugin", targets: ["XCStringsToolPlugin"]),
-        .library(name: "XCStringsToolStringCatalog", targets: ["StringCatalog"])
+        .library(name: "StringCatalog", targets: ["StringCatalog"])
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.2.3"),
