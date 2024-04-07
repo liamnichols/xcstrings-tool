@@ -29,6 +29,24 @@ extension AvailabilityArgumentListSyntax {
             AvailabilityArgumentSyntax(argument: .token(.binaryOperator("*")))
         ]
     }
+
+    static var wwdc2021: AvailabilityArgumentListSyntax {
+        [
+            AvailabilityArgumentSyntax(argument: .platformVersionRestriction("macOS", versionMajor: 12))
+                .with(\.trailingComma, .commaToken()),
+
+            AvailabilityArgumentSyntax(argument: .platformVersionRestriction("iOS", versionMajor: 15))
+                .with(\.trailingComma, .commaToken()),
+
+            AvailabilityArgumentSyntax(argument: .platformVersionRestriction("tvOS", versionMajor: 15))
+                .with(\.trailingComma, .commaToken()),
+
+            AvailabilityArgumentSyntax(argument: .platformVersionRestriction("watchOS", versionMajor: 8))
+                .with(\.trailingComma, .commaToken()),
+
+            AvailabilityArgumentSyntax(argument: .token(.binaryOperator("*")))
+        ]
+    }
 }
 
 extension PlatformVersionSyntax {
