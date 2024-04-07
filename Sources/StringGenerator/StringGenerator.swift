@@ -120,7 +120,7 @@ public struct StringGenerator {
                         // Properties
                         VariableDeclSyntax(
                             modifiers: [
-                                DeclModifierSyntax(name: accessLevel.token),
+                                DeclModifierSyntax(name: .keyword(.fileprivate)),
                             ],
                             .let,
                             name: PatternSyntax(IdentifierPatternSyntax(identifier: "key")),
@@ -130,7 +130,7 @@ public struct StringGenerator {
                         )
                         VariableDeclSyntax(
                             modifiers: [
-                                DeclModifierSyntax(name: accessLevel.token),
+                                DeclModifierSyntax(name: .keyword(.fileprivate)),
                             ],
                             .let,
                             name: PatternSyntax(IdentifierPatternSyntax(identifier: "defaultValue")),
@@ -140,7 +140,7 @@ public struct StringGenerator {
                         )
                         VariableDeclSyntax(
                             modifiers: [
-                                DeclModifierSyntax(name: accessLevel.token),
+                                DeclModifierSyntax(name: .keyword(.fileprivate)),
                             ],
                             .let,
                             name: PatternSyntax(IdentifierPatternSyntax(identifier: "table")),
@@ -152,9 +152,9 @@ public struct StringGenerator {
                         )
                         VariableDeclSyntax(
                             modifiers: [
-                                DeclModifierSyntax(name: accessLevel.token),
+                                DeclModifierSyntax(name: .keyword(.fileprivate)),
                             ],
-                            .var,
+                            .let,
                             name: PatternSyntax(IdentifierPatternSyntax(identifier: "locale")),
                             type: TypeAnnotationSyntax(
                                 type: IdentifierTypeSyntax(name: "Locale")
@@ -162,7 +162,7 @@ public struct StringGenerator {
                         )
                         VariableDeclSyntax(
                             modifiers: [
-                                DeclModifierSyntax(name: accessLevel.token),
+                                DeclModifierSyntax(name: .keyword(.fileprivate)),
                             ],
                             .let,
                             name: PatternSyntax(IdentifierPatternSyntax(identifier: "bundle")),
