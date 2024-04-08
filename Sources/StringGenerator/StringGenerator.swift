@@ -995,9 +995,11 @@ extension Resource {
                     LabeledExprSyntax(
                         label: variableToken.text,
                         expression: FunctionCallExprSyntax(
-                            callee: MemberAccessExprSyntax(
+                            calledExpression: MemberAccessExprSyntax(
                                 declName: DeclReferenceExprSyntax(baseName: name)
-                            )
+                            ),
+                            leftParen: arguments.isEmpty ? nil : .leftParenToken(),
+                            rightParen: arguments.isEmpty ? nil : .rightParenToken()
                         ) {
                             for argument in arguments {
                                 LabeledExprSyntax(
