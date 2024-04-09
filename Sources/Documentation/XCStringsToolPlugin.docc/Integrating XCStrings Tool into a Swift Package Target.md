@@ -42,7 +42,7 @@ let package = Package(
             name: "DogKit",
             dependencies: [
                 // 2. Add the XCStringsToolPlugin product as a dependency on your target
-                .product(name: "XCStringsToolPlugin", package: "xcstrings-tool")
+                .product(name: "XCStringsToolPlugin", package: "xcstrings-tool-plugin")
             ],
             path: "Sources"
         )
