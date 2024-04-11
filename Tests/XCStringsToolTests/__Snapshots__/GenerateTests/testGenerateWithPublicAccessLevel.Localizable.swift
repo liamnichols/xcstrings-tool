@@ -2,6 +2,13 @@ import Foundation
 
 @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
 extension String {
+    /// Constant values for the Localizable Strings Catalog
+    ///
+    /// ```swift
+    /// // Accessing the localized value directly
+    /// let value = String(localizable: .key)
+    /// value // "Default Value"
+    /// ```
     public struct Localizable {
         fileprivate enum BundleDescription {
             case main
@@ -131,6 +138,18 @@ private extension LocalizedStringResource.BundleDescription {
 
 @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)
 extension LocalizedStringResource {
+    /// Constant values for the Localizable Strings Catalog
+    ///
+    /// ```swift
+    /// // Accessing the localized value directly
+    /// let value = String(localized: .localizable.key)
+    /// value // "Default Value"
+    ///
+    /// // Working with SwiftUI
+    /// Text(.localizable.key)
+    /// ```
+    ///
+    /// - Note: Using ``LocalizedStringResource.Localizable`` requires iOS 16/macOS 13 or later. See ``String.Localizable`` for an iOS 15/macOS 12 compatible API.
     public struct Localizable {
         /// This is a comment
         public var key: LocalizedStringResource {

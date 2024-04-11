@@ -2,6 +2,13 @@ import Foundation
 
 @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
 extension String {
+    /// Constant values for the Positional Strings Catalog
+    ///
+    /// ```swift
+    /// // Accessing the localized value directly
+    /// let value = String(positional: .foo)
+    /// value // "bar"
+    /// ```
     internal struct Positional {
         fileprivate enum BundleDescription {
             case main
@@ -123,6 +130,18 @@ private extension LocalizedStringResource.BundleDescription {
 
 @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)
 extension LocalizedStringResource {
+    /// Constant values for the Positional Strings Catalog
+    ///
+    /// ```swift
+    /// // Accessing the localized value directly
+    /// let value = String(localized: .positional.foo)
+    /// value // "bar"
+    ///
+    /// // Working with SwiftUI
+    /// Text(.positional.foo)
+    /// ```
+    ///
+    /// - Note: Using ``LocalizedStringResource.Positional`` requires iOS 16/macOS 13 or later. See ``String.Positional`` for an iOS 15/macOS 12 compatible API.
     internal struct Positional {
         /// A string where the second argument is at the front of the string and the first argument is at the end
         internal func reorder(_ arg1: Int, _ arg2: String) -> LocalizedStringResource {

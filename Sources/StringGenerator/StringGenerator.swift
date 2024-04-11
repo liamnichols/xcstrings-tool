@@ -61,7 +61,7 @@ public struct StringGenerator {
         ) {
             // Table struct
             StructDeclSyntax(
-//                leadingTrivia: typeDocumentation,
+                leadingTrivia: customTypeDocumentation,
                 modifiers: [
                     DeclModifierSyntax(name: accessLevel.token)
                 ],
@@ -676,7 +676,7 @@ public struct StringGenerator {
         ) {
             // Table struct
             StructDeclSyntax(
-//                leadingTrivia: typeDocumentation,
+                leadingTrivia: typeDocumentation,
                 modifiers: [
                     DeclModifierSyntax(name: accessLevel.token)
                 ],
@@ -800,28 +800,36 @@ public struct StringGenerator {
         let exampleValue = exampleResource?.defaultValue.first?.content ?? "bar"
         let exampleAccessor = ".\(variableToken.text).\(exampleId)"
 
-        return [
-            .docLineComment("/// Constant values for the \(tableName) Strings Catalog"),
-            .newlines(1),
-            .docLineComment("///"),
-            .newlines(1),
-            .docLineComment("/// ```swift"),
-            .newlines(1),
-            .docLineComment("/// // Accessing the localized value directly"),
-            .newlines(1),
-            .docLineComment("/// let value = String(localized: \(exampleAccessor))"),
-            .newlines(1),
-            .docLineComment("/// value // \"\(exampleValue.replacingOccurrences(of: "\n", with: "\\n"))\""),
-            .newlines(1),
-            .docLineComment("///"),
-            .newlines(1),
-            .docLineComment("/// // Working with SwiftUI"),
-            .newlines(1),
-            .docLineComment("/// Text(\(exampleAccessor))"),
-            .newlines(1),
-            .docLineComment("/// ```"),
-            .newlines(1),
-        ]
+        return Trivia(docComment: """
+        Constant values for the \(tableName) Strings Catalog
+
+        ```swift
+        // Accessing the localized value directly
+        let value = String(localized: \(exampleAccessor))
+        value // \"\(exampleValue.replacingOccurrences(of: "\n", with: "\\n"))\"
+
+        // Working with SwiftUI
+        Text(\(exampleAccessor))
+        ```
+
+        - Note: Using ``LocalizedStringResource.\(tableName)`` requires iOS 16/macOS 13 or later. See ``String.\(tableName)`` for an iOS 15/macOS 12 compatible API.
+        """)
+    }
+
+    var customTypeDocumentation: Trivia {
+        let exampleResource = resources.first(where: { $0.arguments.isEmpty })
+        let exampleId = exampleResource?.identifier ?? "foo"
+        let exampleValue = exampleResource?.defaultValue.first?.content ?? "bar"
+
+        return Trivia(docComment: """
+        Constant values for the \(tableName) Strings Catalog
+
+        ```swift
+        // Accessing the localized value directly
+        let value = String(\(variableToken.text): .\(exampleId))
+        value // \"\(exampleValue.replacingOccurrences(of: "\n", with: "\\n"))\"
+        ```
+        """)
     }
 
     // Localizable
@@ -1131,5 +1139,15 @@ private extension Unicode.Scalar {
         // Exclude non-printables before the space character U+20, and anything
         // including and above the DEL character U+7F.
         return self.value >= 0x20 && self.value < 0x7F
+    }
+}
+
+extension Trivia {
+    init(docComment: String) {
+        self = docComment
+            .components(separatedBy: .newlines)
+            .map { "/// \($0)" }
+            .map { [.docLineComment($0.trimmingCharacters(in: .whitespaces)), .newlines(1)] }
+            .reduce([], +)
     }
 }

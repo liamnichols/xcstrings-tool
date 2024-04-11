@@ -2,6 +2,13 @@ import Foundation
 
 @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
 extension String {
+    /// Constant values for the Multiline Strings Catalog
+    ///
+    /// ```swift
+    /// // Accessing the localized value directly
+    /// let value = String(multiline: .multiline)
+    /// value // "Options:\n- One\n- Two\n- Three"
+    /// ```
     internal struct Multiline {
         fileprivate enum BundleDescription {
             case main
@@ -103,6 +110,18 @@ private extension LocalizedStringResource.BundleDescription {
 
 @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)
 extension LocalizedStringResource {
+    /// Constant values for the Multiline Strings Catalog
+    ///
+    /// ```swift
+    /// // Accessing the localized value directly
+    /// let value = String(localized: .multiline.multiline)
+    /// value // "Options:\n- One\n- Two\n- Three"
+    ///
+    /// // Working with SwiftUI
+    /// Text(.multiline.multiline)
+    /// ```
+    ///
+    /// - Note: Using ``LocalizedStringResource.Multiline`` requires iOS 16/macOS 13 or later. See ``String.Multiline`` for an iOS 15/macOS 12 compatible API.
     internal struct Multiline {
         /// This example tests the following:
         /// 1. That line breaks in the defaultValue are supported

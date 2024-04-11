@@ -2,6 +2,13 @@ import Foundation
 
 @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
 extension String {
+    /// Constant values for the Substitution Strings Catalog
+    ///
+    /// ```swift
+    /// // Accessing the localized value directly
+    /// let value = String(substitution: .foo)
+    /// value // "bar"
+    /// ```
     internal struct Substitution {
         fileprivate enum BundleDescription {
             case main
@@ -101,6 +108,18 @@ private extension LocalizedStringResource.BundleDescription {
 
 @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)
 extension LocalizedStringResource {
+    /// Constant values for the Substitution Strings Catalog
+    ///
+    /// ```swift
+    /// // Accessing the localized value directly
+    /// let value = String(localized: .substitution.foo)
+    /// value // "bar"
+    ///
+    /// // Working with SwiftUI
+    /// Text(.substitution.foo)
+    /// ```
+    ///
+    /// - Note: Using ``LocalizedStringResource.Substitution`` requires iOS 16/macOS 13 or later. See ``String.Substitution`` for an iOS 15/macOS 12 compatible API.
     internal struct Substitution {
         /// A string that uses substitutions as well as arguments
         internal func substitutions_exampleString(_ arg1: String, totalStrings arg2: Int, remainingStrings arg3: Int) -> LocalizedStringResource {

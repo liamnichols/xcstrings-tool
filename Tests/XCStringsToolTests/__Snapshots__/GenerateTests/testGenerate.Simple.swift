@@ -2,6 +2,13 @@ import Foundation
 
 @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
 extension String {
+    /// Constant values for the Simple Strings Catalog
+    ///
+    /// ```swift
+    /// // Accessing the localized value directly
+    /// let value = String(simple: .simpleKey)
+    /// value // "My Value"
+    /// ```
     internal struct Simple {
         fileprivate enum BundleDescription {
             case main
@@ -101,6 +108,18 @@ private extension LocalizedStringResource.BundleDescription {
 
 @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)
 extension LocalizedStringResource {
+    /// Constant values for the Simple Strings Catalog
+    ///
+    /// ```swift
+    /// // Accessing the localized value directly
+    /// let value = String(localized: .simple.simpleKey)
+    /// value // "My Value"
+    ///
+    /// // Working with SwiftUI
+    /// Text(.simple.simpleKey)
+    /// ```
+    ///
+    /// - Note: Using ``LocalizedStringResource.Simple`` requires iOS 16/macOS 13 or later. See ``String.Simple`` for an iOS 15/macOS 12 compatible API.
     internal struct Simple {
         /// This is a simple key and value
         internal var simpleKey: LocalizedStringResource {

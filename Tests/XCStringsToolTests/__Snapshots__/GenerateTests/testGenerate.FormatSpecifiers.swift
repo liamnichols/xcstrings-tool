@@ -2,6 +2,13 @@ import Foundation
 
 @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
 extension String {
+    /// Constant values for the FormatSpecifiers Strings Catalog
+    ///
+    /// ```swift
+    /// // Accessing the localized value directly
+    /// let value = String(formatSpecifiers: .foo)
+    /// value // "bar"
+    /// ```
     internal struct FormatSpecifiers {
         fileprivate enum BundleDescription {
             case main
@@ -222,6 +229,18 @@ private extension LocalizedStringResource.BundleDescription {
 
 @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)
 extension LocalizedStringResource {
+    /// Constant values for the FormatSpecifiers Strings Catalog
+    ///
+    /// ```swift
+    /// // Accessing the localized value directly
+    /// let value = String(localized: .formatSpecifiers.foo)
+    /// value // "bar"
+    ///
+    /// // Working with SwiftUI
+    /// Text(.formatSpecifiers.foo)
+    /// ```
+    ///
+    /// - Note: Using ``LocalizedStringResource.FormatSpecifiers`` requires iOS 16/macOS 13 or later. See ``String.FormatSpecifiers`` for an iOS 15/macOS 12 compatible API.
     internal struct FormatSpecifiers {
         /// %@ should convert to a String argument
         internal func at(_ arg1: String) -> LocalizedStringResource {
