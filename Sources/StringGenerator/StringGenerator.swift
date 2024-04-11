@@ -70,7 +70,7 @@ public struct StringGenerator {
                 // BundleDescription
                 EnumDeclSyntax(
                     modifiers: [
-                        DeclModifierSyntax(name: accessLevel.token)
+                        DeclModifierSyntax(name: .keyword(.fileprivate))
                     ],
                     name: .type(.BundleDescription),
                     memberBlockBuilder: {

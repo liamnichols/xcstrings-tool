@@ -3,7 +3,7 @@ import Foundation
 @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
 extension String {
     internal struct Positional {
-        internal enum BundleDescription {
+        fileprivate enum BundleDescription {
             case main
             case atURL(URL)
             case forClass(AnyClass)
