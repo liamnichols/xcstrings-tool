@@ -1,6 +1,6 @@
 import Foundation
 
-public struct StringLanguage: Codable, Hashable, RawRepresentable, ExpressibleByStringLiteral {
+public struct StringLanguage: Codable, Hashable, RawRepresentable, ExpressibleByStringLiteral, CodingKeyRepresentable {
     public let rawValue: String
 
     public init(rawValue: String) {

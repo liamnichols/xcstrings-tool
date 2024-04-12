@@ -76,13 +76,13 @@ extension Resource {
     }
 }
 
-private extension DictionaryWrapper where Key == StringVariations.DeviceKey, Value == StringVariation {
+private extension Dictionary where Key == StringVariations.DeviceKey, Value == StringVariation {
     var preferredDeviceVariation: StringVariation? {
         self[.other] ?? self.values.first
     }
 }
 
-private extension DictionaryWrapper where Key == StringVariations.PluralKey, Value == StringVariation {
+private extension Dictionary where Key == StringVariations.PluralKey, Value == StringVariation {
     var preferredPluralVariation: StringVariation? {
         self[.other] ?? self[.one] ?? self.values.first
     }
