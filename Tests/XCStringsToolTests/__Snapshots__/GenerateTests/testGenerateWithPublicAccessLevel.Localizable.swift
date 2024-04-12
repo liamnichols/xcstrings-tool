@@ -37,13 +37,13 @@ extension String {
         }
     }
 
-    public init(localizable: Localizable) {
+    public init(localizable: Localizable, locale: Locale? = nil) {
         self.init(
             localized: localizable.key,
             defaultValue: localizable.defaultValue,
             table: localizable.table,
             bundle: .from(description: localizable.bundle),
-            locale: localizable.locale
+            locale: locale ?? localizable.locale
         )
     }
 }
