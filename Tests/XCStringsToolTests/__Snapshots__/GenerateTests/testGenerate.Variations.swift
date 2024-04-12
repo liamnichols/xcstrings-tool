@@ -37,13 +37,13 @@ extension String {
         }
     }
 
-    internal init(variations: Variations) {
+    internal init(variations: Variations, locale: Locale? = nil) {
         self.init(
             localized: variations.key,
             defaultValue: variations.defaultValue,
             table: variations.table,
             bundle: .from(description: variations.bundle),
-            locale: variations.locale
+            locale: locale ?? variations.locale
         )
     }
 }
