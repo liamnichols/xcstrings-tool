@@ -232,6 +232,11 @@ public struct StringGenerator {
                             firstName: variableToken,
                             type: IdentifierTypeSyntax(name: structToken)
                         )
+                        FunctionParameterSyntax(
+                            firstName: "locale",
+                            type: OptionalTypeSyntax(wrappedType: .identifier(.Locale)),
+                            defaultValue: InitializerClauseSyntax(value: NilLiteralExprSyntax())
+                        )
                     }
                 )
             ) {
@@ -241,6 +246,7 @@ public struct StringGenerator {
                         name: .keyword(.`init`)
                     )
                 ) {
+                    // localized: localizable.key
                     LabeledExprSyntax(
                         label: "localized",
                         expression: MemberAccessExprSyntax(
@@ -248,6 +254,7 @@ public struct StringGenerator {
                             name: "key"
                         )
                     )
+                    // defaultValue: localizable.defaultValue
                     LabeledExprSyntax(
                         label: "defaultValue",
                         expression: MemberAccessExprSyntax(
@@ -255,6 +262,7 @@ public struct StringGenerator {
                             name: "defaultValue"
                         )
                     )
+                    // table: localizable.table
                     LabeledExprSyntax(
                         label: "table",
                         expression: MemberAccessExprSyntax(
@@ -262,6 +270,7 @@ public struct StringGenerator {
                             name: "table"
                         )
                     )
+                    // bundle: .from(description: localizable.bundle)
                     LabeledExprSyntax(
                         label: "bundle",
                         expression: FunctionCallExprSyntax(
@@ -280,11 +289,16 @@ public struct StringGenerator {
                             )
                         }
                     )
+                    // locale: locale ?? localizable.locale
                     LabeledExprSyntax(
                         label: "locale",
-                        expression: MemberAccessExprSyntax(
-                            base: DeclReferenceExprSyntax(baseName: variableToken),
-                            name: "locale"
+                        expression: InfixOperatorExprSyntax(
+                            leftOperand: DeclReferenceExprSyntax(baseName: "locale"),
+                            operator: BinaryOperatorExprSyntax(operator: .binaryOperator("??")),
+                            rightOperand: MemberAccessExprSyntax(
+                                base: DeclReferenceExprSyntax(baseName: variableToken),
+                                name: "locale"
+                            )
                         )
                     )
                 }
