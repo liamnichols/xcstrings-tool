@@ -14,7 +14,9 @@ Before integrating with any targets, you need to add the XCStrings Tool package 
 
 In Xcode, click **File** → **Add Package Dependencies…** and in the search box, type **github.com/liamnichols/xcstrings-tool-plugin**
 
-![A screenshot of the Xcode "Add Package" window after searching for the xcstrings-tool dependency](Xcode-AddPackage)
+![A screenshot of the Xcode "Add Package" window after searching for the xcstrings-tool-plugin dependency](Xcode-AddPackage)
+
+> When using the Package Plugin, it's recommended to use the [**xcstrings-tool-plugin**](https://github.com/liamnichols/xcstrings-tool-plugin) dependency instead of [**xcstrings-tool**](https://github.com/liamnichols/xcstrings-tool) to benefit from the precompiled binary executable.
 
 Select the **xcstrings-tool-plugin** package from the list of results, ensure that **Add to Project** is correctly set to your project and click **Add Package**.
 
@@ -26,7 +28,7 @@ The Build Tool plugin is the main component of XCStrings Tool. Once integrated w
 
 To integrate the plugin, navigate to your project settings, click on your desired target and navigate to the **Build Phases** tab.
 
-Expand the **Run Build Tool Plug-ins** group and click the **+** button. In the list under xcstrings-tool, select **XCStringsToolPlugin** and then click the **Add** button:
+Expand the **Run Build Tool Plug-ins** group and click the **+** button. In the list under xcstrings-tool-plugin, select **XCStringsToolPlugin** and then click the **Add** button:
 
 ![A screenshot of the Build Phases screen after adding the XCStringsToolPlugin](Xcode-AddedBuildToolPlugin)
 
