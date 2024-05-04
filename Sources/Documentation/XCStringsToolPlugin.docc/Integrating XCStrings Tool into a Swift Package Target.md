@@ -14,7 +14,7 @@ If you haven't already, open up a Swift Package which contains the Strings Catal
 
 To integrate the XCStrings Tool plugin, you need to make two modifications to your **Package.swift** file:
 
-1. Add the xcstrings-tool Package dependency
+1. Add the xcstrings-tool-plugin Package dependency
 2. Add the XCStringsToolPlugin product as a dependency on your target
 
 ```swift
@@ -34,7 +34,7 @@ let package = Package(
         )
     ],
     dependencies: [
-        // 1. Add the xcstrings-tool Package dependency
+        // 1. Add the xcstrings-tool-plugin Package dependency
         .package(url: "https://github.com/liamnichols/xcstrings-tool-plugin.git", from: "0.1.0")
     ],
     targets: [
@@ -49,6 +49,8 @@ let package = Package(
     ]
 )
 ```
+
+> It's recommended to use the [**xcstrings-tool-plugin**](https://github.com/liamnichols/xcstrings-tool-plugin) dependency instead of [**xcstrings-tool**](https://github.com/liamnichols/xcstrings-tool) to benefit from the precompiled binary executable.
 
 ### Review your Strings Catalog
 
