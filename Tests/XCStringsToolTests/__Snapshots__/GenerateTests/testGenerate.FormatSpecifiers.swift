@@ -61,17 +61,6 @@ extension String.FormatSpecifiers {
         )
     }
 
-    /// %c should convert to a CChar argument
-    internal static func c(_ arg1: CChar) -> Self {
-        Self (
-            key: "c",
-            defaultValue: ###"Test \###(arg1)"###,
-            table: "FormatSpecifiers",
-            locale: .current,
-            bundle: .current
-        )
-    }
-
     /// %d should convert to an Int argument
     internal static func d(_ arg1: Int) -> Self {
         Self (
@@ -131,28 +120,6 @@ extension String.FormatSpecifiers {
     internal static func o(_ arg1: UInt) -> Self {
         Self (
             key: "o",
-            defaultValue: ###"Test \###(arg1)"###,
-            table: "FormatSpecifiers",
-            locale: .current,
-            bundle: .current
-        )
-    }
-
-    /// %p should convert to an UnsafeRawPointer argument
-    internal static func p(_ arg1: UnsafeRawPointer) -> Self {
-        Self (
-            key: "p",
-            defaultValue: ###"Test \###(arg1)"###,
-            table: "FormatSpecifiers",
-            locale: .current,
-            bundle: .current
-        )
-    }
-
-    /// %s should convert to an UnsafePointer<CChar> argument
-    internal static func s(_ arg1: UnsafePointer<CChar>) -> Self {
-        Self (
-            key: "s",
             defaultValue: ###"Test \###(arg1)"###,
             table: "FormatSpecifiers",
             locale: .current,
@@ -247,11 +214,6 @@ extension LocalizedStringResource {
             LocalizedStringResource(formatSpecifiers: .at(arg1))
         }
 
-        /// %c should convert to a CChar argument
-        internal func c(_ arg1: CChar) -> LocalizedStringResource {
-            LocalizedStringResource(formatSpecifiers: .c(arg1))
-        }
-
         /// %d should convert to an Int argument
         internal func d(_ arg1: Int) -> LocalizedStringResource {
             LocalizedStringResource(formatSpecifiers: .d(arg1))
@@ -280,16 +242,6 @@ extension LocalizedStringResource {
         /// %o should convert to a UInt argument
         internal func o(_ arg1: UInt) -> LocalizedStringResource {
             LocalizedStringResource(formatSpecifiers: .o(arg1))
-        }
-
-        /// %p should convert to an UnsafeRawPointer argument
-        internal func p(_ arg1: UnsafeRawPointer) -> LocalizedStringResource {
-            LocalizedStringResource(formatSpecifiers: .p(arg1))
-        }
-
-        /// %s should convert to an UnsafePointer<CChar> argument
-        internal func s(_ arg1: UnsafePointer<CChar>) -> LocalizedStringResource {
-            LocalizedStringResource(formatSpecifiers: .s(arg1))
         }
 
         /// %u should convert to a UInt argument
