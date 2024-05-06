@@ -1,0 +1,18 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Key" : {
+      "comment" : "%c is not supported",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Test %c"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

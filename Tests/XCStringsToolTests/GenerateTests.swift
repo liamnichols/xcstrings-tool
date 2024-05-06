@@ -30,6 +30,14 @@ final class GenerateTests: FixtureTestCase {
             source localization and it's type cannot be inferred.
             """
         )
+
+        // Scenario where format specifiers such as %c are not supported
+        assertError(
+            for: try fixture(named: "!UnsupportedFormatSpecifiers"),
+            localizedDescription: """
+            String ‘Key‘ is not supported: The placeholder format specifier ‘%c‘ is not supported.
+            """
+        )
     }
 
     func testGenerateWithPublicAccessLevel() throws {
