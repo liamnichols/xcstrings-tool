@@ -14,7 +14,19 @@ extension Resource {
             switch segment {
             case .string(let contents):
                 defaultValue.append(.string(contents))
-            case .placeholder(let placeholder, let specifiedPosition):
+            case .placeholder(let rawValue, let placeholder, let specifiedPosition):
+                // If the placeholder is an unsupported type, raise an error about the invalid string
+                guard let type = placeholder.type else {
+                    throw ExtractionError.unsupported(
+                        ExtractionError.Context(
+                            key: key,
+                            debugDescription: """
+                            The placeholder format specifier ‘\(rawValue)‘ is not supported.
+                            """
+                        )
+                    )
+                }
+
                 // Figure out the position of the argument for this placeholder
                 let position: Int
                 if let specifiedPosition {
@@ -29,7 +41,7 @@ extension Resource {
                 let argument = Argument(
                     label: labels[position],
                     name: name,
-                    type: placeholder.type
+                    type: type
                 )
 
                 // If the same argument is represented by many placeholders,

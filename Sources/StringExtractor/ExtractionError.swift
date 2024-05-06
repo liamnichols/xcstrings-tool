@@ -10,6 +10,7 @@ public enum ExtractionError: Error {
     }
 
     case localizationCorrupt(Context)
+    case unsupported(Context)
 }
 
 extension ExtractionError: LocalizedError {
@@ -17,6 +18,8 @@ extension ExtractionError: LocalizedError {
         switch self {
         case .localizationCorrupt(let context):
             "String ‘\(context.key)‘ was corrupt: \(context.debugDescription)"
+        case .unsupported(let context):
+            "String ‘\(context.key)‘ is not supported: \(context.debugDescription)"
         }
     }
 }

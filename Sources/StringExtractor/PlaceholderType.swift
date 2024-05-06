@@ -25,15 +25,13 @@ enum PlaceholderType {
         }
     }
 
-    var type: String {
+    var type: String? {
         switch self {
         case .object: "String"
         case .float: "Double"
         case .int: "Int"
         case .uint: "UInt"
-        case .char: "CChar"
-        case .cString: "UnsafePointer<CChar>"
-        case .pointer: "UnsafeRawPointer"
+        default: nil
         }
     }
 }
