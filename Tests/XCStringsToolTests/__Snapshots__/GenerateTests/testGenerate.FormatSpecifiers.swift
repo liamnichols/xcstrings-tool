@@ -6,8 +6,8 @@ extension String {
     ///
     /// ```swift
     /// // Accessing the localized value directly
-    /// let value = String(formatSpecifiers: .foo)
-    /// value // "bar"
+    /// let value = String(formatSpecifiers: .percentage)
+    /// value // "Test %"
     /// ```
     internal struct FormatSpecifiers {
         fileprivate enum BundleDescription {
@@ -127,6 +127,50 @@ extension String.FormatSpecifiers {
         )
     }
 
+    /// % should not be converted to an argument
+    internal static var percentage: Self {
+        Self (
+            key: "percentage",
+            defaultValue: ###"Test %"###,
+            table: "FormatSpecifiers",
+            locale: .current,
+            bundle: .current
+        )
+    }
+
+    /// %% should not be converted to an argument
+    internal static var percentage_escaped: Self {
+        Self (
+            key: "percentage_escaped",
+            defaultValue: ###"Test %%"###,
+            table: "FormatSpecifiers",
+            locale: .current,
+            bundle: .current
+        )
+    }
+
+    /// %% should not be converted to an argument
+    internal static var percentage_escaped_space_o: Self {
+        Self (
+            key: "percentage_escaped_space_o",
+            defaultValue: ###"Test 50%% off"###,
+            table: "FormatSpecifiers",
+            locale: .current,
+            bundle: .current
+        )
+    }
+
+    /// '% o' should not be converted to an argument
+    internal static var percentage_space_o: Self {
+        Self (
+            key: "percentage_space_o",
+            defaultValue: ###"Test 50% off"###,
+            table: "FormatSpecifiers",
+            locale: .current,
+            bundle: .current
+        )
+    }
+
     /// %u should convert to a UInt argument
     internal static func u(_ arg1: UInt) -> Self {
         Self (
@@ -200,11 +244,11 @@ extension LocalizedStringResource {
     ///
     /// ```swift
     /// // Accessing the localized value directly
-    /// let value = String(localized: .formatSpecifiers.foo)
-    /// value // "bar"
+    /// let value = String(localized: .formatSpecifiers.percentage)
+    /// value // "Test %"
     ///
     /// // Working with SwiftUI
-    /// Text(.formatSpecifiers.foo)
+    /// Text(.formatSpecifiers.percentage)
     /// ```
     ///
     /// - Note: Using ``LocalizedStringResource.FormatSpecifiers`` requires iOS 16/macOS 13 or later. See ``String.FormatSpecifiers`` for an iOS 15/macOS 12 compatible API.
@@ -242,6 +286,26 @@ extension LocalizedStringResource {
         /// %o should convert to a UInt argument
         internal func o(_ arg1: UInt) -> LocalizedStringResource {
             LocalizedStringResource(formatSpecifiers: .o(arg1))
+        }
+
+        /// % should not be converted to an argument
+        internal var percentage: LocalizedStringResource {
+            LocalizedStringResource(formatSpecifiers: .percentage)
+        }
+
+        /// %% should not be converted to an argument
+        internal var percentage_escaped: LocalizedStringResource {
+            LocalizedStringResource(formatSpecifiers: .percentage_escaped)
+        }
+
+        /// %% should not be converted to an argument
+        internal var percentage_escaped_space_o: LocalizedStringResource {
+            LocalizedStringResource(formatSpecifiers: .percentage_escaped_space_o)
+        }
+
+        /// '% o' should not be converted to an argument
+        internal var percentage_space_o: LocalizedStringResource {
+            LocalizedStringResource(formatSpecifiers: .percentage_space_o)
         }
 
         /// %u should convert to a UInt argument
