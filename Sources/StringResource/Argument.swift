@@ -8,11 +8,11 @@ public struct Argument: Equatable {
     public let name: String
 
     /// The type of the argument
-    public let type: String
+    public let placeholderType: String.LocalizationValue.Placeholder
 
-    public init(label: String?, name: String, type: String) {
+    public init(label: String?, name: String, placeholderType: String.LocalizationValue.Placeholder) {
         self.label = label
         self.name = name
-        self.type = type
+        self.placeholderType = placeholderType
     }
 }

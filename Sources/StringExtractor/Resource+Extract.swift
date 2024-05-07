@@ -43,19 +43,19 @@ extension Resource {
                 let argument = Argument(
                     label: labels[position],
                     name: name,
-                    type: type.identifier
+                    placeholderType: type
                 )
 
                 // If the same argument is represented by many placeholders,
                 // ensure that they use the same type
-                if let existing = arguments[position], existing.type != argument.type {
+                if let existing = arguments[position], existing.placeholderType != argument.placeholderType {
                     throw ExtractionError.localizationCorrupt(
                         ExtractionError.Context(
                             key: key,
                             debugDescription: """
                             The argument at position \(position) was specified multiple \
-                            times but with different data types. First ‘\(existing.type)‘, \
-                            then ‘\(argument.type)‘.
+                            times but with different data types. First ‘\(existing.placeholderType)‘, \
+                            then ‘\(argument.placeholderType)‘.
                             """
                         )
                     )
@@ -99,17 +99,6 @@ private extension String.LocalizationValue.Placeholder {
             self = .uint
         default:
             return nil
-        }
-    }
-
-    var identifier: String {
-        switch self {
-        case .int: "Int"
-        case .uint: "UInt"
-        case .float: "Float"
-        case .double: "Double"
-        case .object: "String"
-        @unknown default: "AnyObject"
         }
     }
 }

@@ -3,18 +3,22 @@ import SwiftSyntaxBuilder
 
 extension ExtensionDeclSyntax {
     init(
-        availability: AvailabilityArgumentListSyntax,
+        availability: AvailabilityArgumentListSyntax? = nil,
         accessLevel: Keyword? = nil,
         extendedType: some TypeSyntaxProtocol,
         @MemberBlockItemListBuilder memberBlockBuilder: () -> MemberBlockItemListSyntax
     ) {
-        self.init(
-            attributes: [
+        let attributes = AttributeListSyntax {
+            if let availability {
                 .attribute(
                     AttributeSyntax(availability: availability)
                         .with(\.trailingTrivia, .newline)
                 )
-            ],
+            }
+        }
+
+        self.init(
+            attributes: attributes,
             modifiers: DeclModifierListSyntax {
                 if let accessLevel {
                     DeclModifierSyntax(name: .keyword(accessLevel))

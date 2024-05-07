@@ -5,11 +5,13 @@ extension TokenSyntax {
         case String
         case StaticString
         case LocalizationValue
+        case StringInterpolation
         case Locale
         case Bundle
         case AnyClass
         case BundleDescription
         case LocalizedStringResource
+        case Argument
     }
 
     static func type(_ value: MetaType) -> TokenSyntax {
