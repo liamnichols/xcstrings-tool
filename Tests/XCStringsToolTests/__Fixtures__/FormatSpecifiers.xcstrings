@@ -85,6 +85,42 @@
         }
       }
     },
+    "percentage" : {
+      "comment" : "% should not be converted to an argument",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Test %"
+          }
+        }
+      }
+    },
+    "percentage_escaped" : {
+      "comment" : "%% should not be converted to an argument",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Test %%"
+          }
+        }
+      }
+    },
+    "percentage_space_o" : {
+      "comment" : "'% o' should not be converted to an argument",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Test 50% off"
+          }
+        }
+      }
+    },
     "u" : {
       "comment" : "%u should convert to a UInt argument",
       "extractionState" : "manual",
