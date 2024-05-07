@@ -14,6 +14,8 @@ extension Resource {
             switch segment {
             case .string(let contents):
                 defaultValue.append(.string(contents))
+            case .placeholder(let placeholder) where placeholder.rawValue == "%" || placeholder.rawValue == "%%":
+                defaultValue.append(.string(placeholder.rawValue))
             case .placeholder(let placeholder):
                 // If the placeholder is an unsupported type, raise an error about the invalid string
                 guard let _type = placeholder.type, let type = String.LocalizationValue.Placeholder(_type) else {

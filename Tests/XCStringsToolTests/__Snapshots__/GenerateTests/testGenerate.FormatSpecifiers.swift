@@ -149,11 +149,22 @@ extension String.FormatSpecifiers {
         )
     }
 
+    /// %% should not be converted to an argument
+    internal static var percentage_escaped_space_o: Self {
+        Self (
+            key: "percentage_escaped_space_o",
+            defaultValue: ###"Test 50%% off"###,
+            table: "FormatSpecifiers",
+            locale: .current,
+            bundle: .current
+        )
+    }
+
     /// '% o' should not be converted to an argument
-    internal static func percentage_space_o(_ arg1: UInt) -> Self {
+    internal static var percentage_space_o: Self {
         Self (
             key: "percentage_space_o",
-            defaultValue: ###"Test 50\###(arg1)ff"###,
+            defaultValue: ###"Test 50% off"###,
             table: "FormatSpecifiers",
             locale: .current,
             bundle: .current
@@ -287,9 +298,14 @@ extension LocalizedStringResource {
             LocalizedStringResource(formatSpecifiers: .percentage_escaped)
         }
 
+        /// %% should not be converted to an argument
+        internal var percentage_escaped_space_o: LocalizedStringResource {
+            LocalizedStringResource(formatSpecifiers: .percentage_escaped_space_o)
+        }
+
         /// '% o' should not be converted to an argument
-        internal func percentage_space_o(_ arg1: UInt) -> LocalizedStringResource {
-            LocalizedStringResource(formatSpecifiers: .percentage_space_o(arg1))
+        internal var percentage_space_o: LocalizedStringResource {
+            LocalizedStringResource(formatSpecifiers: .percentage_space_o)
         }
 
         /// %u should convert to a UInt argument

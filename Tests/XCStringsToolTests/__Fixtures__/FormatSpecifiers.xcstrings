@@ -109,6 +109,18 @@
         }
       }
     },
+    "percentage_escaped_space_o" : {
+      "comment" : "%% should not be converted to an argument",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Test 50%% off"
+          }
+        }
+      }
+    },
     "percentage_space_o" : {
       "comment" : "'% o' should not be converted to an argument",
       "extractionState" : "manual",

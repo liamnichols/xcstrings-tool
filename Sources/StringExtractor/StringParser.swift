@@ -37,7 +37,7 @@ struct StringParser {
             }
 
             // Now create a segment for the match itself
-            let output: (rawValue: Substring, position: Int?, type: String) = match.output
+            let output: (rawValue: Substring, position: Int?, type: String?) = match.output
             segments.append(.placeholder(Placeholder(
                 rawValue: String(output.rawValue),
                 position: output.position,
@@ -74,7 +74,7 @@ extension StringParser {
         }
 
         // Optional, precision information
-        Optionally(.anyOf("-+# 0"))
+        Optionally(.anyOf("-+"))
         Optionally(.digit)
         Optionally {
             "."
@@ -84,6 +84,7 @@ extension StringParser {
         // Required, the type (inc lengths)
         TryCapture {
             ChoiceOf {
+                "%"
                 "@"
                 Regex {
                     Optionally {
