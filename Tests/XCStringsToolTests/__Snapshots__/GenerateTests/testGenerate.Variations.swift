@@ -1,6 +1,5 @@
 import Foundation
 
-@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
 extension String {
     /// Constant values for the Variations Strings Catalog
     ///
@@ -16,27 +15,36 @@ extension String {
             case forClass(AnyClass)
         }
 
+        fileprivate enum Argument {
+            case object(String)
+            case int(Int)
+            case uint(UInt)
+            case double(Double)
+            case float(Float)
+        }
+
         fileprivate let key: StaticString
-        fileprivate let defaultValue: LocalizationValue
+        fileprivate let arguments: [Argument]
         fileprivate let table: String?
         fileprivate let locale: Locale
         fileprivate let bundle: BundleDescription
 
         fileprivate init(
             key: StaticString,
-            defaultValue: LocalizationValue,
+            arguments: [Argument],
             table: String?,
             locale: Locale,
             bundle: BundleDescription
         ) {
             self.key = key
-            self.defaultValue = defaultValue
+            self.arguments = arguments
             self.table = table
             self.locale = locale
             self.bundle = bundle
         }
     }
 
+    @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
     internal init(variations: Variations, locale: Locale? = nil) {
         self.init(
             localized: variations.key,
@@ -48,13 +56,12 @@ extension String {
     }
 }
 
-@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
 extension String.Variations {
     /// A string that should have a macOS variation to replace 'Tap' with 'Click'
     internal static var stringDevice: Self {
         Self (
             key: "String.Device",
-            defaultValue: ###"Tap to open"###,
+            arguments: [],
             table: "Variations",
             locale: .current,
             bundle: .current
@@ -64,11 +71,35 @@ extension String.Variations {
     internal static func stringPlural(_ arg1: Int) -> Self {
         Self (
             key: "String.Plural",
-            defaultValue: ###"I have \###(arg1) strings"###,
+            arguments: [
+                .int(arg1)
+            ],
             table: "Variations",
             locale: .current,
             bundle: .current
         )
+    }
+}
+
+@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
+extension String.Variations {
+    var defaultValue: String.LocalizationValue {
+        var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
+        for argument in arguments {
+            switch argument {
+            case .int(let value):
+                stringInterpolation.appendInterpolation(value)
+            case .uint(let value):
+                stringInterpolation.appendInterpolation(value)
+            case .float(let value):
+                stringInterpolation.appendInterpolation(value)
+            case .double(let value):
+                stringInterpolation.appendInterpolation(value)
+            case .object(let value):
+                stringInterpolation.appendInterpolation(value)
+            }
+        }
+        return String.LocalizationValue(stringInterpolation: stringInterpolation)
     }
 }
 

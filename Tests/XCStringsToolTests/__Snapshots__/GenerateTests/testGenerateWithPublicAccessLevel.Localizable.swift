@@ -1,6 +1,5 @@
 import Foundation
 
-@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
 extension String {
     /// Constant values for the Localizable Strings Catalog
     ///
@@ -16,27 +15,36 @@ extension String {
             case forClass(AnyClass)
         }
 
+        fileprivate enum Argument {
+            case object(String)
+            case int(Int)
+            case uint(UInt)
+            case double(Double)
+            case float(Float)
+        }
+
         fileprivate let key: StaticString
-        fileprivate let defaultValue: LocalizationValue
+        fileprivate let arguments: [Argument]
         fileprivate let table: String?
         fileprivate let locale: Locale
         fileprivate let bundle: BundleDescription
 
         fileprivate init(
             key: StaticString,
-            defaultValue: LocalizationValue,
+            arguments: [Argument],
             table: String?,
             locale: Locale,
             bundle: BundleDescription
         ) {
             self.key = key
-            self.defaultValue = defaultValue
+            self.arguments = arguments
             self.table = table
             self.locale = locale
             self.bundle = bundle
         }
     }
 
+    @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
     public init(localizable: Localizable, locale: Locale? = nil) {
         self.init(
             localized: localizable.key,
@@ -48,13 +56,12 @@ extension String {
     }
 }
 
-@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
 extension String.Localizable {
     /// This is a comment
     public static var key: Self {
         Self (
             key: "Key",
-            defaultValue: ###"Default Value"###,
+            arguments: [],
             table: "Localizable",
             locale: .current,
             bundle: .current
@@ -64,7 +71,7 @@ extension String.Localizable {
     public static var myDeviceVariant: Self {
         Self (
             key: "myDeviceVariant",
-            defaultValue: ###"Multiplatform Original"###,
+            arguments: [],
             table: "Localizable",
             locale: .current,
             bundle: .current
@@ -74,7 +81,9 @@ extension String.Localizable {
     public static func myPlural(_ arg1: Int) -> Self {
         Self (
             key: "myPlural",
-            defaultValue: ###"I have \###(arg1) plurals"###,
+            arguments: [
+                .int(arg1)
+            ],
             table: "Localizable",
             locale: .current,
             bundle: .current
@@ -84,11 +93,36 @@ extension String.Localizable {
     public static func mySubstitute(_ arg1: Int, count arg2: Int) -> Self {
         Self (
             key: "mySubstitute",
-            defaultValue: ###"\###(arg1): People liked \###(arg2) posts"###,
+            arguments: [
+                .int(arg1),
+                .int(arg2)
+            ],
             table: "Localizable",
             locale: .current,
             bundle: .current
         )
+    }
+}
+
+@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
+extension String.Localizable {
+    var defaultValue: String.LocalizationValue {
+        var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
+        for argument in arguments {
+            switch argument {
+            case .int(let value):
+                stringInterpolation.appendInterpolation(value)
+            case .uint(let value):
+                stringInterpolation.appendInterpolation(value)
+            case .float(let value):
+                stringInterpolation.appendInterpolation(value)
+            case .double(let value):
+                stringInterpolation.appendInterpolation(value)
+            case .object(let value):
+                stringInterpolation.appendInterpolation(value)
+            }
+        }
+        return String.LocalizationValue(stringInterpolation: stringInterpolation)
     }
 }
 

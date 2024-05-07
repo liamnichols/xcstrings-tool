@@ -1,6 +1,5 @@
 import Foundation
 
-@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
 extension String {
     /// Constant values for the Positional Strings Catalog
     ///
@@ -16,27 +15,36 @@ extension String {
             case forClass(AnyClass)
         }
 
+        fileprivate enum Argument {
+            case object(String)
+            case int(Int)
+            case uint(UInt)
+            case double(Double)
+            case float(Float)
+        }
+
         fileprivate let key: StaticString
-        fileprivate let defaultValue: LocalizationValue
+        fileprivate let arguments: [Argument]
         fileprivate let table: String?
         fileprivate let locale: Locale
         fileprivate let bundle: BundleDescription
 
         fileprivate init(
             key: StaticString,
-            defaultValue: LocalizationValue,
+            arguments: [Argument],
             table: String?,
             locale: Locale,
             bundle: BundleDescription
         ) {
             self.key = key
-            self.defaultValue = defaultValue
+            self.arguments = arguments
             self.table = table
             self.locale = locale
             self.bundle = bundle
         }
     }
 
+    @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
     internal init(positional: Positional, locale: Locale? = nil) {
         self.init(
             localized: positional.key,
@@ -48,13 +56,15 @@ extension String {
     }
 }
 
-@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
 extension String.Positional {
     /// A string where the second argument is at the front of the string and the first argument is at the end
     internal static func reorder(_ arg1: Int, _ arg2: String) -> Self {
         Self (
             key: "reorder",
-            defaultValue: ###"Second: \###(arg2) - First: \###(arg1)"###,
+            arguments: [
+                .int(arg1),
+                .object(arg2)
+            ],
             table: "Positional",
             locale: .current,
             bundle: .current
@@ -65,7 +75,9 @@ extension String.Positional {
     internal static func repeatExplicit(_ arg1: Int) -> Self {
         Self (
             key: "repeatExplicit",
-            defaultValue: ###"\###(arg1), I repeat: \###(arg1)"###,
+            arguments: [
+                .int(arg1)
+            ],
             table: "Positional",
             locale: .current,
             bundle: .current
@@ -76,11 +88,35 @@ extension String.Positional {
     internal static func repeatImplicit(_ arg1: String) -> Self {
         Self (
             key: "repeatImplicit",
-            defaultValue: ###"\###(arg1), are you there? \###(arg1)?"###,
+            arguments: [
+                .object(arg1)
+            ],
             table: "Positional",
             locale: .current,
             bundle: .current
         )
+    }
+}
+
+@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
+extension String.Positional {
+    var defaultValue: String.LocalizationValue {
+        var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
+        for argument in arguments {
+            switch argument {
+            case .int(let value):
+                stringInterpolation.appendInterpolation(value)
+            case .uint(let value):
+                stringInterpolation.appendInterpolation(value)
+            case .float(let value):
+                stringInterpolation.appendInterpolation(value)
+            case .double(let value):
+                stringInterpolation.appendInterpolation(value)
+            case .object(let value):
+                stringInterpolation.appendInterpolation(value)
+            }
+        }
+        return String.LocalizationValue(stringInterpolation: stringInterpolation)
     }
 }
 
