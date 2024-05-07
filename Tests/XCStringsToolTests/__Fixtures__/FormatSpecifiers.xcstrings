@@ -13,18 +13,6 @@
         }
       }
     },
-    "c" : {
-      "comment" : "%c should convert to a CChar argument",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Test %c"
-          }
-        }
-      }
-    },
     "d" : {
       "comment" : "%d should convert to an Int argument",
       "extractionState" : "manual",
@@ -93,30 +81,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Test %o"
-          }
-        }
-      }
-    },
-    "p" : {
-      "comment" : "%p should convert to an UnsafeRawPointer argument",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Test %p"
-          }
-        }
-      }
-    },
-    "s" : {
-      "comment" : "%s should convert to an UnsafePointer<CChar> argument",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Test %s"
           }
         }
       }
