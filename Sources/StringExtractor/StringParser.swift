@@ -5,7 +5,13 @@ import RegexBuilder
 struct StringParser {
     enum ParsedSegment: Equatable {
         case string(contents: String)
-        case placeholder(String, PlaceholderType, position: Int?)
+        case placeholder(Placeholder)
+    }
+
+    struct Placeholder: Equatable {
+        let rawValue: String
+        let position: Int?
+        let type: String?
     }
 
     /// Parse the given input string including the expansion of the given substitutions
@@ -31,12 +37,12 @@ struct StringParser {
             }
 
             // Now create a segment for the match itself
-            let output: (rawValue: Substring, position: Int?, placeholder: PlaceholderType) = match.output
-            segments.append(.placeholder(
-                String(output.rawValue),
-                output.placeholder,
-                position: output.position
-            ))
+            let output: (rawValue: Substring, position: Int?, type: String) = match.output
+            segments.append(.placeholder(Placeholder(
+                rawValue: String(output.rawValue),
+                position: output.position,
+                type: output.type
+            )))
 
             // Update the last index for the next iteration
             lastIndex = match.range.upperBound
@@ -75,7 +81,7 @@ extension StringParser {
             One(.digit)
         }
 
-        // Required, the format (inc lengths)
+        // Required, the type (inc lengths)
         TryCapture {
             ChoiceOf {
                 "@"
@@ -97,8 +103,8 @@ extension StringParser {
                 One(.anyOf("aefg"))
                 One(.anyOf("csp"))
             }
-        } transform: { rawValue -> PlaceholderType? in
-            return PlaceholderType(formatSpecifier: rawValue)
+        } transform: { rawValue in
+            String(rawValue)
         }
     }
 }

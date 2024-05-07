@@ -14,14 +14,14 @@ extension Resource {
             switch segment {
             case .string(let contents):
                 defaultValue.append(.string(contents))
-            case .placeholder(let rawValue, let placeholder, let specifiedPosition):
+            case .placeholder(let placeholder):
                 // If the placeholder is an unsupported type, raise an error about the invalid string
-                guard let type = placeholder.type else {
+                guard let _type = placeholder.type, let type = String.LocalizationValue.Placeholder(_type) else {
                     throw ExtractionError.unsupported(
                         ExtractionError.Context(
                             key: key,
                             debugDescription: """
-                            The placeholder format specifier ‘\(rawValue)‘ is not supported.
+                            The placeholder format specifier ‘\(placeholder.rawValue)‘ is not supported.
                             """
                         )
                     )
@@ -29,7 +29,7 @@ extension Resource {
 
                 // Figure out the position of the argument for this placeholder
                 let position: Int
-                if let specifiedPosition {
+                if let specifiedPosition = placeholder.position {
                     position = specifiedPosition
                 } else {
                     position = nextUnspecifiedPosition
@@ -41,7 +41,7 @@ extension Resource {
                 let argument = Argument(
                     label: labels[position],
                     name: name,
-                    type: type
+                    type: type.identifier
                 )
 
                 // If the same argument is represented by many placeholders,
@@ -83,3 +83,31 @@ extension Resource {
     }
 }
 
+private extension String.LocalizationValue.Placeholder {
+    init?(_ formatSpecifier: String) {
+        // By using `.last`, we are dropping any potential length info
+        switch formatSpecifier.last {
+        case "@":
+            self = .object
+        case "a", "e", "f", "g":
+            self = .double
+        case "d", "i":
+            self = .int
+        case "u", "x", "X", "o":
+            self = .uint
+        default:
+            return nil
+        }
+    }
+
+    var identifier: String {
+        switch self {
+        case .int: "Int"
+        case .uint: "UInt"
+        case .float: "Float"
+        case .double: "Double"
+        case .object: "String"
+        @unknown default: "AnyObject"
+        }
+    }
+}
