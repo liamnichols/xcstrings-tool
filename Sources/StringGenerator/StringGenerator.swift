@@ -1156,7 +1156,7 @@ public struct StringGenerator {
         Text(\(exampleAccessor))
         ```
 
-        - Note: Using ``LocalizedStringResource.\(tableName)`` requires iOS 16/macOS 13 or later. See ``String.\(tableName)`` for an iOS 15/macOS 12 compatible API.
+        - Note: Using ``LocalizedStringResource.\(tableName)`` requires iOS 16/macOS 13 or later. See ``String.\(tableName)`` for a backwards compatible API.
         """)
     }
 

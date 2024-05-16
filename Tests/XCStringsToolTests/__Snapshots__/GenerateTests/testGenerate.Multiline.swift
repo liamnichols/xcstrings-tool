@@ -174,7 +174,7 @@ extension LocalizedStringResource {
     /// Text(.multiline.multiline)
     /// ```
     ///
-    /// - Note: Using ``LocalizedStringResource.Multiline`` requires iOS 16/macOS 13 or later. See ``String.Multiline`` for an iOS 15/macOS 12 compatible API.
+    /// - Note: Using ``LocalizedStringResource.Multiline`` requires iOS 16/macOS 13 or later. See ``String.Multiline`` for a backwards compatible API.
     internal struct Multiline {
         /// This example tests the following:
         /// 1. That line breaks in the defaultValue are supported

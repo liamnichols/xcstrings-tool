@@ -169,7 +169,7 @@ extension LocalizedStringResource {
     /// Text(.simple.simpleKey)
     /// ```
     ///
-    /// - Note: Using ``LocalizedStringResource.Simple`` requires iOS 16/macOS 13 or later. See ``String.Simple`` for an iOS 15/macOS 12 compatible API.
+    /// - Note: Using ``LocalizedStringResource.Simple`` requires iOS 16/macOS 13 or later. See ``String.Simple`` for a backwards compatible API.
     internal struct Simple {
         /// This is a simple key and value
         ///

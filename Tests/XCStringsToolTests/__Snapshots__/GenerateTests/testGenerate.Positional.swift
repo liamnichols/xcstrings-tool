@@ -210,7 +210,7 @@ extension LocalizedStringResource {
     /// Text(.positional.foo)
     /// ```
     ///
-    /// - Note: Using ``LocalizedStringResource.Positional`` requires iOS 16/macOS 13 or later. See ``String.Positional`` for an iOS 15/macOS 12 compatible API.
+    /// - Note: Using ``LocalizedStringResource.Positional`` requires iOS 16/macOS 13 or later. See ``String.Positional`` for a backwards compatible API.
     internal struct Positional {
         /// A string where the second argument is at the front of the string and the first argument is at the end
         ///

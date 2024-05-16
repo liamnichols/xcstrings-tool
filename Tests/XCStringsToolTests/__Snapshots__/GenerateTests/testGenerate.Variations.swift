@@ -186,7 +186,7 @@ extension LocalizedStringResource {
     /// Text(.variations.stringDevice)
     /// ```
     ///
-    /// - Note: Using ``LocalizedStringResource.Variations`` requires iOS 16/macOS 13 or later. See ``String.Variations`` for an iOS 15/macOS 12 compatible API.
+    /// - Note: Using ``LocalizedStringResource.Variations`` requires iOS 16/macOS 13 or later. See ``String.Variations`` for a backwards compatible API.
     internal struct Variations {
         /// A string that should have a macOS variation to replace 'Tap' with 'Click'
         ///

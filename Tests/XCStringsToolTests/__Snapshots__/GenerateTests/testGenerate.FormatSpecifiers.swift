@@ -391,7 +391,7 @@ extension LocalizedStringResource {
     /// Text(.formatSpecifiers.percentage)
     /// ```
     ///
-    /// - Note: Using ``LocalizedStringResource.FormatSpecifiers`` requires iOS 16/macOS 13 or later. See ``String.FormatSpecifiers`` for an iOS 15/macOS 12 compatible API.
+    /// - Note: Using ``LocalizedStringResource.FormatSpecifiers`` requires iOS 16/macOS 13 or later. See ``String.FormatSpecifiers`` for a backwards compatible API.
     internal struct FormatSpecifiers {
         /// %@ should convert to a String argument
         ///

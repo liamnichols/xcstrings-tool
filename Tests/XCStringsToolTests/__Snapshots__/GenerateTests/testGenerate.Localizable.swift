@@ -219,7 +219,7 @@ extension LocalizedStringResource {
     /// Text(.localizable.key)
     /// ```
     ///
-    /// - Note: Using ``LocalizedStringResource.Localizable`` requires iOS 16/macOS 13 or later. See ``String.Localizable`` for an iOS 15/macOS 12 compatible API.
+    /// - Note: Using ``LocalizedStringResource.Localizable`` requires iOS 16/macOS 13 or later. See ``String.Localizable`` for a backwards compatible API.
     internal struct Localizable {
         /// This is a comment
         ///
