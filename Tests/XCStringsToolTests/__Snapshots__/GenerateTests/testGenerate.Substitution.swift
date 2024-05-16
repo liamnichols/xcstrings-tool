@@ -44,14 +44,16 @@ extension String {
         }
     }
 
-    @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
     internal init(substitution: Substitution, locale: Locale? = nil) {
         self.init(
-            localized: substitution.key,
-            defaultValue: substitution.defaultValue,
-            table: substitution.table,
-            bundle: .from(description: substitution.bundle),
-            locale: locale ?? substitution.locale
+            format: NSLocalizedString(
+                String(describing: substitution.key),
+                tableName: substitution.table,
+                bundle: .from(description: substitution.bundle) ?? .main,
+                comment: ""
+            ),
+            locale: locale,
+            arguments: substitution.arguments.map(\.value)
         )
     }
 }
@@ -80,7 +82,7 @@ extension String.Substitution {
 }
 
 @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
-extension String.Substitution {
+private extension String.Substitution {
     var defaultValue: String.LocalizationValue {
         var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
         for argument in arguments {
@@ -102,7 +104,23 @@ extension String.Substitution {
     }
 }
 
-@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
+private extension String.Substitution.Argument {
+    var value: CVarArg {
+        switch self {
+        case .object(let value):
+            value
+        case .int(let value):
+            value
+        case .uint(let value):
+            value
+        case .double(let value):
+            value
+        case .float(let value):
+            value
+        }
+    }
+}
+
 private extension String.Substitution.BundleDescription {
     #if !SWIFT_PACKAGE
     private class BundleLocator {
@@ -118,7 +136,6 @@ private extension String.Substitution.BundleDescription {
     }
 }
 
-@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
 private extension Bundle {
     static func from(description: String.Substitution.BundleDescription) -> Bundle? {
         switch description {
