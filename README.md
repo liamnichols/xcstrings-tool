@@ -33,10 +33,6 @@ struct ContentView: View {
 
 XCStrings Tool aims to extend your localization experience so that you don't have to compromise anything. It does this by using your Strings Catalog as a source for generating elegant Swift code that you can reference directly within the rest of your project.
 
-> [!NOTE]
->
-> While Strings Catalogs are fully backwards compatible, code generated using XCStrings Tool supports iOS 15/macOS 12/watchOS 8/tvOS 15 or later.
-
 ## Getting Started
 
 XCStrings Tool is a Swift Package Plugin that can integrate directly into Xcode and Swift Package targets that contain Strings Catalog (.xcstrings) files.

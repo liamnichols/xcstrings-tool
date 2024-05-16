@@ -44,14 +44,13 @@ extension String {
         }
     }
 
-    @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
     internal init(substitution: Substitution, locale: Locale? = nil) {
+        let bundle: Bundle = .from(description: substitution.bundle) ?? .main
+        let key = String(describing: substitution.key)
         self.init(
-            localized: substitution.key,
-            defaultValue: substitution.defaultValue,
-            table: substitution.table,
-            bundle: .from(description: substitution.bundle),
-            locale: locale ?? substitution.locale
+            format: bundle.localizedString(forKey: key, value: nil, table: substitution.table),
+            locale: locale,
+            arguments: substitution.arguments.map(\.value)
         )
     }
 }
@@ -80,7 +79,7 @@ extension String.Substitution {
 }
 
 @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
-extension String.Substitution {
+private extension String.Substitution {
     var defaultValue: String.LocalizationValue {
         var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
         for argument in arguments {
@@ -102,7 +101,23 @@ extension String.Substitution {
     }
 }
 
-@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
+private extension String.Substitution.Argument {
+    var value: CVarArg {
+        switch self {
+        case .int(let value):
+            value
+        case .uint(let value):
+            value
+        case .float(let value):
+            value
+        case .double(let value):
+            value
+        case .object(let value):
+            value
+        }
+    }
+}
+
 private extension String.Substitution.BundleDescription {
     #if !SWIFT_PACKAGE
     private class BundleLocator {
@@ -118,7 +133,6 @@ private extension String.Substitution.BundleDescription {
     }
 }
 
-@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
 private extension Bundle {
     static func from(description: String.Substitution.BundleDescription) -> Bundle? {
         switch description {
@@ -159,7 +173,7 @@ extension LocalizedStringResource {
     /// Text(.substitution.foo)
     /// ```
     ///
-    /// - Note: Using ``LocalizedStringResource.Substitution`` requires iOS 16/macOS 13 or later. See ``String.Substitution`` for an iOS 15/macOS 12 compatible API.
+    /// - Note: Using ``LocalizedStringResource.Substitution`` requires iOS 16/macOS 13 or later. See ``String.Substitution`` for a backwards compatible API.
     internal struct Substitution {
         /// A string that uses substitutions as well as arguments
         ///

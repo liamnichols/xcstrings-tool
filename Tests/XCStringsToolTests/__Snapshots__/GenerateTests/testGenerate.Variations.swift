@@ -44,14 +44,13 @@ extension String {
         }
     }
 
-    @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
     internal init(variations: Variations, locale: Locale? = nil) {
+        let bundle: Bundle = .from(description: variations.bundle) ?? .main
+        let key = String(describing: variations.key)
         self.init(
-            localized: variations.key,
-            defaultValue: variations.defaultValue,
-            table: variations.table,
-            bundle: .from(description: variations.bundle),
-            locale: locale ?? variations.locale
+            format: bundle.localizedString(forKey: key, value: nil, table: variations.table),
+            locale: locale,
+            arguments: variations.arguments.map(\.value)
         )
     }
 }
@@ -93,7 +92,7 @@ extension String.Variations {
 }
 
 @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
-extension String.Variations {
+private extension String.Variations {
     var defaultValue: String.LocalizationValue {
         var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
         for argument in arguments {
@@ -115,7 +114,23 @@ extension String.Variations {
     }
 }
 
-@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
+private extension String.Variations.Argument {
+    var value: CVarArg {
+        switch self {
+        case .int(let value):
+            value
+        case .uint(let value):
+            value
+        case .float(let value):
+            value
+        case .double(let value):
+            value
+        case .object(let value):
+            value
+        }
+    }
+}
+
 private extension String.Variations.BundleDescription {
     #if !SWIFT_PACKAGE
     private class BundleLocator {
@@ -131,7 +146,6 @@ private extension String.Variations.BundleDescription {
     }
 }
 
-@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
 private extension Bundle {
     static func from(description: String.Variations.BundleDescription) -> Bundle? {
         switch description {
@@ -172,7 +186,7 @@ extension LocalizedStringResource {
     /// Text(.variations.stringDevice)
     /// ```
     ///
-    /// - Note: Using ``LocalizedStringResource.Variations`` requires iOS 16/macOS 13 or later. See ``String.Variations`` for an iOS 15/macOS 12 compatible API.
+    /// - Note: Using ``LocalizedStringResource.Variations`` requires iOS 16/macOS 13 or later. See ``String.Variations`` for a backwards compatible API.
     internal struct Variations {
         /// A string that should have a macOS variation to replace 'Tap' with 'Click'
         ///

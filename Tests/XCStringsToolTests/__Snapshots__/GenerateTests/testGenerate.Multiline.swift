@@ -44,14 +44,13 @@ extension String {
         }
     }
 
-    @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
     internal init(multiline: Multiline, locale: Locale? = nil) {
+        let bundle: Bundle = .from(description: multiline.bundle) ?? .main
+        let key = String(describing: multiline.key)
         self.init(
-            localized: multiline.key,
-            defaultValue: multiline.defaultValue,
-            table: multiline.table,
-            bundle: .from(description: multiline.bundle),
-            locale: locale ?? multiline.locale
+            format: bundle.localizedString(forKey: key, value: nil, table: multiline.table),
+            locale: locale,
+            arguments: multiline.arguments.map(\.value)
         )
     }
 }
@@ -81,7 +80,7 @@ extension String.Multiline {
 }
 
 @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
-extension String.Multiline {
+private extension String.Multiline {
     var defaultValue: String.LocalizationValue {
         var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
         for argument in arguments {
@@ -103,7 +102,23 @@ extension String.Multiline {
     }
 }
 
-@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
+private extension String.Multiline.Argument {
+    var value: CVarArg {
+        switch self {
+        case .int(let value):
+            value
+        case .uint(let value):
+            value
+        case .float(let value):
+            value
+        case .double(let value):
+            value
+        case .object(let value):
+            value
+        }
+    }
+}
+
 private extension String.Multiline.BundleDescription {
     #if !SWIFT_PACKAGE
     private class BundleLocator {
@@ -119,7 +134,6 @@ private extension String.Multiline.BundleDescription {
     }
 }
 
-@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
 private extension Bundle {
     static func from(description: String.Multiline.BundleDescription) -> Bundle? {
         switch description {
@@ -160,7 +174,7 @@ extension LocalizedStringResource {
     /// Text(.multiline.multiline)
     /// ```
     ///
-    /// - Note: Using ``LocalizedStringResource.Multiline`` requires iOS 16/macOS 13 or later. See ``String.Multiline`` for an iOS 15/macOS 12 compatible API.
+    /// - Note: Using ``LocalizedStringResource.Multiline`` requires iOS 16/macOS 13 or later. See ``String.Multiline`` for a backwards compatible API.
     internal struct Multiline {
         /// This example tests the following:
         /// 1. That line breaks in the defaultValue are supported
