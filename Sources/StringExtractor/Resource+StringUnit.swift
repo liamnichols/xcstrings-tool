@@ -13,14 +13,14 @@ extension Resource {
             comment: comment,
             identifier: identifier,
             arguments: extracted.arguments,
-            defaultValue: extracted.defaultValue
+            sourceLocalization: extracted.sourceLocalization
         )
     }
 
     static func extract(
         from localization: StringLocalization,
         key: String
-    ) throws -> (arguments: [Argument], defaultValue: String) {
+    ) throws -> (arguments: [Argument], sourceLocalization: String) {
         guard let stringUnit = preferredStringUnit(from: localization.stringUnit, variations: localization.variations) else {
             throw ExtractionError.localizationCorrupt(
                 ExtractionError.Context(

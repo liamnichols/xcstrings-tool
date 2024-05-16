@@ -13,21 +13,21 @@ public struct Resource: Equatable {
     /// An array of arguments to be interpolated into the resource
     public let arguments: [Argument]
 
-    /// The default localised value
-    public let defaultValue: String
+    /// The source localization value
+    public let sourceLocalization: String
 
     public init(
         key: String,
         comment: String?,
         identifier: String,
         arguments: [Argument],
-        defaultValue: String
+        sourceLocalization: String
     ) {
         self.key = key
         self.comment = comment
         self.identifier = identifier
         self.arguments = arguments
-        self.defaultValue = defaultValue
+        self.sourceLocalization = sourceLocalization
     }
 }
 
