@@ -204,14 +204,6 @@ public struct StringGenerator {
                         DeclModifierSyntax(name: .keyword(.fileprivate)),
                     ],
                     .let,
-                    name: PatternSyntax(IdentifierPatternSyntax(identifier: "locale")),
-                    type: TypeAnnotationSyntax(type: .identifier(.Locale))
-                )
-                VariableDeclSyntax(
-                    modifiers: [
-                        DeclModifierSyntax(name: .keyword(.fileprivate)),
-                    ],
-                    .let,
                     name: PatternSyntax(IdentifierPatternSyntax(identifier: "bundle")),
                     type: TypeAnnotationSyntax(type: .identifier(.BundleDescription))
                 ).with(\.trailingTrivia, .newlines(2))
@@ -234,10 +226,6 @@ public struct StringGenerator {
                             FunctionParameterSyntax(
                                 firstName: "table",
                                 type: OptionalTypeSyntax(wrappedType: .identifier(.String))
-                            )
-                            FunctionParameterSyntax(
-                                firstName: "locale",
-                                type: .identifier(.Locale)
                             )
                             FunctionParameterSyntax(
                                 firstName: "bundle",
@@ -270,14 +258,6 @@ public struct StringGenerator {
                         ),
                         operator: AssignmentExprSyntax(),
                         rightOperand: DeclReferenceExprSyntax(baseName: "table")
-                    )
-                    InfixOperatorExprSyntax(
-                        leftOperand: MemberAccessExprSyntax(
-                            base: DeclReferenceExprSyntax(baseName: .keyword(.`self`)),
-                            name: "locale"
-                        ),
-                        operator: AssignmentExprSyntax(),
-                        rightOperand: DeclReferenceExprSyntax(baseName: "locale")
                     )
                     InfixOperatorExprSyntax(
                         leftOperand: MemberAccessExprSyntax(
@@ -1060,14 +1040,14 @@ public struct StringGenerator {
                         name: .keyword(.`init`)
                     )
                 ) {
+                    // localizable.key,
                     LabeledExprSyntax(
-                        label: nil,
                         expression: MemberAccessExprSyntax(
                             base: DeclReferenceExprSyntax(baseName: variableToken),
                             declName: DeclReferenceExprSyntax(baseName: "key")
                         )
                     )
-
+                    // defaultValue: localizable.defaultValue,
                     LabeledExprSyntax(
                         label: "defaultValue",
                         expression: MemberAccessExprSyntax(
@@ -1075,7 +1055,7 @@ public struct StringGenerator {
                             declName: DeclReferenceExprSyntax(baseName: "defaultValue")
                         )
                     )
-
+                    // table: localizable.table,
                     LabeledExprSyntax(
                         label: "table",
                         expression: MemberAccessExprSyntax(
@@ -1083,15 +1063,7 @@ public struct StringGenerator {
                             declName: DeclReferenceExprSyntax(baseName: "table")
                         )
                     )
-
-                    LabeledExprSyntax(
-                        label: "locale",
-                        expression: MemberAccessExprSyntax(
-                            base: DeclReferenceExprSyntax(baseName: variableToken),
-                            declName: DeclReferenceExprSyntax(baseName: "locale")
-                        )
-                    )
-
+                    // bundle: .from(description: localizable.bundle)
                     LabeledExprSyntax(
                         label: "bundle",
                         expression: FunctionCallExprSyntax(
@@ -1319,22 +1291,18 @@ extension Resource {
                         baseName: .keyword(.Self)
                     )
                 ) {
-                    LabeledExprSyntax(label: "key", expression: keyExpr)
-
-                    LabeledExprSyntax(label: "arguments", expression: argumentsExpr)
-
+                    LabeledExprSyntax(
+                        label: "key",
+                        expression: keyExpr
+                    )
+                    LabeledExprSyntax(
+                        label: "arguments",
+                        expression: argumentsExpr
+                    )
                     LabeledExprSyntax(
                         label: "table",
                         expression: StringLiteralExprSyntax(content: table)
                     )
-
-                    LabeledExprSyntax(
-                        label: "locale",
-                        expression: MemberAccessExprSyntax(
-                            name: .identifier("current")
-                        )
-                    )
-
                     LabeledExprSyntax(
                         label: "bundle",
                         expression: MemberAccessExprSyntax(

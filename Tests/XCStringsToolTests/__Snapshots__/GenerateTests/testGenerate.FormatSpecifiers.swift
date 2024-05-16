@@ -26,20 +26,17 @@ extension String {
         fileprivate let key: StaticString
         fileprivate let arguments: [Argument]
         fileprivate let table: String?
-        fileprivate let locale: Locale
         fileprivate let bundle: BundleDescription
 
         fileprivate init(
             key: StaticString,
             arguments: [Argument],
             table: String?,
-            locale: Locale,
             bundle: BundleDescription
         ) {
             self.key = key
             self.arguments = arguments
             self.table = table
-            self.locale = locale
             self.bundle = bundle
         }
     }
@@ -70,7 +67,6 @@ extension String.FormatSpecifiers {
                 .object(arg1)
             ],
             table: "FormatSpecifiers",
-            locale: .current,
             bundle: .current
         )
     }
@@ -89,7 +85,6 @@ extension String.FormatSpecifiers {
                 .int(arg1)
             ],
             table: "FormatSpecifiers",
-            locale: .current,
             bundle: .current
         )
     }
@@ -108,7 +103,6 @@ extension String.FormatSpecifiers {
                 .int(arg1)
             ],
             table: "FormatSpecifiers",
-            locale: .current,
             bundle: .current
         )
     }
@@ -127,7 +121,6 @@ extension String.FormatSpecifiers {
                 .double(arg1)
             ],
             table: "FormatSpecifiers",
-            locale: .current,
             bundle: .current
         )
     }
@@ -146,7 +139,6 @@ extension String.FormatSpecifiers {
                 .double(arg1)
             ],
             table: "FormatSpecifiers",
-            locale: .current,
             bundle: .current
         )
     }
@@ -165,7 +157,6 @@ extension String.FormatSpecifiers {
                 .int(arg1)
             ],
             table: "FormatSpecifiers",
-            locale: .current,
             bundle: .current
         )
     }
@@ -184,7 +175,6 @@ extension String.FormatSpecifiers {
                 .uint(arg1)
             ],
             table: "FormatSpecifiers",
-            locale: .current,
             bundle: .current
         )
     }
@@ -201,7 +191,6 @@ extension String.FormatSpecifiers {
             key: "percentage",
             arguments: [],
             table: "FormatSpecifiers",
-            locale: .current,
             bundle: .current
         )
     }
@@ -218,7 +207,6 @@ extension String.FormatSpecifiers {
             key: "percentage_escaped",
             arguments: [],
             table: "FormatSpecifiers",
-            locale: .current,
             bundle: .current
         )
     }
@@ -235,7 +223,6 @@ extension String.FormatSpecifiers {
             key: "percentage_escaped_space_o",
             arguments: [],
             table: "FormatSpecifiers",
-            locale: .current,
             bundle: .current
         )
     }
@@ -252,7 +239,6 @@ extension String.FormatSpecifiers {
             key: "percentage_space_o",
             arguments: [],
             table: "FormatSpecifiers",
-            locale: .current,
             bundle: .current
         )
     }
@@ -271,7 +257,6 @@ extension String.FormatSpecifiers {
                 .uint(arg1)
             ],
             table: "FormatSpecifiers",
-            locale: .current,
             bundle: .current
         )
     }
@@ -290,7 +275,6 @@ extension String.FormatSpecifiers {
                 .uint(arg1)
             ],
             table: "FormatSpecifiers",
-            locale: .current,
             bundle: .current
         )
     }
@@ -542,7 +526,6 @@ extension LocalizedStringResource {
             formatSpecifiers.key,
             defaultValue: formatSpecifiers.defaultValue,
             table: formatSpecifiers.table,
-            locale: formatSpecifiers.locale,
             bundle: .from(description: formatSpecifiers.bundle)
         )
     }

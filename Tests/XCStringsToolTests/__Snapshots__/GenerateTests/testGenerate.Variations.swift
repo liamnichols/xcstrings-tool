@@ -26,20 +26,17 @@ extension String {
         fileprivate let key: StaticString
         fileprivate let arguments: [Argument]
         fileprivate let table: String?
-        fileprivate let locale: Locale
         fileprivate let bundle: BundleDescription
 
         fileprivate init(
             key: StaticString,
             arguments: [Argument],
             table: String?,
-            locale: Locale,
             bundle: BundleDescription
         ) {
             self.key = key
             self.arguments = arguments
             self.table = table
-            self.locale = locale
             self.bundle = bundle
         }
     }
@@ -68,7 +65,6 @@ extension String.Variations {
             key: "String.Device",
             arguments: [],
             table: "Variations",
-            locale: .current,
             bundle: .current
         )
     }
@@ -85,7 +81,6 @@ extension String.Variations {
                 .int(arg1)
             ],
             table: "Variations",
-            locale: .current,
             bundle: .current
         )
     }
@@ -214,7 +209,6 @@ extension LocalizedStringResource {
             variations.key,
             defaultValue: variations.defaultValue,
             table: variations.table,
-            locale: variations.locale,
             bundle: .from(description: variations.bundle)
         )
     }
