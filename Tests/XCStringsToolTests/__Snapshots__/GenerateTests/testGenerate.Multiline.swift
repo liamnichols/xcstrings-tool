@@ -45,13 +45,10 @@ extension String {
     }
 
     internal init(multiline: Multiline, locale: Locale? = nil) {
+        let bundle: Bundle = .from(description: multiline.bundle) ?? .main
+        let key = String(describing: multiline.key)
         self.init(
-            format: NSLocalizedString(
-                String(describing: multiline.key),
-                tableName: multiline.table,
-                bundle: .from(description: multiline.bundle) ?? .main,
-                comment: ""
-            ),
+            format: bundle.localizedString(forKey: key, value: nil, table: multiline.table),
             locale: locale,
             arguments: multiline.arguments.map(\.value)
         )

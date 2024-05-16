@@ -45,13 +45,10 @@ extension String {
     }
 
     internal init(substitution: Substitution, locale: Locale? = nil) {
+        let bundle: Bundle = .from(description: substitution.bundle) ?? .main
+        let key = String(describing: substitution.key)
         self.init(
-            format: NSLocalizedString(
-                String(describing: substitution.key),
-                tableName: substitution.table,
-                bundle: .from(description: substitution.bundle) ?? .main,
-                comment: ""
-            ),
+            format: bundle.localizedString(forKey: key, value: nil, table: substitution.table),
             locale: locale,
             arguments: substitution.arguments.map(\.value)
         )

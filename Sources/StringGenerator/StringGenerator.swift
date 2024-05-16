@@ -310,6 +310,51 @@ public struct StringGenerator {
                     }
                 )
             ) {
+                // let bundle: Bundle = .from(description: localizable.bundle) ?? .main
+                VariableDeclSyntax(bindingSpecifier: .keyword(.let)) {
+                    PatternBindingSyntax(
+                        pattern: IdentifierPatternSyntax(identifier: "bundle"),
+                        typeAnnotation: TypeAnnotationSyntax(
+                            type: IdentifierTypeSyntax(name: .type(.Bundle))
+                        ),
+                        initializer: InitializerClauseSyntax(
+                            value: InfixOperatorExprSyntax(
+                                leftOperand: FunctionCallExprSyntax(
+                                    callee: MemberAccessExprSyntax(name: "from")
+                                ) {
+                                    LabeledExprSyntax(
+                                        label: "description",
+                                        expression: MemberAccessExprSyntax(
+                                            base: DeclReferenceExprSyntax(baseName: variableToken),
+                                            name: "bundle"
+                                        )
+                                    )
+                                },
+                                operator: BinaryOperatorExprSyntax(operator: .binaryOperator("??")),
+                                rightOperand: MemberAccessExprSyntax(name: "main")
+                            )
+                        )
+                    )
+                }
+                // let key = String(describing: localizable.key)
+                VariableDeclSyntax(bindingSpecifier: .keyword(.let)) {
+                    PatternBindingSyntax(
+                        pattern: IdentifierPatternSyntax(identifier: "key"),
+                        initializer: InitializerClauseSyntax(
+                            value: FunctionCallExprSyntax(
+                                callee: DeclReferenceExprSyntax(baseName: .type(.String))
+                            ) {
+                                LabeledExprSyntax(
+                                    label: "describing",
+                                    expression: MemberAccessExprSyntax(
+                                        base: DeclReferenceExprSyntax(baseName: variableToken),
+                                        name: "key"
+                                    )
+                                )
+                            }
+                        )
+                    )
+                }
                 // self.init(format:locale:arguments:)
                 FunctionCallExprSyntax(
                     callee: MemberAccessExprSyntax(
@@ -317,62 +362,36 @@ public struct StringGenerator {
                         name: .keyword(.`init`)
                     )
                 ) {
-                    // format: NSLocalizedString(...)
+                    // format: bundle.localizedString(forKey: key, value: nil, table: localizable.table),
                     LabeledExprSyntax(
                         label: "format",
                         expression: FunctionCallExprSyntax(
-                            callee: DeclReferenceExprSyntax(baseName: "NSLocalizedString")
-                        ) {
-                            // String(describing: localizable.key),
-                            LabeledExprSyntax(
-                                expression: FunctionCallExprSyntax(
-                                    callee: DeclReferenceExprSyntax(baseName: .type(.String))
-                                ) {
-                                    LabeledExprSyntax(
-                                        label: "describing",
-                                        expression: MemberAccessExprSyntax(
-                                            base: DeclReferenceExprSyntax(baseName: variableToken),
-                                            name: "key"
-                                        )
-                                    )
-                                }
+                            callee: MemberAccessExprSyntax(
+                                base: DeclReferenceExprSyntax(baseName: "bundle"),
+                                name: "localizedString"
                             )
-                            // tableName: localizable.table,
+                        ) {
+                            // forKey: key,
                             LabeledExprSyntax(
-                                label: "tableName",
+                                label: "forKey",
+                                expression: DeclReferenceExprSyntax(baseName: "key")
+                            )
+                            // value: nil,
+                            LabeledExprSyntax(
+                                label: "value",
+                                expression: NilLiteralExprSyntax()
+                            )
+                            // table: localizable.table
+                            LabeledExprSyntax(
+                                label: "table",
                                 expression: MemberAccessExprSyntax(
                                     base: DeclReferenceExprSyntax(baseName: variableToken),
                                     name: "table"
                                 )
                             )
-                            // bundle: .from(description: substitution.bundle) ?? .main,
-                            LabeledExprSyntax(
-                                label: "bundle",
-                                expression: InfixOperatorExprSyntax(
-                                    leftOperand: FunctionCallExprSyntax(
-                                        callee: MemberAccessExprSyntax(name: "from")
-                                    ) {
-                                        LabeledExprSyntax(
-                                            label: "description",
-                                            expression: MemberAccessExprSyntax(
-                                                base: DeclReferenceExprSyntax(baseName: variableToken),
-                                                name: "bundle"
-                                            )
-                                        )
-                                    },
-                                    operator: BinaryOperatorExprSyntax(operator: .binaryOperator("??")),
-                                    rightOperand: MemberAccessExprSyntax(name: "main")
-                                )
-                            )
-                            // comment: ""
-                            LabeledExprSyntax(
-                                label: "comment",
-                                expression: StringLiteralExprSyntax(content: "")
-                            )
                         }
-                        .multiline()
                     )
-                    // locale: locale
+                    // locale: locale,
                     LabeledExprSyntax(
                         label: "locale",
                         expression: DeclReferenceExprSyntax(baseName: "locale")

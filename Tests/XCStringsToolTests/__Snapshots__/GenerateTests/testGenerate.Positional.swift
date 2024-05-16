@@ -45,13 +45,10 @@ extension String {
     }
 
     internal init(positional: Positional, locale: Locale? = nil) {
+        let bundle: Bundle = .from(description: positional.bundle) ?? .main
+        let key = String(describing: positional.key)
         self.init(
-            format: NSLocalizedString(
-                String(describing: positional.key),
-                tableName: positional.table,
-                bundle: .from(description: positional.bundle) ?? .main,
-                comment: ""
-            ),
+            format: bundle.localizedString(forKey: key, value: nil, table: positional.table),
             locale: locale,
             arguments: positional.arguments.map(\.value)
         )

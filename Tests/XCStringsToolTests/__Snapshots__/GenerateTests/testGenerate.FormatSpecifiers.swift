@@ -45,13 +45,10 @@ extension String {
     }
 
     internal init(formatSpecifiers: FormatSpecifiers, locale: Locale? = nil) {
+        let bundle: Bundle = .from(description: formatSpecifiers.bundle) ?? .main
+        let key = String(describing: formatSpecifiers.key)
         self.init(
-            format: NSLocalizedString(
-                String(describing: formatSpecifiers.key),
-                tableName: formatSpecifiers.table,
-                bundle: .from(description: formatSpecifiers.bundle) ?? .main,
-                comment: ""
-            ),
+            format: bundle.localizedString(forKey: key, value: nil, table: formatSpecifiers.table),
             locale: locale,
             arguments: formatSpecifiers.arguments.map(\.value)
         )
