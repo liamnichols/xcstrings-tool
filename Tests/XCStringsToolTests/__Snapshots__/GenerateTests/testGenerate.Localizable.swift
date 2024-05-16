@@ -9,13 +9,13 @@ extension String {
     /// value // "Default Value"
     /// ```
     internal struct Localizable {
-        fileprivate enum BundleDescription {
+        enum BundleDescription {
             case main
             case atURL(URL)
             case forClass(AnyClass)
         }
 
-        fileprivate enum Argument {
+        enum Argument {
             case object(String)
             case int(Int)
             case uint(UInt)
@@ -23,23 +23,20 @@ extension String {
             case float(Float)
         }
 
-        fileprivate let key: StaticString
-        fileprivate let arguments: [Argument]
-        fileprivate let table: String?
-        fileprivate let locale: Locale
-        fileprivate let bundle: BundleDescription
+        let key: StaticString
+        let arguments: [Argument]
+        let table: String?
+        let bundle: BundleDescription
 
         fileprivate init(
             key: StaticString,
             arguments: [Argument],
             table: String?,
-            locale: Locale,
             bundle: BundleDescription
         ) {
             self.key = key
             self.arguments = arguments
             self.table = table
-            self.locale = locale
             self.bundle = bundle
         }
     }
@@ -68,7 +65,6 @@ extension String.Localizable {
             key: "Key",
             arguments: [],
             table: "Localizable",
-            locale: .current,
             bundle: .current
         )
     }
@@ -83,7 +79,6 @@ extension String.Localizable {
             key: "myDeviceVariant",
             arguments: [],
             table: "Localizable",
-            locale: .current,
             bundle: .current
         )
     }
@@ -100,7 +95,6 @@ extension String.Localizable {
                 .int(arg1)
             ],
             table: "Localizable",
-            locale: .current,
             bundle: .current
         )
     }
@@ -118,7 +112,6 @@ extension String.Localizable {
                 .int(arg2)
             ],
             table: "Localizable",
-            locale: .current,
             bundle: .current
         )
     }
@@ -147,7 +140,7 @@ private extension String.Localizable {
     }
 }
 
-private extension String.Localizable.Argument {
+extension String.Localizable.Argument {
     var value: CVarArg {
         switch self {
         case .int(let value):
@@ -179,7 +172,7 @@ private extension String.Localizable.BundleDescription {
     }
 }
 
-private extension Bundle {
+extension Bundle {
     static func from(description: String.Localizable.BundleDescription) -> Bundle? {
         switch description {
         case .main:
@@ -265,7 +258,6 @@ extension LocalizedStringResource {
             localizable.key,
             defaultValue: localizable.defaultValue,
             table: localizable.table,
-            locale: localizable.locale,
             bundle: .from(description: localizable.bundle)
         )
     }

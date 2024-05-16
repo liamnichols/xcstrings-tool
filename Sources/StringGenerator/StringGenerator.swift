@@ -70,9 +70,6 @@ public struct StringGenerator {
             ) {
                 // BundleDescription
                 EnumDeclSyntax(
-                    modifiers: [
-                        DeclModifierSyntax(name: .keyword(.fileprivate))
-                    ],
                     name: .type(.BundleDescription),
                     memberBlockBuilder: {
                         EnumCaseDeclSyntax {
@@ -104,9 +101,6 @@ public struct StringGenerator {
 
                 // Argument
                 EnumDeclSyntax(
-                    modifiers: [
-                        DeclModifierSyntax(name: .keyword(.fileprivate))
-                    ],
                     name: .type(.Argument),
                     memberBlockBuilder: {
                         // case object(String)
@@ -170,9 +164,6 @@ public struct StringGenerator {
 
                 // Properties
                 VariableDeclSyntax(
-                    modifiers: [
-                        DeclModifierSyntax(name: .keyword(.fileprivate)),
-                    ],
                     .let,
                     name: PatternSyntax(IdentifierPatternSyntax(identifier: "key")),
                     type: TypeAnnotationSyntax(
@@ -180,9 +171,6 @@ public struct StringGenerator {
                     )
                 )
                 VariableDeclSyntax(
-                    modifiers: [
-                        DeclModifierSyntax(name: .keyword(.fileprivate)),
-                    ],
                     .let,
                     name: PatternSyntax(IdentifierPatternSyntax(identifier: "arguments")),
                     type: TypeAnnotationSyntax(
@@ -190,9 +178,6 @@ public struct StringGenerator {
                     )
                 )
                 VariableDeclSyntax(
-                    modifiers: [
-                        DeclModifierSyntax(name: .keyword(.fileprivate)),
-                    ],
                     .let,
                     name: PatternSyntax(IdentifierPatternSyntax(identifier: "table")),
                     type: TypeAnnotationSyntax(
@@ -200,17 +185,6 @@ public struct StringGenerator {
                     )
                 )
                 VariableDeclSyntax(
-                    modifiers: [
-                        DeclModifierSyntax(name: .keyword(.fileprivate)),
-                    ],
-                    .let,
-                    name: PatternSyntax(IdentifierPatternSyntax(identifier: "locale")),
-                    type: TypeAnnotationSyntax(type: .identifier(.Locale))
-                )
-                VariableDeclSyntax(
-                    modifiers: [
-                        DeclModifierSyntax(name: .keyword(.fileprivate)),
-                    ],
                     .let,
                     name: PatternSyntax(IdentifierPatternSyntax(identifier: "bundle")),
                     type: TypeAnnotationSyntax(type: .identifier(.BundleDescription))
@@ -234,10 +208,6 @@ public struct StringGenerator {
                             FunctionParameterSyntax(
                                 firstName: "table",
                                 type: OptionalTypeSyntax(wrappedType: .identifier(.String))
-                            )
-                            FunctionParameterSyntax(
-                                firstName: "locale",
-                                type: .identifier(.Locale)
                             )
                             FunctionParameterSyntax(
                                 firstName: "bundle",
@@ -270,14 +240,6 @@ public struct StringGenerator {
                         ),
                         operator: AssignmentExprSyntax(),
                         rightOperand: DeclReferenceExprSyntax(baseName: "table")
-                    )
-                    InfixOperatorExprSyntax(
-                        leftOperand: MemberAccessExprSyntax(
-                            base: DeclReferenceExprSyntax(baseName: .keyword(.`self`)),
-                            name: "locale"
-                        ),
-                        operator: AssignmentExprSyntax(),
-                        rightOperand: DeclReferenceExprSyntax(baseName: "locale")
                     )
                     InfixOperatorExprSyntax(
                         leftOperand: MemberAccessExprSyntax(
@@ -595,7 +557,6 @@ public struct StringGenerator {
 
     func generateStringsTableArgumentValueExtension() -> ExtensionDeclSyntax {
         ExtensionDeclSyntax(
-            accessLevel: .private,
             extendedType: MemberTypeSyntax(
                 baseType: localTableMemberType,
                 name: .type(.Argument)
@@ -707,7 +668,6 @@ public struct StringGenerator {
 
     func generateBundleExtension() -> ExtensionDeclSyntax {
         ExtensionDeclSyntax(
-            accessLevel: .private,
             extendedType: .identifier(.Bundle)
         ) {
             FunctionDeclSyntax(
@@ -1060,14 +1020,14 @@ public struct StringGenerator {
                         name: .keyword(.`init`)
                     )
                 ) {
+                    // localizable.key,
                     LabeledExprSyntax(
-                        label: nil,
                         expression: MemberAccessExprSyntax(
                             base: DeclReferenceExprSyntax(baseName: variableToken),
                             declName: DeclReferenceExprSyntax(baseName: "key")
                         )
                     )
-
+                    // defaultValue: localizable.defaultValue,
                     LabeledExprSyntax(
                         label: "defaultValue",
                         expression: MemberAccessExprSyntax(
@@ -1075,7 +1035,7 @@ public struct StringGenerator {
                             declName: DeclReferenceExprSyntax(baseName: "defaultValue")
                         )
                     )
-
+                    // table: localizable.table,
                     LabeledExprSyntax(
                         label: "table",
                         expression: MemberAccessExprSyntax(
@@ -1083,15 +1043,7 @@ public struct StringGenerator {
                             declName: DeclReferenceExprSyntax(baseName: "table")
                         )
                     )
-
-                    LabeledExprSyntax(
-                        label: "locale",
-                        expression: MemberAccessExprSyntax(
-                            base: DeclReferenceExprSyntax(baseName: variableToken),
-                            declName: DeclReferenceExprSyntax(baseName: "locale")
-                        )
-                    )
-
+                    // bundle: .from(description: localizable.bundle)
                     LabeledExprSyntax(
                         label: "bundle",
                         expression: FunctionCallExprSyntax(
@@ -1319,22 +1271,18 @@ extension Resource {
                         baseName: .keyword(.Self)
                     )
                 ) {
-                    LabeledExprSyntax(label: "key", expression: keyExpr)
-
-                    LabeledExprSyntax(label: "arguments", expression: argumentsExpr)
-
+                    LabeledExprSyntax(
+                        label: "key",
+                        expression: keyExpr
+                    )
+                    LabeledExprSyntax(
+                        label: "arguments",
+                        expression: argumentsExpr
+                    )
                     LabeledExprSyntax(
                         label: "table",
                         expression: StringLiteralExprSyntax(content: table)
                     )
-
-                    LabeledExprSyntax(
-                        label: "locale",
-                        expression: MemberAccessExprSyntax(
-                            name: .identifier("current")
-                        )
-                    )
-
                     LabeledExprSyntax(
                         label: "bundle",
                         expression: MemberAccessExprSyntax(

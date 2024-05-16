@@ -9,13 +9,13 @@ extension String {
     /// value // "Tap to open"
     /// ```
     internal struct Variations {
-        fileprivate enum BundleDescription {
+        enum BundleDescription {
             case main
             case atURL(URL)
             case forClass(AnyClass)
         }
 
-        fileprivate enum Argument {
+        enum Argument {
             case object(String)
             case int(Int)
             case uint(UInt)
@@ -23,23 +23,20 @@ extension String {
             case float(Float)
         }
 
-        fileprivate let key: StaticString
-        fileprivate let arguments: [Argument]
-        fileprivate let table: String?
-        fileprivate let locale: Locale
-        fileprivate let bundle: BundleDescription
+        let key: StaticString
+        let arguments: [Argument]
+        let table: String?
+        let bundle: BundleDescription
 
         fileprivate init(
             key: StaticString,
             arguments: [Argument],
             table: String?,
-            locale: Locale,
             bundle: BundleDescription
         ) {
             self.key = key
             self.arguments = arguments
             self.table = table
-            self.locale = locale
             self.bundle = bundle
         }
     }
@@ -68,7 +65,6 @@ extension String.Variations {
             key: "String.Device",
             arguments: [],
             table: "Variations",
-            locale: .current,
             bundle: .current
         )
     }
@@ -85,7 +81,6 @@ extension String.Variations {
                 .int(arg1)
             ],
             table: "Variations",
-            locale: .current,
             bundle: .current
         )
     }
@@ -114,7 +109,7 @@ private extension String.Variations {
     }
 }
 
-private extension String.Variations.Argument {
+extension String.Variations.Argument {
     var value: CVarArg {
         switch self {
         case .int(let value):
@@ -146,7 +141,7 @@ private extension String.Variations.BundleDescription {
     }
 }
 
-private extension Bundle {
+extension Bundle {
     static func from(description: String.Variations.BundleDescription) -> Bundle? {
         switch description {
         case .main:
@@ -214,7 +209,6 @@ extension LocalizedStringResource {
             variations.key,
             defaultValue: variations.defaultValue,
             table: variations.table,
-            locale: variations.locale,
             bundle: .from(description: variations.bundle)
         )
     }
