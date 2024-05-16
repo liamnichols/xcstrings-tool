@@ -116,7 +116,8 @@ extension String.Positional {
                 stringInterpolation.appendInterpolation(value)
             }
         }
-        return String.LocalizationValue(stringInterpolation: stringInterpolation)
+        let makeDefaultValue = String.LocalizationValue.init(stringInterpolation:)
+        return makeDefaultValue(stringInterpolation)
     }
 }
 

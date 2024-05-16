@@ -504,18 +504,37 @@ public struct StringGenerator {
                                 }
                             )
 
-                            // return String.LocalizationValue(stringInterpolation: interpolation)
+                            // let makeDefaultValue = String.LocalizationValue.init(stringInterpolation:)
+                            VariableDeclSyntax(bindingSpecifier: .keyword(.let)) {
+                                PatternBindingSyntax(
+                                    pattern: IdentifierPatternSyntax(identifier: "makeDefaultValue"),
+                                    initializer: InitializerClauseSyntax(
+                                        value: MemberAccessExprSyntax(
+                                            base: MemberAccessExprSyntax(
+                                                base: DeclReferenceExprSyntax(baseName: .type(.String)),
+                                                declName: DeclReferenceExprSyntax(baseName: .type(.LocalizationValue))
+                                            ),
+                                            declName: DeclReferenceExprSyntax(
+                                                baseName: .keyword(.`init`),
+                                                argumentNames: DeclNameArgumentsSyntax(
+                                                    arguments: DeclNameArgumentListSyntax {
+                                                        DeclNameArgumentSyntax(name: "stringInterpolation")
+                                                    }
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            }
+
+                            // return makeDefaultValue(stringInterpolation)
                             ReturnStmtSyntax(
                                 expression: FunctionCallExprSyntax(
-                                    callee: MemberAccessExprSyntax(
-                                        base: DeclReferenceExprSyntax(baseName: .type(.String)),
-                                        name: .type(.LocalizationValue)
-                                    )
+                                    callee: DeclReferenceExprSyntax(baseName: "makeDefaultValue")
                                 ) {
-                                    // stringInterpolation: stringInterpolation
                                     LabeledExprSyntax(
-                                        label: "stringInterpolation",
-                                        expression: DeclReferenceExprSyntax(baseName: "stringInterpolation"))
+                                        expression: DeclReferenceExprSyntax(baseName: "stringInterpolation")
+                                    )
                                 }
                             )
                         })
