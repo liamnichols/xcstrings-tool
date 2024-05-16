@@ -1,4 +1,4 @@
-# Moving Away from XCStrings Tool
+# Moving away from XCStrings Tool
 
 Tips on how to move your project away from XCStrings Tool if it's not working out.
 

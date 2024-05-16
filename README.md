@@ -39,6 +39,7 @@ XCStrings Tool is a Swift Package Plugin that can integrate directly into Xcode 
 
 - [**Integrating XCStrings Tool into an Xcode Project Target**](https://swiftpackageindex.com/liamnichols/xcstrings-tool/documentation/documentation/integrating-xcstrings-tool-into-an-xcode-project-target)
 - [**Integrating XCStrings Tool into a Swift Package Target**](https://swiftpackageindex.com/liamnichols/xcstrings-tool/documentation/documentation/integrating-xcstrings-tool-into-a-swift-package-target)
+- [**Using the generated source code**](https://swiftpackageindex.com/liamnichols/xcstrings-tool/documentation/documentation/using-the-generated-source-code)
 
 For more information about the Strings Catalog format, check out the [Discover Strings Catalogs](https://developer.apple.com/videos/play/wwdc2023/10155/) video from WWDC 2023.
 
