@@ -18,7 +18,7 @@ final class GenerateTests: FixtureTestCase {
             for: try fixture(named: "!MismatchingArgumentType"),
             localizedDescription: """
             String ‘Key‘ was corrupt: The argument at position 1 was specified multiple \
-            times but with different data types. First ‘Int‘, then ‘String‘.
+            times but with different data types. First ‘int‘, then ‘object‘.
             """
         )
 

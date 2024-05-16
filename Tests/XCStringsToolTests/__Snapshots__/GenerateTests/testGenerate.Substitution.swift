@@ -1,6 +1,5 @@
 import Foundation
 
-@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
 extension String {
     /// Constant values for the Substitution Strings Catalog
     ///
@@ -16,27 +15,36 @@ extension String {
             case forClass(AnyClass)
         }
 
+        fileprivate enum Argument {
+            case object(String)
+            case int(Int)
+            case uint(UInt)
+            case double(Double)
+            case float(Float)
+        }
+
         fileprivate let key: StaticString
-        fileprivate let defaultValue: LocalizationValue
+        fileprivate let arguments: [Argument]
         fileprivate let table: String?
         fileprivate let locale: Locale
         fileprivate let bundle: BundleDescription
 
         fileprivate init(
             key: StaticString,
-            defaultValue: LocalizationValue,
+            arguments: [Argument],
             table: String?,
             locale: Locale,
             bundle: BundleDescription
         ) {
             self.key = key
-            self.defaultValue = defaultValue
+            self.arguments = arguments
             self.table = table
             self.locale = locale
             self.bundle = bundle
         }
     }
 
+    @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
     internal init(substitution: Substitution, locale: Locale? = nil) {
         self.init(
             localized: substitution.key,
@@ -48,17 +56,43 @@ extension String {
     }
 }
 
-@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
 extension String.Substitution {
     /// A string that uses substitutions as well as arguments
     internal static func substitutions_exampleString(_ arg1: String, totalStrings arg2: Int, remainingStrings arg3: Int) -> Self {
         Self (
             key: "substitutions_example.string",
-            defaultValue: ###"\###(arg1)! There are \###(arg2) strings and you have \###(arg3) remaining"###,
+            arguments: [
+                .object(arg1),
+                .int(arg2),
+                .int(arg3)
+            ],
             table: "Substitution",
             locale: .current,
             bundle: .current
         )
+    }
+}
+
+@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
+extension String.Substitution {
+    var defaultValue: String.LocalizationValue {
+        var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
+        for argument in arguments {
+            switch argument {
+            case .int(let value):
+                stringInterpolation.appendInterpolation(value)
+            case .uint(let value):
+                stringInterpolation.appendInterpolation(value)
+            case .float(let value):
+                stringInterpolation.appendInterpolation(value)
+            case .double(let value):
+                stringInterpolation.appendInterpolation(value)
+            case .object(let value):
+                stringInterpolation.appendInterpolation(value)
+            }
+        }
+        let makeDefaultValue = String.LocalizationValue.init(stringInterpolation:)
+        return makeDefaultValue(stringInterpolation)
     }
 }
 

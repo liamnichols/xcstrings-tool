@@ -1,6 +1,5 @@
 import Foundation
 
-@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
 extension String {
     /// Constant values for the Simple Strings Catalog
     ///
@@ -16,27 +15,36 @@ extension String {
             case forClass(AnyClass)
         }
 
+        fileprivate enum Argument {
+            case object(String)
+            case int(Int)
+            case uint(UInt)
+            case double(Double)
+            case float(Float)
+        }
+
         fileprivate let key: StaticString
-        fileprivate let defaultValue: LocalizationValue
+        fileprivate let arguments: [Argument]
         fileprivate let table: String?
         fileprivate let locale: Locale
         fileprivate let bundle: BundleDescription
 
         fileprivate init(
             key: StaticString,
-            defaultValue: LocalizationValue,
+            arguments: [Argument],
             table: String?,
             locale: Locale,
             bundle: BundleDescription
         ) {
             self.key = key
-            self.defaultValue = defaultValue
+            self.arguments = arguments
             self.table = table
             self.locale = locale
             self.bundle = bundle
         }
     }
 
+    @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
     internal init(simple: Simple, locale: Locale? = nil) {
         self.init(
             localized: simple.key,
@@ -48,17 +56,39 @@ extension String {
     }
 }
 
-@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
 extension String.Simple {
     /// This is a simple key and value
     internal static var simpleKey: Self {
         Self (
             key: "SimpleKey",
-            defaultValue: ###"My Value"###,
+            arguments: [],
             table: "Simple",
             locale: .current,
             bundle: .current
         )
+    }
+}
+
+@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
+extension String.Simple {
+    var defaultValue: String.LocalizationValue {
+        var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
+        for argument in arguments {
+            switch argument {
+            case .int(let value):
+                stringInterpolation.appendInterpolation(value)
+            case .uint(let value):
+                stringInterpolation.appendInterpolation(value)
+            case .float(let value):
+                stringInterpolation.appendInterpolation(value)
+            case .double(let value):
+                stringInterpolation.appendInterpolation(value)
+            case .object(let value):
+                stringInterpolation.appendInterpolation(value)
+            }
+        }
+        let makeDefaultValue = String.LocalizationValue.init(stringInterpolation:)
+        return makeDefaultValue(stringInterpolation)
     }
 }
 

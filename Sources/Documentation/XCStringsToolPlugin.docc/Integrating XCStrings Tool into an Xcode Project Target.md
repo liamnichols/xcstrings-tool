@@ -32,16 +32,6 @@ Expand the **Run Build Tool Plug-ins** group and click the **+** button. In the 
 
 ![A screenshot of the Build Phases screen after adding the XCStringsToolPlugin](Xcode-AddedBuildToolPlugin)
 
-### Configuring Build Settings
-
-Because XCStrings Tool helps you to make your Strings Catalog the source of truth for your localizations, there are some build settings that you want to ensure are correctly set for your target:
-
-- Localization Prefers String Catalogs (`LOCALIZATION_PREFERS_STRING_CATALOGS`): `YES`
-- Localized String SwiftUI Support (`LOCALIZED_STRING_SWIFTUI_SUPPORT`): `NO`
-- Use Compiler to Extract Swift Strings (`SWIFT_EMIT_LOC_STRINGS`): `NO`
-
-For the last two build settings, you want to ensure that these are set to `NO` so that building your project will not cause localized strings to be automatically populated in your Strings Catalog. Automatically managed strings will produce build warning because XCStrings Tool will skip them when producing constant definitions.
-
 ### Review your Strings Catalog
 
 Before building the product, let's just review our Strings Catalog quickly:

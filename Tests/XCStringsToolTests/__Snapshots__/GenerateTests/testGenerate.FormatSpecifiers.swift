@@ -1,6 +1,5 @@
 import Foundation
 
-@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
 extension String {
     /// Constant values for the FormatSpecifiers Strings Catalog
     ///
@@ -16,27 +15,36 @@ extension String {
             case forClass(AnyClass)
         }
 
+        fileprivate enum Argument {
+            case object(String)
+            case int(Int)
+            case uint(UInt)
+            case double(Double)
+            case float(Float)
+        }
+
         fileprivate let key: StaticString
-        fileprivate let defaultValue: LocalizationValue
+        fileprivate let arguments: [Argument]
         fileprivate let table: String?
         fileprivate let locale: Locale
         fileprivate let bundle: BundleDescription
 
         fileprivate init(
             key: StaticString,
-            defaultValue: LocalizationValue,
+            arguments: [Argument],
             table: String?,
             locale: Locale,
             bundle: BundleDescription
         ) {
             self.key = key
-            self.defaultValue = defaultValue
+            self.arguments = arguments
             self.table = table
             self.locale = locale
             self.bundle = bundle
         }
     }
 
+    @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
     internal init(formatSpecifiers: FormatSpecifiers, locale: Locale? = nil) {
         self.init(
             localized: formatSpecifiers.key,
@@ -48,13 +56,14 @@ extension String {
     }
 }
 
-@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
 extension String.FormatSpecifiers {
     /// %@ should convert to a String argument
     internal static func at(_ arg1: String) -> Self {
         Self (
             key: "at",
-            defaultValue: ###"Test \###(arg1)"###,
+            arguments: [
+                .object(arg1)
+            ],
             table: "FormatSpecifiers",
             locale: .current,
             bundle: .current
@@ -65,7 +74,9 @@ extension String.FormatSpecifiers {
     internal static func d(_ arg1: Int) -> Self {
         Self (
             key: "d",
-            defaultValue: ###"Test \###(arg1)"###,
+            arguments: [
+                .int(arg1)
+            ],
             table: "FormatSpecifiers",
             locale: .current,
             bundle: .current
@@ -76,7 +87,9 @@ extension String.FormatSpecifiers {
     internal static func d_length(_ arg1: Int) -> Self {
         Self (
             key: "d_length",
-            defaultValue: ###"Test \###(arg1)"###,
+            arguments: [
+                .int(arg1)
+            ],
             table: "FormatSpecifiers",
             locale: .current,
             bundle: .current
@@ -87,7 +100,9 @@ extension String.FormatSpecifiers {
     internal static func f(_ arg1: Double) -> Self {
         Self (
             key: "f",
-            defaultValue: ###"Test \###(arg1)"###,
+            arguments: [
+                .double(arg1)
+            ],
             table: "FormatSpecifiers",
             locale: .current,
             bundle: .current
@@ -98,7 +113,9 @@ extension String.FormatSpecifiers {
     internal static func f_precision(_ arg1: Double) -> Self {
         Self (
             key: "f_precision",
-            defaultValue: ###"Test \###(arg1)"###,
+            arguments: [
+                .double(arg1)
+            ],
             table: "FormatSpecifiers",
             locale: .current,
             bundle: .current
@@ -109,7 +126,9 @@ extension String.FormatSpecifiers {
     internal static func i(_ arg1: Int) -> Self {
         Self (
             key: "i",
-            defaultValue: ###"Test \###(arg1)"###,
+            arguments: [
+                .int(arg1)
+            ],
             table: "FormatSpecifiers",
             locale: .current,
             bundle: .current
@@ -120,7 +139,9 @@ extension String.FormatSpecifiers {
     internal static func o(_ arg1: UInt) -> Self {
         Self (
             key: "o",
-            defaultValue: ###"Test \###(arg1)"###,
+            arguments: [
+                .uint(arg1)
+            ],
             table: "FormatSpecifiers",
             locale: .current,
             bundle: .current
@@ -131,7 +152,7 @@ extension String.FormatSpecifiers {
     internal static var percentage: Self {
         Self (
             key: "percentage",
-            defaultValue: ###"Test %"###,
+            arguments: [],
             table: "FormatSpecifiers",
             locale: .current,
             bundle: .current
@@ -142,7 +163,7 @@ extension String.FormatSpecifiers {
     internal static var percentage_escaped: Self {
         Self (
             key: "percentage_escaped",
-            defaultValue: ###"Test %%"###,
+            arguments: [],
             table: "FormatSpecifiers",
             locale: .current,
             bundle: .current
@@ -153,7 +174,7 @@ extension String.FormatSpecifiers {
     internal static var percentage_escaped_space_o: Self {
         Self (
             key: "percentage_escaped_space_o",
-            defaultValue: ###"Test 50%% off"###,
+            arguments: [],
             table: "FormatSpecifiers",
             locale: .current,
             bundle: .current
@@ -164,7 +185,7 @@ extension String.FormatSpecifiers {
     internal static var percentage_space_o: Self {
         Self (
             key: "percentage_space_o",
-            defaultValue: ###"Test 50% off"###,
+            arguments: [],
             table: "FormatSpecifiers",
             locale: .current,
             bundle: .current
@@ -175,7 +196,9 @@ extension String.FormatSpecifiers {
     internal static func u(_ arg1: UInt) -> Self {
         Self (
             key: "u",
-            defaultValue: ###"Test \###(arg1)"###,
+            arguments: [
+                .uint(arg1)
+            ],
             table: "FormatSpecifiers",
             locale: .current,
             bundle: .current
@@ -186,11 +209,36 @@ extension String.FormatSpecifiers {
     internal static func x(_ arg1: UInt) -> Self {
         Self (
             key: "x",
-            defaultValue: ###"Test \###(arg1)"###,
+            arguments: [
+                .uint(arg1)
+            ],
             table: "FormatSpecifiers",
             locale: .current,
             bundle: .current
         )
+    }
+}
+
+@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
+extension String.FormatSpecifiers {
+    var defaultValue: String.LocalizationValue {
+        var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
+        for argument in arguments {
+            switch argument {
+            case .int(let value):
+                stringInterpolation.appendInterpolation(value)
+            case .uint(let value):
+                stringInterpolation.appendInterpolation(value)
+            case .float(let value):
+                stringInterpolation.appendInterpolation(value)
+            case .double(let value):
+                stringInterpolation.appendInterpolation(value)
+            case .object(let value):
+                stringInterpolation.appendInterpolation(value)
+            }
+        }
+        let makeDefaultValue = String.LocalizationValue.init(stringInterpolation:)
+        return makeDefaultValue(stringInterpolation)
     }
 }
 

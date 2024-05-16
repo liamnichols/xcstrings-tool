@@ -36,6 +36,7 @@ public struct StringGenerator {
             generateImports()
             generateStringExtension()
             generateStringsTableExtension()
+            generateStringsTableDefaultValueExtension()
             generateBundleDescriptionExtension()
             generateBundleExtension()
             generateFoundationBundleDescriptionExtension()
@@ -56,7 +57,6 @@ public struct StringGenerator {
 
     func generateStringExtension() -> ExtensionDeclSyntax {
         ExtensionDeclSyntax(
-            availability: .wwdc2021,
             extendedType: .identifier(.String)
         ) {
             // Table struct
@@ -97,9 +97,75 @@ public struct StringGenerator {
                                 )
                             )
                         }
-                    },
-                    trailingTrivia: .newlines(2)
+                    }
                 )
+                .with(\.trailingTrivia, .newlines(2))
+
+                // Argument
+                EnumDeclSyntax(
+                    modifiers: [
+                        DeclModifierSyntax(name: .keyword(.fileprivate))
+                    ],
+                    name: .type(.Argument),
+                    memberBlockBuilder: {
+                        // case object(String)
+                        EnumCaseDeclSyntax {
+                            EnumCaseElementSyntax(
+                                name: .identifier("object"),
+                                parameterClause: EnumCaseParameterClauseSyntax(
+                                    parameters: [
+                                        "String"
+                                    ]
+                                )
+                            )
+                        }
+                        // case int(Int)
+                        EnumCaseDeclSyntax {
+                            EnumCaseElementSyntax(
+                                name: .identifier("int"),
+                                parameterClause: EnumCaseParameterClauseSyntax(
+                                    parameters: [
+                                        "Int"
+                                    ]
+                                )
+                            )
+                        }
+                        // case uint(UInt)
+                        EnumCaseDeclSyntax {
+                            EnumCaseElementSyntax(
+                                name: .identifier("uint"),
+                                parameterClause: EnumCaseParameterClauseSyntax(
+                                    parameters: [
+                                        "UInt"
+                                    ]
+                                )
+                            )
+                        }
+                        // case double(Double)
+                        EnumCaseDeclSyntax {
+                            EnumCaseElementSyntax(
+                                name: .identifier("double"),
+                                parameterClause: EnumCaseParameterClauseSyntax(
+                                    parameters: [
+                                        "Double"
+                                    ]
+                                )
+                            )
+                        }
+                        // case float(Float)
+                        EnumCaseDeclSyntax {
+                            EnumCaseElementSyntax(
+                                name: .identifier("float"),
+                                parameterClause: EnumCaseParameterClauseSyntax(
+                                    parameters: [
+                                        "Float"
+                                    ]
+                                )
+                            )
+                        }
+                    }
+                )
+                .with(\.trailingTrivia, .newlines(2))
 
                 // Properties
                 VariableDeclSyntax(
@@ -117,8 +183,10 @@ public struct StringGenerator {
                         DeclModifierSyntax(name: .keyword(.fileprivate)),
                     ],
                     .let,
-                    name: PatternSyntax(IdentifierPatternSyntax(identifier: "defaultValue")),
-                    type: TypeAnnotationSyntax(type: .identifier(.LocalizationValue))
+                    name: PatternSyntax(IdentifierPatternSyntax(identifier: "arguments")),
+                    type: TypeAnnotationSyntax(
+                        type: ArrayTypeSyntax(element: .identifier(.Argument))
+                    )
                 )
                 VariableDeclSyntax(
                     modifiers: [
@@ -159,8 +227,8 @@ public struct StringGenerator {
                                 type: .identifier(.StaticString)
                             )
                             FunctionParameterSyntax(
-                                firstName: "defaultValue",
-                                type: .identifier(.LocalizationValue)
+                                firstName: "arguments",
+                                type: ArrayTypeSyntax(element: .identifier(.Argument))
                             )
                             FunctionParameterSyntax(
                                 firstName: "table",
@@ -189,10 +257,10 @@ public struct StringGenerator {
                     InfixOperatorExprSyntax(
                         leftOperand: MemberAccessExprSyntax(
                             base: DeclReferenceExprSyntax(baseName: .keyword(.`self`)),
-                            name: "defaultValue"
+                            name: "arguments"
                         ),
                         operator: AssignmentExprSyntax(),
-                        rightOperand: DeclReferenceExprSyntax(baseName: "defaultValue")
+                        rightOperand: DeclReferenceExprSyntax(baseName: "arguments")
                     )
                     InfixOperatorExprSyntax(
                         leftOperand: MemberAccessExprSyntax(
@@ -223,6 +291,12 @@ public struct StringGenerator {
 
             // String initialiser
             InitializerDeclSyntax(
+                attributes: [
+                    .attribute(
+                        AttributeSyntax(availability: .wwdc2021)
+                            .with(\.trailingTrivia, .newline)
+                    )
+                ],
                 modifiers: [
                     DeclModifierSyntax(name: accessLevel.token),
                 ],
@@ -310,7 +384,6 @@ public struct StringGenerator {
 
     func generateStringsTableExtension() -> ExtensionDeclSyntax {
         ExtensionDeclSyntax(
-            availability: .wwdc2021,
             extendedType: localTableMemberType
         ) {
             for resource in resources {
@@ -319,6 +392,153 @@ public struct StringGenerator {
                     variableToken: variableToken,
                     accessLevel: accessLevel.token,
                     isLocalizedStringResource: false
+                )
+            }
+        }
+        .spacingMembers()
+    }
+
+    func generateStringsTableDefaultValueExtension() -> ExtensionDeclSyntax {
+        ExtensionDeclSyntax(
+            availability: .wwdc2021,
+            extendedType: localTableMemberType
+        ) {
+            // var defaultValue: String.LocalizationValue { ... }
+            VariableDeclSyntax(bindingSpecifier: .keyword(.var)) {
+                PatternBindingSyntax(
+                    pattern: IdentifierPatternSyntax(identifier: .identifier("defaultValue")),
+                    typeAnnotation: TypeAnnotationSyntax(
+                        type: MemberTypeSyntax(
+                            baseType: .identifier(.String),
+                            name: .type(.LocalizationValue)
+                        )
+                    ),
+                    accessorBlock: AccessorBlockSyntax(
+                        accessors: .getter(CodeBlockItemListSyntax {
+                            // var interpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
+                            VariableDeclSyntax(bindingSpecifier: .keyword(.var)) {
+                                PatternBindingSyntax(
+                                    pattern: IdentifierPatternSyntax(identifier: .identifier("stringInterpolation")),
+                                    initializer: InitializerClauseSyntax(
+                                        value: FunctionCallExprSyntax(
+                                            callee: MemberAccessExprSyntax(
+                                                base: MemberAccessExprSyntax(
+                                                    base: DeclReferenceExprSyntax(baseName: .type(.String)),
+                                                    declName: DeclReferenceExprSyntax(baseName: .type(.LocalizationValue))
+                                                ),
+                                                declName: DeclReferenceExprSyntax(baseName: .type(.StringInterpolation))
+                                            )
+                                        ) {
+                                            // literalCapacity: 0
+                                            LabeledExprSyntax(
+                                                label: "literalCapacity",
+                                                expression: IntegerLiteralExprSyntax(0)
+                                            )
+                                            // interpolationCount: arguments.count
+                                            LabeledExprSyntax(
+                                                label: "interpolationCount",
+                                                expression: MemberAccessExprSyntax(
+                                                    base: DeclReferenceExprSyntax(baseName: "arguments"),
+                                                    declName: DeclReferenceExprSyntax(baseName: "count")
+                                                )
+                                            )
+                                        }
+                                    )
+                                )
+                            }
+
+                            // for argument in arguments { ... }
+                            ForStmtSyntax(
+                                pattern: IdentifierPatternSyntax(identifier: "argument"),
+                                sequence: DeclReferenceExprSyntax(baseName: "arguments"),
+                                body: CodeBlockSyntax {
+                                    // switch argument { ... }
+                                    SwitchExprSyntax(subject: DeclReferenceExprSyntax(baseName: "argument")) {
+                                        // case object(let object):
+                                        //     stringInterpolation.appendInterpolation(string)
+                                        for placeholder in String.LocalizationValue.Placeholder.allCases {
+                                            SwitchCaseSyntax(
+                                                // case object(let value):
+                                                label: .case(
+                                                    SwitchCaseLabelSyntax(
+                                                        caseItems: SwitchCaseItemListSyntax {
+                                                            SwitchCaseItemSyntax(
+                                                                pattern: ExpressionPatternSyntax(
+                                                                    expression: FunctionCallExprSyntax(
+                                                                        callee: MemberAccessExprSyntax(
+                                                                            declName: DeclReferenceExprSyntax(baseName: placeholder.caseName)
+                                                                        )
+                                                                    ) {
+                                                                        LabeledExprSyntax(
+                                                                            expression: PatternExprSyntax(
+                                                                                pattern: ValueBindingPatternSyntax(
+                                                                                    bindingSpecifier: .keyword(.let),
+                                                                                    pattern: IdentifierPatternSyntax(
+                                                                                        identifier: "value"
+                                                                                    )
+                                                                                )
+                                                                            )
+                                                                        )
+                                                                    }
+                                                                )
+                                                            )
+                                                        }
+                                                    )
+                                                ),
+                                                // stringInterpolation.appendInterpolation(value)
+                                                statements: CodeBlockItemListSyntax {
+                                                    FunctionCallExprSyntax(
+                                                        callee: MemberAccessExprSyntax(
+                                                            base: DeclReferenceExprSyntax(baseName: "stringInterpolation"),
+                                                            name: "appendInterpolation"
+                                                        )
+                                                    ) {
+                                                        LabeledExprSyntax(
+                                                            expression: DeclReferenceExprSyntax(baseName: "value")
+                                                        )
+                                                    }
+                                                }
+                                            )
+                                        }
+                                    }
+                                }
+                            )
+
+                            // let makeDefaultValue = String.LocalizationValue.init(stringInterpolation:)
+                            VariableDeclSyntax(bindingSpecifier: .keyword(.let)) {
+                                PatternBindingSyntax(
+                                    pattern: IdentifierPatternSyntax(identifier: "makeDefaultValue"),
+                                    initializer: InitializerClauseSyntax(
+                                        value: MemberAccessExprSyntax(
+                                            base: MemberAccessExprSyntax(
+                                                base: DeclReferenceExprSyntax(baseName: .type(.String)),
+                                                declName: DeclReferenceExprSyntax(baseName: .type(.LocalizationValue))
+                                            ),
+                                            declName: DeclReferenceExprSyntax(
+                                                baseName: .keyword(.`init`),
+                                                argumentNames: DeclNameArgumentsSyntax(
+                                                    arguments: DeclNameArgumentListSyntax {
+                                                        DeclNameArgumentSyntax(name: "stringInterpolation")
+                                                    }
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            }
+
+                            // return makeDefaultValue(stringInterpolation)
+                            ReturnStmtSyntax(
+                                expression: FunctionCallExprSyntax(
+                                    callee: DeclReferenceExprSyntax(baseName: "makeDefaultValue")
+                                ) {
+                                    LabeledExprSyntax(
+                                        expression: DeclReferenceExprSyntax(baseName: "stringInterpolation")
+                                    )
+                                }
+                            )
+                        })
+                    )
                 )
             }
         }
@@ -986,7 +1206,7 @@ extension Resource {
                 ) {
                     LabeledExprSyntax(label: "key", expression: keyExpr)
 
-                    LabeledExprSyntax(label: "defaultValue", expression: defaultValueExpr)
+                    LabeledExprSyntax(label: "arguments", expression: argumentsExpr)
 
                     LabeledExprSyntax(
                         label: "table",
@@ -1042,17 +1262,24 @@ extension Resource {
         StringLiteralExprSyntax(content: key)
     }
 
-    // TODO: Improve this
-    // 1. Maybe use multiline string literals?
-    // 2. Calculate the correct number of pounds to be used.
-    var defaultValueExpr: StringLiteralExprSyntax {
-        StringLiteralExprSyntax(
-            openingPounds: .rawStringPoundDelimiter("###"),
-            openingQuote: .stringQuoteToken(),
-            segments: StringLiteralSegmentListSyntax(defaultValue.map(\.element)),
-            closingQuote: .stringQuoteToken(),
-            closingPounds: .rawStringPoundDelimiter("###")
-        )
+    var argumentsExpr: ArrayExprSyntax {
+        ArrayExprSyntax {
+            for argument in self.arguments {
+                // .object(arg1)
+                ArrayElementSyntax(
+                    expression: FunctionCallExprSyntax(
+                        callee: MemberAccessExprSyntax(name: argument.placeholderType.caseName)
+                    ) {
+                        LabeledExprSyntax(
+                            expression: DeclReferenceExprSyntax(
+                                baseName: .identifier(argument.name)
+                            )
+                        )
+                    }
+                )
+            }
+        }
+        .multiline()
     }
 }
 
@@ -1061,7 +1288,7 @@ extension Argument {
         FunctionParameterSyntax(
             firstName: label.flatMap { .identifier($0) } ?? .wildcardToken(),
             secondName: .identifier(name),
-            type: IdentifierTypeSyntax(name: .identifier(type))
+            type: IdentifierTypeSyntax(name: .identifier(placeholderType.identifier))
         )
     }
 }
@@ -1164,4 +1391,36 @@ extension Trivia {
             .map { [.docLineComment($0.trimmingCharacters(in: .whitespaces)), .newlines(1)] }
             .reduce([], +)
     }
+}
+
+private extension String.LocalizationValue.Placeholder {
+    var identifier: String {
+        switch self {
+        case .int: "Int"
+        case .uint: "UInt"
+        case .float: "Float"
+        case .double: "Double"
+        case .object: "String"
+        @unknown default: "AnyObject"
+        }
+    }
+
+    var caseName: TokenSyntax {
+        switch self {
+        case .int: "int"
+        case .uint: "uint"
+        case .float: "float"
+        case .double: "double"
+        case .object: "object"
+        @unknown default: .identifier(String(describing: self))
+        }
+    }
+
+    static let allCases: [Self] = [
+        .int,
+        .uint,
+        .float,
+        .double,
+        .object
+    ]
 }
