@@ -70,9 +70,6 @@ public struct StringGenerator {
             ) {
                 // BundleDescription
                 EnumDeclSyntax(
-                    modifiers: [
-                        DeclModifierSyntax(name: .keyword(.fileprivate))
-                    ],
                     name: .type(.BundleDescription),
                     memberBlockBuilder: {
                         EnumCaseDeclSyntax {
@@ -104,9 +101,6 @@ public struct StringGenerator {
 
                 // Argument
                 EnumDeclSyntax(
-                    modifiers: [
-                        DeclModifierSyntax(name: .keyword(.fileprivate))
-                    ],
                     name: .type(.Argument),
                     memberBlockBuilder: {
                         // case object(String)
@@ -170,9 +164,6 @@ public struct StringGenerator {
 
                 // Properties
                 VariableDeclSyntax(
-                    modifiers: [
-                        DeclModifierSyntax(name: .keyword(.fileprivate)),
-                    ],
                     .let,
                     name: PatternSyntax(IdentifierPatternSyntax(identifier: "key")),
                     type: TypeAnnotationSyntax(
@@ -180,9 +171,6 @@ public struct StringGenerator {
                     )
                 )
                 VariableDeclSyntax(
-                    modifiers: [
-                        DeclModifierSyntax(name: .keyword(.fileprivate)),
-                    ],
                     .let,
                     name: PatternSyntax(IdentifierPatternSyntax(identifier: "arguments")),
                     type: TypeAnnotationSyntax(
@@ -190,9 +178,6 @@ public struct StringGenerator {
                     )
                 )
                 VariableDeclSyntax(
-                    modifiers: [
-                        DeclModifierSyntax(name: .keyword(.fileprivate)),
-                    ],
                     .let,
                     name: PatternSyntax(IdentifierPatternSyntax(identifier: "table")),
                     type: TypeAnnotationSyntax(
@@ -200,9 +185,6 @@ public struct StringGenerator {
                     )
                 )
                 VariableDeclSyntax(
-                    modifiers: [
-                        DeclModifierSyntax(name: .keyword(.fileprivate)),
-                    ],
                     .let,
                     name: PatternSyntax(IdentifierPatternSyntax(identifier: "bundle")),
                     type: TypeAnnotationSyntax(type: .identifier(.BundleDescription))
@@ -575,7 +557,6 @@ public struct StringGenerator {
 
     func generateStringsTableArgumentValueExtension() -> ExtensionDeclSyntax {
         ExtensionDeclSyntax(
-            accessLevel: .private,
             extendedType: MemberTypeSyntax(
                 baseType: localTableMemberType,
                 name: .type(.Argument)
@@ -687,7 +668,6 @@ public struct StringGenerator {
 
     func generateBundleExtension() -> ExtensionDeclSyntax {
         ExtensionDeclSyntax(
-            accessLevel: .private,
             extendedType: .identifier(.Bundle)
         ) {
             FunctionDeclSyntax(

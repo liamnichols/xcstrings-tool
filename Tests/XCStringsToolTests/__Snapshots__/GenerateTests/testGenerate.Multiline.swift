@@ -9,13 +9,13 @@ extension String {
     /// value // "Options:\n- One\n- Two\n- Three"
     /// ```
     internal struct Multiline {
-        fileprivate enum BundleDescription {
+        enum BundleDescription {
             case main
             case atURL(URL)
             case forClass(AnyClass)
         }
 
-        fileprivate enum Argument {
+        enum Argument {
             case object(String)
             case int(Int)
             case uint(UInt)
@@ -23,10 +23,10 @@ extension String {
             case float(Float)
         }
 
-        fileprivate let key: StaticString
-        fileprivate let arguments: [Argument]
-        fileprivate let table: String?
-        fileprivate let bundle: BundleDescription
+        let key: StaticString
+        let arguments: [Argument]
+        let table: String?
+        let bundle: BundleDescription
 
         fileprivate init(
             key: StaticString,
@@ -98,7 +98,7 @@ private extension String.Multiline {
     }
 }
 
-private extension String.Multiline.Argument {
+extension String.Multiline.Argument {
     var value: CVarArg {
         switch self {
         case .int(let value):
@@ -130,7 +130,7 @@ private extension String.Multiline.BundleDescription {
     }
 }
 
-private extension Bundle {
+extension Bundle {
     static func from(description: String.Multiline.BundleDescription) -> Bundle? {
         switch description {
         case .main:
