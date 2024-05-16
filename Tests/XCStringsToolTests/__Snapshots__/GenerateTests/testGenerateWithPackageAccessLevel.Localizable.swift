@@ -58,6 +58,12 @@ extension String {
 
 extension String.Localizable {
     /// This is a comment
+    ///
+    /// ### Source Localization
+    ///
+    /// ```
+    /// Default Value
+    /// ```
     package static var key: Self {
         Self (
             key: "Key",
@@ -68,6 +74,11 @@ extension String.Localizable {
         )
     }
 
+    /// ### Source Localization
+    ///
+    /// ```
+    /// Multiplatform Original
+    /// ```
     package static var myDeviceVariant: Self {
         Self (
             key: "myDeviceVariant",
@@ -78,6 +89,11 @@ extension String.Localizable {
         )
     }
 
+    /// ### Source Localization
+    ///
+    /// ```
+    /// I have %lld plurals
+    /// ```
     package static func myPlural(_ arg1: Int) -> Self {
         Self (
             key: "myPlural",
@@ -90,6 +106,11 @@ extension String.Localizable {
         )
     }
 
+    /// ### Source Localization
+    ///
+    /// ```
+    /// %lld: People liked %lld posts
+    /// ```
     package static func mySubstitute(_ arg1: Int, count arg2: Int) -> Self {
         Self (
             key: "mySubstitute",
@@ -187,18 +208,39 @@ extension LocalizedStringResource {
     /// - Note: Using ``LocalizedStringResource.Localizable`` requires iOS 16/macOS 13 or later. See ``String.Localizable`` for an iOS 15/macOS 12 compatible API.
     package struct Localizable {
         /// This is a comment
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Default Value
+        /// ```
         package var key: LocalizedStringResource {
             LocalizedStringResource(localizable: .key)
         }
 
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Multiplatform Original
+        /// ```
         package var myDeviceVariant: LocalizedStringResource {
             LocalizedStringResource(localizable: .myDeviceVariant)
         }
 
+        /// ### Source Localization
+        ///
+        /// ```
+        /// I have %lld plurals
+        /// ```
         package func myPlural(_ arg1: Int) -> LocalizedStringResource {
             LocalizedStringResource(localizable: .myPlural(arg1))
         }
 
+        /// ### Source Localization
+        ///
+        /// ```
+        /// %lld: People liked %lld posts
+        /// ```
         package func mySubstitute(_ arg1: Int, count arg2: Int) -> LocalizedStringResource {
             LocalizedStringResource(localizable: .mySubstitute(arg1, count: arg2))
         }

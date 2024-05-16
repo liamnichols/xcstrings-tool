@@ -58,6 +58,12 @@ extension String {
 
 extension String.Positional {
     /// A string where the second argument is at the front of the string and the first argument is at the end
+    ///
+    /// ### Source Localization
+    ///
+    /// ```
+    /// Second: %2$@ - First: %1$lld
+    /// ```
     internal static func reorder(_ arg1: Int, _ arg2: String) -> Self {
         Self (
             key: "reorder",
@@ -72,6 +78,12 @@ extension String.Positional {
     }
 
     /// A string that uses the same argument twice
+    ///
+    /// ### Source Localization
+    ///
+    /// ```
+    /// %1$lld, I repeat: %1$lld
+    /// ```
     internal static func repeatExplicit(_ arg1: Int) -> Self {
         Self (
             key: "repeatExplicit",
@@ -85,6 +97,12 @@ extension String.Positional {
     }
 
     /// A string that uses the same argument twice implicitly because a positional specifier wasn't provided in one instance
+    ///
+    /// ### Source Localization
+    ///
+    /// ```
+    /// %@, are you there? %1$@?
+    /// ```
     internal static func repeatImplicit(_ arg1: String) -> Self {
         Self (
             key: "repeatImplicit",
@@ -181,16 +199,34 @@ extension LocalizedStringResource {
     /// - Note: Using ``LocalizedStringResource.Positional`` requires iOS 16/macOS 13 or later. See ``String.Positional`` for an iOS 15/macOS 12 compatible API.
     internal struct Positional {
         /// A string where the second argument is at the front of the string and the first argument is at the end
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Second: %2$@ - First: %1$lld
+        /// ```
         internal func reorder(_ arg1: Int, _ arg2: String) -> LocalizedStringResource {
             LocalizedStringResource(positional: .reorder(arg1, arg2))
         }
 
         /// A string that uses the same argument twice
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// %1$lld, I repeat: %1$lld
+        /// ```
         internal func repeatExplicit(_ arg1: Int) -> LocalizedStringResource {
             LocalizedStringResource(positional: .repeatExplicit(arg1))
         }
 
         /// A string that uses the same argument twice implicitly because a positional specifier wasn't provided in one instance
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// %@, are you there? %1$@?
+        /// ```
         internal func repeatImplicit(_ arg1: String) -> LocalizedStringResource {
             LocalizedStringResource(positional: .repeatImplicit(arg1))
         }

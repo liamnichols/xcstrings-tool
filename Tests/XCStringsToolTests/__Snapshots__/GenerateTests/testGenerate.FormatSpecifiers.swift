@@ -58,6 +58,12 @@ extension String {
 
 extension String.FormatSpecifiers {
     /// %@ should convert to a String argument
+    ///
+    /// ### Source Localization
+    ///
+    /// ```
+    /// Test %@
+    /// ```
     internal static func at(_ arg1: String) -> Self {
         Self (
             key: "at",
@@ -71,6 +77,12 @@ extension String.FormatSpecifiers {
     }
 
     /// %d should convert to an Int argument
+    ///
+    /// ### Source Localization
+    ///
+    /// ```
+    /// Test %d
+    /// ```
     internal static func d(_ arg1: Int) -> Self {
         Self (
             key: "d",
@@ -84,6 +96,12 @@ extension String.FormatSpecifiers {
     }
 
     /// %lld should covert to an Int
+    ///
+    /// ### Source Localization
+    ///
+    /// ```
+    /// Test %lld
+    /// ```
     internal static func d_length(_ arg1: Int) -> Self {
         Self (
             key: "d_length",
@@ -97,6 +115,12 @@ extension String.FormatSpecifiers {
     }
 
     /// %f should convert to a Double argument
+    ///
+    /// ### Source Localization
+    ///
+    /// ```
+    /// Test %f
+    /// ```
     internal static func f(_ arg1: Double) -> Self {
         Self (
             key: "f",
@@ -110,6 +134,12 @@ extension String.FormatSpecifiers {
     }
 
     /// %.2f should convert to a Double argument
+    ///
+    /// ### Source Localization
+    ///
+    /// ```
+    /// Test %.2f
+    /// ```
     internal static func f_precision(_ arg1: Double) -> Self {
         Self (
             key: "f_precision",
@@ -123,6 +153,12 @@ extension String.FormatSpecifiers {
     }
 
     /// %i should convert to an Int argument
+    ///
+    /// ### Source Localization
+    ///
+    /// ```
+    /// Test %i
+    /// ```
     internal static func i(_ arg1: Int) -> Self {
         Self (
             key: "i",
@@ -136,6 +172,12 @@ extension String.FormatSpecifiers {
     }
 
     /// %o should convert to a UInt argument
+    ///
+    /// ### Source Localization
+    ///
+    /// ```
+    /// Test %o
+    /// ```
     internal static func o(_ arg1: UInt) -> Self {
         Self (
             key: "o",
@@ -149,6 +191,12 @@ extension String.FormatSpecifiers {
     }
 
     /// % should not be converted to an argument
+    ///
+    /// ### Source Localization
+    ///
+    /// ```
+    /// Test %
+    /// ```
     internal static var percentage: Self {
         Self (
             key: "percentage",
@@ -160,6 +208,12 @@ extension String.FormatSpecifiers {
     }
 
     /// %% should not be converted to an argument
+    ///
+    /// ### Source Localization
+    ///
+    /// ```
+    /// Test %%
+    /// ```
     internal static var percentage_escaped: Self {
         Self (
             key: "percentage_escaped",
@@ -171,6 +225,12 @@ extension String.FormatSpecifiers {
     }
 
     /// %% should not be converted to an argument
+    ///
+    /// ### Source Localization
+    ///
+    /// ```
+    /// Test 50%% off
+    /// ```
     internal static var percentage_escaped_space_o: Self {
         Self (
             key: "percentage_escaped_space_o",
@@ -182,6 +242,12 @@ extension String.FormatSpecifiers {
     }
 
     /// '% o' should not be converted to an argument
+    ///
+    /// ### Source Localization
+    ///
+    /// ```
+    /// Test 50% off
+    /// ```
     internal static var percentage_space_o: Self {
         Self (
             key: "percentage_space_o",
@@ -193,6 +259,12 @@ extension String.FormatSpecifiers {
     }
 
     /// %u should convert to a UInt argument
+    ///
+    /// ### Source Localization
+    ///
+    /// ```
+    /// Test %u
+    /// ```
     internal static func u(_ arg1: UInt) -> Self {
         Self (
             key: "u",
@@ -206,6 +278,12 @@ extension String.FormatSpecifiers {
     }
 
     /// %x should convert to a UInt argument
+    ///
+    /// ### Source Localization
+    ///
+    /// ```
+    /// Test %x
+    /// ```
     internal static func x(_ arg1: UInt) -> Self {
         Self (
             key: "x",
@@ -302,66 +380,144 @@ extension LocalizedStringResource {
     /// - Note: Using ``LocalizedStringResource.FormatSpecifiers`` requires iOS 16/macOS 13 or later. See ``String.FormatSpecifiers`` for an iOS 15/macOS 12 compatible API.
     internal struct FormatSpecifiers {
         /// %@ should convert to a String argument
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Test %@
+        /// ```
         internal func at(_ arg1: String) -> LocalizedStringResource {
             LocalizedStringResource(formatSpecifiers: .at(arg1))
         }
 
         /// %d should convert to an Int argument
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Test %d
+        /// ```
         internal func d(_ arg1: Int) -> LocalizedStringResource {
             LocalizedStringResource(formatSpecifiers: .d(arg1))
         }
 
         /// %lld should covert to an Int
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Test %lld
+        /// ```
         internal func d_length(_ arg1: Int) -> LocalizedStringResource {
             LocalizedStringResource(formatSpecifiers: .d_length(arg1))
         }
 
         /// %f should convert to a Double argument
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Test %f
+        /// ```
         internal func f(_ arg1: Double) -> LocalizedStringResource {
             LocalizedStringResource(formatSpecifiers: .f(arg1))
         }
 
         /// %.2f should convert to a Double argument
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Test %.2f
+        /// ```
         internal func f_precision(_ arg1: Double) -> LocalizedStringResource {
             LocalizedStringResource(formatSpecifiers: .f_precision(arg1))
         }
 
         /// %i should convert to an Int argument
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Test %i
+        /// ```
         internal func i(_ arg1: Int) -> LocalizedStringResource {
             LocalizedStringResource(formatSpecifiers: .i(arg1))
         }
 
         /// %o should convert to a UInt argument
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Test %o
+        /// ```
         internal func o(_ arg1: UInt) -> LocalizedStringResource {
             LocalizedStringResource(formatSpecifiers: .o(arg1))
         }
 
         /// % should not be converted to an argument
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Test %
+        /// ```
         internal var percentage: LocalizedStringResource {
             LocalizedStringResource(formatSpecifiers: .percentage)
         }
 
         /// %% should not be converted to an argument
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Test %%
+        /// ```
         internal var percentage_escaped: LocalizedStringResource {
             LocalizedStringResource(formatSpecifiers: .percentage_escaped)
         }
 
         /// %% should not be converted to an argument
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Test 50%% off
+        /// ```
         internal var percentage_escaped_space_o: LocalizedStringResource {
             LocalizedStringResource(formatSpecifiers: .percentage_escaped_space_o)
         }
 
         /// '% o' should not be converted to an argument
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Test 50% off
+        /// ```
         internal var percentage_space_o: LocalizedStringResource {
             LocalizedStringResource(formatSpecifiers: .percentage_space_o)
         }
 
         /// %u should convert to a UInt argument
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Test %u
+        /// ```
         internal func u(_ arg1: UInt) -> LocalizedStringResource {
             LocalizedStringResource(formatSpecifiers: .u(arg1))
         }
 
         /// %x should convert to a UInt argument
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Test %x
+        /// ```
         internal func x(_ arg1: UInt) -> LocalizedStringResource {
             LocalizedStringResource(formatSpecifiers: .x(arg1))
         }

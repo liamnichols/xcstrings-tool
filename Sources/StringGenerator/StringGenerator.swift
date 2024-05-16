@@ -1031,7 +1031,7 @@ public struct StringGenerator {
     var typeDocumentation: Trivia {
         let exampleResource = resources.first(where: { $0.arguments.isEmpty })
         let exampleId = exampleResource?.identifier ?? "foo"
-        let exampleValue = exampleResource?.defaultValue.map(\.content).reduce("", +) ?? "bar"
+        let exampleValue = exampleResource?.sourceLocalization ?? "bar"
         let exampleAccessor = ".\(variableToken.text).\(exampleId)"
 
         return Trivia(docComment: """
@@ -1053,7 +1053,7 @@ public struct StringGenerator {
     var customTypeDocumentation: Trivia {
         let exampleResource = resources.first(where: { $0.arguments.isEmpty })
         let exampleId = exampleResource?.identifier ?? "foo"
-        let exampleValue = exampleResource?.defaultValue.map(\.content).reduce("", +) ?? "bar"
+        let exampleValue = exampleResource?.sourceLocalization ?? "bar"
 
         return Trivia(docComment: """
         Constant values for the \(tableName) Strings Catalog
@@ -1180,16 +1180,21 @@ extension Resource {
     }
 
     var leadingTrivia: Trivia {
-        var trivia: Trivia = .init(pieces: [])
+        var docComponents: [String] = []
 
-        if let commentLines = comment?.components(separatedBy: .newlines), !commentLines.isEmpty {
-            for line in commentLines {
-                trivia = trivia.appending(Trivia.docLineComment("/// \(line)"))
-                trivia = trivia.appending(.newline)
-            }
+        if let comment {
+            docComponents.append(comment)
         }
 
-        return trivia
+        docComponents.append("""
+        ### Source Localization
+
+        ```
+        \(sourceLocalization)
+        ```
+        """)
+
+        return Trivia(docComment: docComponents.joined(separator: "\n\n"))
     }
 
     func statements(

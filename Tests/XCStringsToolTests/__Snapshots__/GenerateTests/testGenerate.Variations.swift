@@ -58,6 +58,12 @@ extension String {
 
 extension String.Variations {
     /// A string that should have a macOS variation to replace 'Tap' with 'Click'
+    ///
+    /// ### Source Localization
+    ///
+    /// ```
+    /// Tap to open
+    /// ```
     internal static var stringDevice: Self {
         Self (
             key: "String.Device",
@@ -68,6 +74,11 @@ extension String.Variations {
         )
     }
 
+    /// ### Source Localization
+    ///
+    /// ```
+    /// I have %lld strings
+    /// ```
     internal static func stringPlural(_ arg1: Int) -> Self {
         Self (
             key: "String.Plural",
@@ -164,10 +175,21 @@ extension LocalizedStringResource {
     /// - Note: Using ``LocalizedStringResource.Variations`` requires iOS 16/macOS 13 or later. See ``String.Variations`` for an iOS 15/macOS 12 compatible API.
     internal struct Variations {
         /// A string that should have a macOS variation to replace 'Tap' with 'Click'
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Tap to open
+        /// ```
         internal var stringDevice: LocalizedStringResource {
             LocalizedStringResource(variations: .stringDevice)
         }
 
+        /// ### Source Localization
+        ///
+        /// ```
+        /// I have %lld strings
+        /// ```
         internal func stringPlural(_ arg1: Int) -> LocalizedStringResource {
             LocalizedStringResource(variations: .stringPlural(arg1))
         }

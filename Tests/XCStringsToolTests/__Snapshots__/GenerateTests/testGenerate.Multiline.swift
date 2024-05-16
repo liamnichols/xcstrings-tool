@@ -60,6 +60,15 @@ extension String.Multiline {
     /// This example tests the following:
     /// 1. That line breaks in the defaultValue are supported
     /// 2. That line breaks in the comment are supported
+    ///
+    /// ### Source Localization
+    ///
+    /// ```
+    /// Options:
+    /// - One
+    /// - Two
+    /// - Three
+    /// ```
     internal static var multiline: Self {
         Self (
             key: "multiline",
@@ -156,6 +165,15 @@ extension LocalizedStringResource {
         /// This example tests the following:
         /// 1. That line breaks in the defaultValue are supported
         /// 2. That line breaks in the comment are supported
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Options:
+        /// - One
+        /// - Two
+        /// - Three
+        /// ```
         internal var multiline: LocalizedStringResource {
             LocalizedStringResource(multiline: .multiline)
         }
