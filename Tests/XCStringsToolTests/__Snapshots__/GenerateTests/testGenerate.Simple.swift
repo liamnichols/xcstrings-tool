@@ -44,14 +44,16 @@ extension String {
         }
     }
 
-    @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
     internal init(simple: Simple, locale: Locale? = nil) {
         self.init(
-            localized: simple.key,
-            defaultValue: simple.defaultValue,
-            table: simple.table,
-            bundle: .from(description: simple.bundle),
-            locale: locale ?? simple.locale
+            format: NSLocalizedString(
+                String(describing: simple.key),
+                tableName: simple.table,
+                bundle: .from(description: simple.bundle) ?? .main,
+                comment: ""
+            ),
+            locale: locale,
+            arguments: simple.arguments.map(\.value)
         )
     }
 }
@@ -76,7 +78,7 @@ extension String.Simple {
 }
 
 @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
-extension String.Simple {
+private extension String.Simple {
     var defaultValue: String.LocalizationValue {
         var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
         for argument in arguments {
@@ -98,7 +100,23 @@ extension String.Simple {
     }
 }
 
-@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
+private extension String.Simple.Argument {
+    var value: CVarArg {
+        switch self {
+        case .int(let value):
+            value
+        case .uint(let value):
+            value
+        case .float(let value):
+            value
+        case .double(let value):
+            value
+        case .object(let value):
+            value
+        }
+    }
+}
+
 private extension String.Simple.BundleDescription {
     #if !SWIFT_PACKAGE
     private class BundleLocator {
@@ -114,7 +132,6 @@ private extension String.Simple.BundleDescription {
     }
 }
 
-@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
 private extension Bundle {
     static func from(description: String.Simple.BundleDescription) -> Bundle? {
         switch description {

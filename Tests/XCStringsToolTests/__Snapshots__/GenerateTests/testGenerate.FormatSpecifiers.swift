@@ -44,14 +44,16 @@ extension String {
         }
     }
 
-    @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
     internal init(formatSpecifiers: FormatSpecifiers, locale: Locale? = nil) {
         self.init(
-            localized: formatSpecifiers.key,
-            defaultValue: formatSpecifiers.defaultValue,
-            table: formatSpecifiers.table,
-            bundle: .from(description: formatSpecifiers.bundle),
-            locale: locale ?? formatSpecifiers.locale
+            format: NSLocalizedString(
+                String(describing: formatSpecifiers.key),
+                tableName: formatSpecifiers.table,
+                bundle: .from(description: formatSpecifiers.bundle) ?? .main,
+                comment: ""
+            ),
+            locale: locale,
+            arguments: formatSpecifiers.arguments.map(\.value)
         )
     }
 }
@@ -298,7 +300,7 @@ extension String.FormatSpecifiers {
 }
 
 @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
-extension String.FormatSpecifiers {
+private extension String.FormatSpecifiers {
     var defaultValue: String.LocalizationValue {
         var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
         for argument in arguments {
@@ -320,7 +322,23 @@ extension String.FormatSpecifiers {
     }
 }
 
-@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
+private extension String.FormatSpecifiers.Argument {
+    var value: CVarArg {
+        switch self {
+        case .int(let value):
+            value
+        case .uint(let value):
+            value
+        case .float(let value):
+            value
+        case .double(let value):
+            value
+        case .object(let value):
+            value
+        }
+    }
+}
+
 private extension String.FormatSpecifiers.BundleDescription {
     #if !SWIFT_PACKAGE
     private class BundleLocator {
@@ -336,7 +354,6 @@ private extension String.FormatSpecifiers.BundleDescription {
     }
 }
 
-@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
 private extension Bundle {
     static func from(description: String.FormatSpecifiers.BundleDescription) -> Bundle? {
         switch description {

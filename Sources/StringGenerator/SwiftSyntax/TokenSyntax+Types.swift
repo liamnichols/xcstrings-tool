@@ -12,6 +12,7 @@ extension TokenSyntax {
         case BundleDescription
         case LocalizedStringResource
         case Argument
+        case CVarArg
     }
 
     static func type(_ value: MetaType) -> TokenSyntax {

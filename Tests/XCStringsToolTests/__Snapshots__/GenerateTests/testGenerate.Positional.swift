@@ -44,14 +44,16 @@ extension String {
         }
     }
 
-    @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
     internal init(positional: Positional, locale: Locale? = nil) {
         self.init(
-            localized: positional.key,
-            defaultValue: positional.defaultValue,
-            table: positional.table,
-            bundle: .from(description: positional.bundle),
-            locale: locale ?? positional.locale
+            format: NSLocalizedString(
+                String(describing: positional.key),
+                tableName: positional.table,
+                bundle: .from(description: positional.bundle) ?? .main,
+                comment: ""
+            ),
+            locale: locale,
+            arguments: positional.arguments.map(\.value)
         )
     }
 }
@@ -117,7 +119,7 @@ extension String.Positional {
 }
 
 @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
-extension String.Positional {
+private extension String.Positional {
     var defaultValue: String.LocalizationValue {
         var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
         for argument in arguments {
@@ -139,7 +141,23 @@ extension String.Positional {
     }
 }
 
-@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
+private extension String.Positional.Argument {
+    var value: CVarArg {
+        switch self {
+        case .int(let value):
+            value
+        case .uint(let value):
+            value
+        case .float(let value):
+            value
+        case .double(let value):
+            value
+        case .object(let value):
+            value
+        }
+    }
+}
+
 private extension String.Positional.BundleDescription {
     #if !SWIFT_PACKAGE
     private class BundleLocator {
@@ -155,7 +173,6 @@ private extension String.Positional.BundleDescription {
     }
 }
 
-@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
 private extension Bundle {
     static func from(description: String.Positional.BundleDescription) -> Bundle? {
         switch description {

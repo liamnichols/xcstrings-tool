@@ -107,15 +107,15 @@ private extension String.Substitution {
 private extension String.Substitution.Argument {
     var value: CVarArg {
         switch self {
-        case .object(let value):
-            value
         case .int(let value):
             value
         case .uint(let value):
             value
+        case .float(let value):
+            value
         case .double(let value):
             value
-        case .float(let value):
+        case .object(let value):
             value
         }
     }

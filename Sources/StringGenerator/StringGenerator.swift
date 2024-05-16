@@ -37,6 +37,7 @@ public struct StringGenerator {
             generateStringExtension()
             generateStringsTableExtension()
             generateStringsTableDefaultValueExtension()
+            generateStringsTableArgumentValueExtension()
             generateBundleDescriptionExtension()
             generateBundleExtension()
             generateFoundationBundleDescriptionExtension()
@@ -290,13 +291,8 @@ public struct StringGenerator {
             }
 
             // String initialiser
+            // internal init(localizable: Localizable, locale: Locale? = nil) { ... }
             InitializerDeclSyntax(
-                attributes: [
-                    .attribute(
-                        AttributeSyntax(availability: .wwdc2021)
-                            .with(\.trailingTrivia, .newline)
-                    )
-                ],
                 modifiers: [
                     DeclModifierSyntax(name: accessLevel.token),
                 ],
@@ -314,66 +310,98 @@ public struct StringGenerator {
                     }
                 )
             ) {
+                // self.init(format:locale:arguments:)
                 FunctionCallExprSyntax(
                     callee: MemberAccessExprSyntax(
                         base: DeclReferenceExprSyntax(baseName: .keyword(.`self`)),
                         name: .keyword(.`init`)
                     )
                 ) {
-                    // localized: localizable.key
+                    // format: NSLocalizedString(...)
                     LabeledExprSyntax(
-                        label: "localized",
-                        expression: MemberAccessExprSyntax(
-                            base: DeclReferenceExprSyntax(baseName: variableToken),
-                            name: "key"
-                        )
-                    )
-                    // defaultValue: localizable.defaultValue
-                    LabeledExprSyntax(
-                        label: "defaultValue",
-                        expression: MemberAccessExprSyntax(
-                            base: DeclReferenceExprSyntax(baseName: variableToken),
-                            name: "defaultValue"
-                        )
-                    )
-                    // table: localizable.table
-                    LabeledExprSyntax(
-                        label: "table",
-                        expression: MemberAccessExprSyntax(
-                            base: DeclReferenceExprSyntax(baseName: variableToken),
-                            name: "table"
-                        )
-                    )
-                    // bundle: .from(description: localizable.bundle)
-                    LabeledExprSyntax(
-                        label: "bundle",
+                        label: "format",
                         expression: FunctionCallExprSyntax(
-                            calledExpression: MemberAccessExprSyntax(
-                                name: "from"
-                            ),
-                            leftParen: .leftParenToken(),
-                            rightParen: .rightParenToken()
+                            callee: DeclReferenceExprSyntax(baseName: "NSLocalizedString")
                         ) {
+                            // String(describing: localizable.key),
                             LabeledExprSyntax(
-                                label: "description",
+                                expression: FunctionCallExprSyntax(
+                                    callee: DeclReferenceExprSyntax(baseName: .type(.String))
+                                ) {
+                                    LabeledExprSyntax(
+                                        label: "describing",
+                                        expression: MemberAccessExprSyntax(
+                                            base: DeclReferenceExprSyntax(baseName: variableToken),
+                                            name: "key"
+                                        )
+                                    )
+                                }
+                            )
+                            // tableName: localizable.table,
+                            LabeledExprSyntax(
+                                label: "tableName",
                                 expression: MemberAccessExprSyntax(
                                     base: DeclReferenceExprSyntax(baseName: variableToken),
-                                    name: "bundle"
+                                    name: "table"
+                                )
+                            )
+                            // bundle: .from(description: substitution.bundle) ?? .main,
+                            LabeledExprSyntax(
+                                label: "bundle",
+                                expression: InfixOperatorExprSyntax(
+                                    leftOperand: FunctionCallExprSyntax(
+                                        callee: MemberAccessExprSyntax(name: "from")
+                                    ) {
+                                        LabeledExprSyntax(
+                                            label: "description",
+                                            expression: MemberAccessExprSyntax(
+                                                base: DeclReferenceExprSyntax(baseName: variableToken),
+                                                name: "bundle"
+                                            )
+                                        )
+                                    },
+                                    operator: BinaryOperatorExprSyntax(operator: .binaryOperator("??")),
+                                    rightOperand: MemberAccessExprSyntax(name: "main")
+                                )
+                            )
+                            // comment: ""
+                            LabeledExprSyntax(
+                                label: "comment",
+                                expression: StringLiteralExprSyntax(content: "")
+                            )
+                        }
+                        .multiline()
+                    )
+                    // locale: locale
+                    LabeledExprSyntax(
+                        label: "locale",
+                        expression: DeclReferenceExprSyntax(baseName: "locale")
+                    )
+                    // arguments: substitution.arguments.map(\.value)
+                    LabeledExprSyntax(
+                        label: "arguments",
+                        expression: FunctionCallExprSyntax(
+                            callee: MemberAccessExprSyntax(
+                                base: MemberAccessExprSyntax(
+                                    base: DeclReferenceExprSyntax(baseName: variableToken),
+                                    declName: DeclReferenceExprSyntax(baseName: "arguments")
+                                ),
+                                declName: DeclReferenceExprSyntax(baseName: "map")
+                            )
+                        ) {
+                            LabeledExprSyntax(
+                                expression: KeyPathExprSyntax(
+                                    components: KeyPathComponentListSyntax {
+                                        KeyPathComponentSyntax(
+                                            period: .periodToken(),
+                                            component: .property(KeyPathPropertyComponentSyntax(
+                                                declName: DeclReferenceExprSyntax(baseName: "value")
+                                            ))
+                                        )
+                                    }
                                 )
                             )
                         }
-                    )
-                    // locale: locale ?? localizable.locale
-                    LabeledExprSyntax(
-                        label: "locale",
-                        expression: InfixOperatorExprSyntax(
-                            leftOperand: DeclReferenceExprSyntax(baseName: "locale"),
-                            operator: BinaryOperatorExprSyntax(operator: .binaryOperator("??")),
-                            rightOperand: MemberAccessExprSyntax(
-                                base: DeclReferenceExprSyntax(baseName: variableToken),
-                                name: "locale"
-                            )
-                        )
                     )
                 }
                 .multiline()
@@ -401,6 +429,7 @@ public struct StringGenerator {
     func generateStringsTableDefaultValueExtension() -> ExtensionDeclSyntax {
         ExtensionDeclSyntax(
             availability: .wwdc2021,
+            accessLevel: .private,
             extendedType: localTableMemberType
         ) {
             // var defaultValue: String.LocalizationValue { ... }
@@ -545,9 +574,72 @@ public struct StringGenerator {
         .spacingMembers()
     }
 
+    func generateStringsTableArgumentValueExtension() -> ExtensionDeclSyntax {
+        ExtensionDeclSyntax(
+            accessLevel: .private,
+            extendedType: MemberTypeSyntax(
+                baseType: localTableMemberType,
+                name: .type(.Argument)
+            )
+        ) {
+            // var value: CVarArg { ... }
+            VariableDeclSyntax(bindingSpecifier: .keyword(.var)) {
+                PatternBindingSyntax(
+                    pattern: IdentifierPatternSyntax(identifier: .identifier("value")),
+                    typeAnnotation: TypeAnnotationSyntax(
+                        type: IdentifierTypeSyntax(name: .type(.CVarArg))
+                    ),
+                    accessorBlock: AccessorBlockSyntax(
+                        accessors: .getter(CodeBlockItemListSyntax {
+                            // switch self { ... }
+                            SwitchExprSyntax(subject: DeclReferenceExprSyntax(baseName: .keyword(.`self`))) {
+                                // case object(let value):
+                                //     value
+                                for placeholder in String.LocalizationValue.Placeholder.allCases {
+                                    SwitchCaseSyntax(
+                                        // case object(let value):
+                                        label: .case(
+                                            SwitchCaseLabelSyntax(
+                                                caseItems: SwitchCaseItemListSyntax {
+                                                    SwitchCaseItemSyntax(
+                                                        pattern: ExpressionPatternSyntax(
+                                                            expression: FunctionCallExprSyntax(
+                                                                callee: MemberAccessExprSyntax(
+                                                                    declName: DeclReferenceExprSyntax(baseName: placeholder.caseName)
+                                                                )
+                                                            ) {
+                                                                LabeledExprSyntax(
+                                                                    expression: PatternExprSyntax(
+                                                                        pattern: ValueBindingPatternSyntax(
+                                                                            bindingSpecifier: .keyword(.let),
+                                                                            pattern: IdentifierPatternSyntax(
+                                                                                identifier: "value"
+                                                                            )
+                                                                        )
+                                                                    )
+                                                                )
+                                                            }
+                                                        )
+                                                    )
+                                                }
+                                            )
+                                        ),
+                                        // value
+                                        statements: CodeBlockItemListSyntax {
+                                            DeclReferenceExprSyntax(baseName: "value")
+                                        }
+                                    )
+                                }
+                            }
+                        })
+                    )
+                )
+            }
+        }
+    }
+
     func generateBundleDescriptionExtension() -> ExtensionDeclSyntax {
         ExtensionDeclSyntax(
-            availability: .wwdc2021,
             accessLevel: .private,
             extendedType: localBundleDescriptionMemberType
         ) {
@@ -596,7 +688,6 @@ public struct StringGenerator {
 
     func generateBundleExtension() -> ExtensionDeclSyntax {
         ExtensionDeclSyntax(
-            availability: .wwdc2021,
             accessLevel: .private,
             extendedType: .identifier(.Bundle)
         ) {
