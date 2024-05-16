@@ -58,6 +58,12 @@ extension String {
 
 extension String.Simple {
     /// This is a simple key and value
+    ///
+    /// ### Source Localization
+    ///
+    /// ```
+    /// My Value
+    /// ```
     internal static var simpleKey: Self {
         Self (
             key: "SimpleKey",
@@ -152,6 +158,12 @@ extension LocalizedStringResource {
     /// - Note: Using ``LocalizedStringResource.Simple`` requires iOS 16/macOS 13 or later. See ``String.Simple`` for an iOS 15/macOS 12 compatible API.
     internal struct Simple {
         /// This is a simple key and value
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// My Value
+        /// ```
         internal var simpleKey: LocalizedStringResource {
             LocalizedStringResource(simple: .simpleKey)
         }

@@ -1180,16 +1180,21 @@ extension Resource {
     }
 
     var leadingTrivia: Trivia {
-        var trivia: Trivia = .init(pieces: [])
+        var docComponents: [String] = []
 
-        if let commentLines = comment?.components(separatedBy: .newlines), !commentLines.isEmpty {
-            for line in commentLines {
-                trivia = trivia.appending(Trivia.docLineComment("/// \(line)"))
-                trivia = trivia.appending(.newline)
-            }
+        if let comment {
+            docComponents.append(comment)
         }
 
-        return trivia
+        docComponents.append("""
+        ### Source Localization
+
+        ```
+        \(sourceLocalization)
+        ```
+        """)
+
+        return Trivia(docComment: docComponents.joined(separator: "\n\n"))
     }
 
     func statements(

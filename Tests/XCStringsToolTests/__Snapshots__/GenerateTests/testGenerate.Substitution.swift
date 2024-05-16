@@ -58,6 +58,12 @@ extension String {
 
 extension String.Substitution {
     /// A string that uses substitutions as well as arguments
+    ///
+    /// ### Source Localization
+    ///
+    /// ```
+    /// %@! There are %lld strings and you have %lld remaining
+    /// ```
     internal static func substitutions_exampleString(_ arg1: String, totalStrings arg2: Int, remainingStrings arg3: Int) -> Self {
         Self (
             key: "substitutions_example.string",
@@ -156,6 +162,12 @@ extension LocalizedStringResource {
     /// - Note: Using ``LocalizedStringResource.Substitution`` requires iOS 16/macOS 13 or later. See ``String.Substitution`` for an iOS 15/macOS 12 compatible API.
     internal struct Substitution {
         /// A string that uses substitutions as well as arguments
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// %@! There are %lld strings and you have %lld remaining
+        /// ```
         internal func substitutions_exampleString(_ arg1: String, totalStrings arg2: Int, remainingStrings arg3: Int) -> LocalizedStringResource {
             LocalizedStringResource(substitution: .substitutions_exampleString(arg1, totalStrings: arg2, remainingStrings: arg3))
         }
