@@ -1031,7 +1031,7 @@ public struct StringGenerator {
     var typeDocumentation: Trivia {
         let exampleResource = resources.first(where: { $0.arguments.isEmpty })
         let exampleId = exampleResource?.identifier ?? "foo"
-        let exampleValue = exampleResource?.defaultValue.map(\.content).reduce("", +) ?? "bar"
+        let exampleValue = exampleResource?.defaultValue ?? "bar"
         let exampleAccessor = ".\(variableToken.text).\(exampleId)"
 
         return Trivia(docComment: """
@@ -1053,7 +1053,7 @@ public struct StringGenerator {
     var customTypeDocumentation: Trivia {
         let exampleResource = resources.first(where: { $0.arguments.isEmpty })
         let exampleId = exampleResource?.identifier ?? "foo"
-        let exampleValue = exampleResource?.defaultValue.map(\.content).reduce("", +) ?? "bar"
+        let exampleValue = exampleResource?.defaultValue ?? "bar"
 
         return Trivia(docComment: """
         Constant values for the \(tableName) Strings Catalog

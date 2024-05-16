@@ -20,7 +20,7 @@ extension Resource {
     static func extract(
         from localization: StringLocalization,
         key: String
-    ) throws -> (arguments: [Argument], defaultValue: [StringSegment]) {
+    ) throws -> (arguments: [Argument], defaultValue: String) {
         guard let stringUnit = preferredStringUnit(from: localization.stringUnit, variations: localization.variations) else {
             throw ExtractionError.localizationCorrupt(
                 ExtractionError.Context(

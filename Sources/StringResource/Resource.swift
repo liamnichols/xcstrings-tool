@@ -13,15 +13,15 @@ public struct Resource: Equatable {
     /// An array of arguments to be interpolated into the resource
     public let arguments: [Argument]
 
-    /// The string segments that make up the string literal to be used as the default value
-    public let defaultValue: [StringSegment]
+    /// The default localised value
+    public let defaultValue: String
 
     public init(
         key: String,
         comment: String?,
         identifier: String,
         arguments: [Argument],
-        defaultValue: [StringSegment]
+        defaultValue: String
     ) {
         self.key = key
         self.comment = comment

@@ -5,17 +5,17 @@ extension Resource {
         from segments: [StringParser.ParsedSegment],
         labels: [Int: String] = [:],
         key: String
-    ) throws -> (arguments: [Argument], defaultValue: [StringSegment]) {
-        var defaultValue: [StringSegment] = [], arguments: [Int: Argument] = [:]
+    ) throws -> (arguments: [Argument], defaultValue: String) {
+        var defaultValue: String = "", arguments: [Int: Argument] = [:]
         var nextUnspecifiedPosition = 1
 
         // Convert the parsed string into a default value and extract the arguments
         for segment in segments {
             switch segment {
             case .string(let contents):
-                defaultValue.append(.string(contents))
+                defaultValue.append(contents)
             case .placeholder(let placeholder) where placeholder.rawValue == "%" || placeholder.rawValue == "%%":
-                defaultValue.append(.string(placeholder.rawValue))
+                defaultValue.append(placeholder.rawValue)
             case .placeholder(let placeholder):
                 // If the placeholder is an unsupported type, raise an error about the invalid string
                 guard let _type = placeholder.type, let type = String.LocalizationValue.Placeholder(_type) else {
@@ -61,7 +61,7 @@ extension Resource {
                     )
                 }
 
-                defaultValue.append(.interpolation(name))
+                defaultValue.append(placeholder.rawValue)
                 arguments[position] = argument
             }
         }
