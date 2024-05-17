@@ -69,97 +69,66 @@ public struct StringGenerator {
                 name: structToken
             ) {
                 // BundleDescription
-                EnumDeclSyntax(
-                    name: .type(.BundleDescription),
-                    memberBlockBuilder: {
-                        EnumCaseDeclSyntax {
-                            EnumCaseElementSyntax(name: .identifier("main"))
-                        }
-                        EnumCaseDeclSyntax {
-                            EnumCaseElementSyntax(
-                                name: .identifier("atURL"),
-                                parameterClause: EnumCaseParameterClauseSyntax(
-                                    parameters: [
-                                        "URL"
-                                    ]
-                                )
-                            )
-                        }
-                        EnumCaseDeclSyntax {
-                            EnumCaseElementSyntax(
-                                name: .identifier("forClass"),
-                                parameterClause: EnumCaseParameterClauseSyntax(
-                                    parameters: [
-                                        "AnyClass"
-                                    ]
-                                )
-                            )
-                        }
+                EnumDeclSyntax(name: .type(.BundleDescription)) {
+                    // case main
+                    EnumCaseDeclSyntax {
+                        EnumCaseElementSyntax(name: "main")
                     }
-                )
+                    // case atURL(URL)
+                    EnumCaseDeclSyntax {
+                        EnumCaseElementSyntax(
+                            name: "atURL",
+                            parameters: "URL"
+                        )
+                    }
+                    // case forClass(AnyClass)
+                    EnumCaseDeclSyntax {
+                        EnumCaseElementSyntax(
+                            name: "forClass",
+                            parameters: "AnyClass"
+                        )
+                    }
+                }
                 .with(\.trailingTrivia, .newlines(2))
 
                 // Argument
-                EnumDeclSyntax(
-                    name: .type(.Argument),
-                    memberBlockBuilder: {
-                        // case object(String)
-                        EnumCaseDeclSyntax {
-                            EnumCaseElementSyntax(
-                                name: .identifier("object"),
-                                parameterClause: EnumCaseParameterClauseSyntax(
-                                    parameters: [
-                                        "String"
-                                    ]
-                                )
-                            )
-                        }
-                        // case int(Int)
-                        EnumCaseDeclSyntax {
-                            EnumCaseElementSyntax(
-                                name: .identifier("int"),
-                                parameterClause: EnumCaseParameterClauseSyntax(
-                                    parameters: [
-                                        "Int"
-                                    ]
-                                )
-                            )
-                        }
-                        // case uint(UInt)
-                        EnumCaseDeclSyntax {
-                            EnumCaseElementSyntax(
-                                name: .identifier("uint"),
-                                parameterClause: EnumCaseParameterClauseSyntax(
-                                    parameters: [
-                                        "UInt"
-                                    ]
-                                )
-                            )
-                        }
-                        // case double(Double)
-                        EnumCaseDeclSyntax {
-                            EnumCaseElementSyntax(
-                                name: .identifier("double"),
-                                parameterClause: EnumCaseParameterClauseSyntax(
-                                    parameters: [
-                                        "Double"
-                                    ]
-                                )
-                            )
-                        }
-                        // case float(Float)
-                        EnumCaseDeclSyntax {
-                            EnumCaseElementSyntax(
-                                name: .identifier("float"),
-                                parameterClause: EnumCaseParameterClauseSyntax(
-                                    parameters: [
-                                        "Float"
-                                    ]
-                                )
-                            )
-                        }
+                EnumDeclSyntax(name: .type(.Argument)) {
+                    // case object(String)
+                    EnumCaseDeclSyntax {
+                        EnumCaseElementSyntax(
+                            name: "object",
+                            parameters: "String"
+                        )
                     }
-                )
+                    // case int(Int)
+                    EnumCaseDeclSyntax {
+                        EnumCaseElementSyntax(
+                            name: "int",
+                            parameters: "Int"
+                        )
+                    }
+                    // case uint(UInt)
+                    EnumCaseDeclSyntax {
+                        EnumCaseElementSyntax(
+                            name: "uint",
+                            parameters: "UInt"
+                        )
+                    }
+                    // case double(Double)
+                    EnumCaseDeclSyntax {
+                        EnumCaseElementSyntax(
+                            name: "double",
+                            parameters: "Double"
+                        )
+                    }
+                    // case float(Float)
+                    EnumCaseDeclSyntax {
+                        EnumCaseElementSyntax(
+                            name: "float",
+                            parameters: "Float"
+                        )
+                    }
+                }
                 .with(\.trailingTrivia, .newlines(2))
 
                 // Properties
