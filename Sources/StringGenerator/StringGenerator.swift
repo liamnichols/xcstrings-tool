@@ -68,7 +68,7 @@ public struct StringGenerator {
                 ],
                 name: structToken
             ) {
-                // BundleDescription
+                // enum BundleDescription { ... }
                 EnumDeclSyntax(name: .type(.BundleDescription)) {
                     // case main
                     EnumCaseDeclSyntax {
@@ -91,7 +91,7 @@ public struct StringGenerator {
                 }
                 .with(\.trailingTrivia, .newlines(2))
 
-                // Argument
+                // enum Argument { ... }
                 EnumDeclSyntax(name: .type(.Argument)) {
                     // case object(String)
                     EnumCaseDeclSyntax {
@@ -131,7 +131,7 @@ public struct StringGenerator {
                 }
                 .with(\.trailingTrivia, .newlines(2))
 
-                // Properties
+                // let key: StaticString
                 VariableDeclSyntax(
                     .let,
                     name: PatternSyntax(IdentifierPatternSyntax(identifier: "key")),
@@ -139,6 +139,7 @@ public struct StringGenerator {
                         type: .identifier(.StaticString)
                     )
                 )
+                // let arguments: [Argument]
                 VariableDeclSyntax(
                     .let,
                     name: PatternSyntax(IdentifierPatternSyntax(identifier: "arguments")),
@@ -146,6 +147,7 @@ public struct StringGenerator {
                         type: ArrayTypeSyntax(element: .identifier(.Argument))
                     )
                 )
+                // let table: String?
                 VariableDeclSyntax(
                     .let,
                     name: PatternSyntax(IdentifierPatternSyntax(identifier: "table")),
@@ -153,13 +155,14 @@ public struct StringGenerator {
                         type: OptionalTypeSyntax(wrappedType: .identifier(.String))
                     )
                 )
+                // let bundle: BundleDescription
                 VariableDeclSyntax(
                     .let,
                     name: PatternSyntax(IdentifierPatternSyntax(identifier: "bundle")),
                     type: TypeAnnotationSyntax(type: .identifier(.BundleDescription))
                 ).with(\.trailingTrivia, .newlines(2))
 
-                // Init
+                // fileprivate init(key:arguments:table:bundle:)
                 InitializerDeclSyntax(
                     modifiers: [
                         DeclModifierSyntax(name: .keyword(.fileprivate)),
@@ -186,35 +189,27 @@ public struct StringGenerator {
                     )
                     .multiline()
                 ) {
+                    // self.key = key
                     InfixOperatorExprSyntax(
-                        leftOperand: MemberAccessExprSyntax(
-                            base: DeclReferenceExprSyntax(baseName: .keyword(.`self`)),
-                            name: "key"
-                        ),
+                        leftOperand: MemberAccessExprSyntax(.keyword(.`self`), "key"),
                         operator: AssignmentExprSyntax(),
                         rightOperand: DeclReferenceExprSyntax(baseName: "key")
                     )
+                    // self.arguments = arguments
                     InfixOperatorExprSyntax(
-                        leftOperand: MemberAccessExprSyntax(
-                            base: DeclReferenceExprSyntax(baseName: .keyword(.`self`)),
-                            name: "arguments"
-                        ),
+                        leftOperand: MemberAccessExprSyntax(.keyword(.`self`), "arguments"),
                         operator: AssignmentExprSyntax(),
                         rightOperand: DeclReferenceExprSyntax(baseName: "arguments")
                     )
+                    // self.table = table
                     InfixOperatorExprSyntax(
-                        leftOperand: MemberAccessExprSyntax(
-                            base: DeclReferenceExprSyntax(baseName: .keyword(.`self`)),
-                            name: "table"
-                        ),
+                        leftOperand: MemberAccessExprSyntax(.keyword(.`self`), "table"),
                         operator: AssignmentExprSyntax(),
                         rightOperand: DeclReferenceExprSyntax(baseName: "table")
                     )
+                    // self.bundle = bundle
                     InfixOperatorExprSyntax(
-                        leftOperand: MemberAccessExprSyntax(
-                            base: DeclReferenceExprSyntax(baseName: .keyword(.`self`)),
-                            name: "bundle"
-                        ),
+                        leftOperand: MemberAccessExprSyntax(.keyword(.`self`), "bundle"),
                         operator: AssignmentExprSyntax(),
                         rightOperand: DeclReferenceExprSyntax(baseName: "bundle")
                     )
@@ -376,10 +371,10 @@ public struct StringGenerator {
                     ),
                     accessorBlock: AccessorBlockSyntax(
                         accessors: .getter(CodeBlockItemListSyntax {
-                            // var interpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
+                            // var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
                             VariableDeclSyntax(bindingSpecifier: .keyword(.var)) {
                                 PatternBindingSyntax(
-                                    pattern: IdentifierPatternSyntax(identifier: .identifier("stringInterpolation")),
+                                    pattern: IdentifierPatternSyntax(identifier: "stringInterpolation"),
                                     initializer: InitializerClauseSyntax(
                                         value: FunctionCallExprSyntax(
                                             callee: MemberAccessExprSyntax(
@@ -503,7 +498,7 @@ public struct StringGenerator {
                 PatternBindingSyntax(
                     pattern: IdentifierPatternSyntax(identifier: .identifier("value")),
                     typeAnnotation: TypeAnnotationSyntax(
-                        type: IdentifierTypeSyntax(name: .type(.CVarArg))
+                        type: .identifier(.CVarArg)
                     ),
                     accessorBlock: AccessorBlockSyntax(
                         accessors: .getter(CodeBlockItemListSyntax {
