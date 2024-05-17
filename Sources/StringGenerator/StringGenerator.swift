@@ -286,10 +286,7 @@ public struct StringGenerator {
                                 ) {
                                     LabeledExprSyntax(
                                         label: "description",
-                                        expression: MemberAccessExprSyntax(
-                                            base: DeclReferenceExprSyntax(baseName: variableToken),
-                                            name: "bundle"
-                                        )
+                                        expression: MemberAccessExprSyntax(variableToken, "bundle")
                                     )
                                 },
                                 operator: BinaryOperatorExprSyntax(operator: .binaryOperator("??")),
@@ -308,10 +305,7 @@ public struct StringGenerator {
                             ) {
                                 LabeledExprSyntax(
                                     label: "describing",
-                                    expression: MemberAccessExprSyntax(
-                                        base: DeclReferenceExprSyntax(baseName: variableToken),
-                                        name: "key"
-                                    )
+                                    expression: MemberAccessExprSyntax(variableToken, "key")
                                 )
                             }
                         )
@@ -328,10 +322,7 @@ public struct StringGenerator {
                     LabeledExprSyntax(
                         label: "format",
                         expression: FunctionCallExprSyntax(
-                            callee: MemberAccessExprSyntax(
-                                base: DeclReferenceExprSyntax(baseName: "bundle"),
-                                name: "localizedString"
-                            )
+                            callee: MemberAccessExprSyntax("bundle", "localizedString")
                         ) {
                             // forKey: key,
                             LabeledExprSyntax(
@@ -346,10 +337,7 @@ public struct StringGenerator {
                             // table: localizable.table
                             LabeledExprSyntax(
                                 label: "table",
-                                expression: MemberAccessExprSyntax(
-                                    base: DeclReferenceExprSyntax(baseName: variableToken),
-                                    name: "table"
-                                )
+                                expression: MemberAccessExprSyntax(variableToken, "table")
                             )
                         }
                     )
@@ -362,13 +350,7 @@ public struct StringGenerator {
                     LabeledExprSyntax(
                         label: "arguments",
                         expression: FunctionCallExprSyntax(
-                            callee: MemberAccessExprSyntax(
-                                base: MemberAccessExprSyntax(
-                                    base: DeclReferenceExprSyntax(baseName: variableToken),
-                                    declName: DeclReferenceExprSyntax(baseName: "arguments")
-                                ),
-                                declName: DeclReferenceExprSyntax(baseName: "map")
-                            )
+                            callee: MemberAccessExprSyntax(variableToken, "arguments", "map")
                         ) {
                             LabeledExprSyntax(
                                 expression: KeyPathExprSyntax(
@@ -432,11 +414,7 @@ public struct StringGenerator {
                                     initializer: InitializerClauseSyntax(
                                         value: FunctionCallExprSyntax(
                                             callee: MemberAccessExprSyntax(
-                                                base: MemberAccessExprSyntax(
-                                                    base: DeclReferenceExprSyntax(baseName: .type(.String)),
-                                                    declName: DeclReferenceExprSyntax(baseName: .type(.LocalizationValue))
-                                                ),
-                                                declName: DeclReferenceExprSyntax(baseName: .type(.StringInterpolation))
+                                                .type(.String), .type(.LocalizationValue), .type(.StringInterpolation)
                                             )
                                         ) {
                                             // literalCapacity: 0
@@ -447,10 +425,7 @@ public struct StringGenerator {
                                             // interpolationCount: arguments.count
                                             LabeledExprSyntax(
                                                 label: "interpolationCount",
-                                                expression: MemberAccessExprSyntax(
-                                                    base: DeclReferenceExprSyntax(baseName: "arguments"),
-                                                    declName: DeclReferenceExprSyntax(baseName: "count")
-                                                )
+                                                expression: MemberAccessExprSyntax("arguments", "count")
                                             )
                                         }
                                     )
@@ -475,9 +450,7 @@ public struct StringGenerator {
                                                             SwitchCaseItemSyntax(
                                                                 pattern: ExpressionPatternSyntax(
                                                                     expression: FunctionCallExprSyntax(
-                                                                        callee: MemberAccessExprSyntax(
-                                                                            declName: DeclReferenceExprSyntax(baseName: placeholder.caseName)
-                                                                        )
+                                                                        callee: MemberAccessExprSyntax(name: placeholder.caseName)
                                                                     ) {
                                                                         LabeledExprSyntax(
                                                                             expression: PatternExprSyntax(
@@ -498,10 +471,7 @@ public struct StringGenerator {
                                                 // stringInterpolation.appendInterpolation(value)
                                                 statements: CodeBlockItemListSyntax {
                                                     FunctionCallExprSyntax(
-                                                        callee: MemberAccessExprSyntax(
-                                                            base: DeclReferenceExprSyntax(baseName: "stringInterpolation"),
-                                                            name: "appendInterpolation"
-                                                        )
+                                                        callee: MemberAccessExprSyntax("stringInterpolation", "appendInterpolation")
                                                     ) {
                                                         LabeledExprSyntax(
                                                             expression: DeclReferenceExprSyntax(baseName: "value")
@@ -520,10 +490,7 @@ public struct StringGenerator {
                                     pattern: IdentifierPatternSyntax(identifier: "makeDefaultValue"),
                                     initializer: InitializerClauseSyntax(
                                         value: MemberAccessExprSyntax(
-                                            base: MemberAccessExprSyntax(
-                                                base: DeclReferenceExprSyntax(baseName: .type(.String)),
-                                                declName: DeclReferenceExprSyntax(baseName: .type(.LocalizationValue))
-                                            ),
+                                            base: MemberAccessExprSyntax(.type(.String), .type(.LocalizationValue)),
                                             declName: DeclReferenceExprSyntax(
                                                 baseName: .keyword(.`init`),
                                                 argumentNames: DeclNameArgumentsSyntax(
@@ -584,9 +551,7 @@ public struct StringGenerator {
                                                     SwitchCaseItemSyntax(
                                                         pattern: ExpressionPatternSyntax(
                                                             expression: FunctionCallExprSyntax(
-                                                                callee: MemberAccessExprSyntax(
-                                                                    declName: DeclReferenceExprSyntax(baseName: placeholder.caseName)
-                                                                )
+                                                                callee: MemberAccessExprSyntax(name: placeholder.caseName)
                                                             ) {
                                                                 LabeledExprSyntax(
                                                                     expression: PatternExprSyntax(
@@ -699,9 +664,7 @@ public struct StringGenerator {
                                 caseItems: SwitchCaseItemListSyntax {
                                     SwitchCaseItemSyntax(
                                         pattern: ExpressionPatternSyntax(
-                                            expression: MemberAccessExprSyntax(
-                                                declName: DeclReferenceExprSyntax(baseName: "main")
-                                            )
+                                            expression: MemberAccessExprSyntax(name: "main")
                                         )
                                     )
                                 }
@@ -709,10 +672,7 @@ public struct StringGenerator {
                         ),
                         statements: CodeBlockItemListSyntax {
                             // Bundle.main
-                            MemberAccessExprSyntax(
-                                base: DeclReferenceExprSyntax(baseName: .type(.Bundle)),
-                                name: "main"
-                            )
+                            MemberAccessExprSyntax(.type(.Bundle), "main")
                         }
                     )
 
@@ -724,9 +684,7 @@ public struct StringGenerator {
                                     SwitchCaseItemSyntax(
                                         pattern: ExpressionPatternSyntax(
                                             expression: FunctionCallExprSyntax(
-                                                calledExpression: MemberAccessExprSyntax(
-                                                    declName: DeclReferenceExprSyntax(baseName: "atURL")
-                                                ),
+                                                calledExpression: MemberAccessExprSyntax(name: "atURL"),
                                                 leftParen: .leftParenToken(),
                                                 rightParen: .rightParenToken()
                                             ) {
@@ -773,9 +731,7 @@ public struct StringGenerator {
                                     SwitchCaseItemSyntax(
                                         pattern: ExpressionPatternSyntax(
                                             expression: FunctionCallExprSyntax(
-                                                calledExpression: MemberAccessExprSyntax(
-                                                    declName: DeclReferenceExprSyntax(baseName: "forClass")
-                                                ),
+                                                calledExpression: MemberAccessExprSyntax(name: "forClass"),
                                                 leftParen: .leftParenToken(),
                                                 rightParen: .rightParenToken()
                                             ) {
@@ -852,9 +808,7 @@ public struct StringGenerator {
                                 caseItems: SwitchCaseItemListSyntax {
                                     SwitchCaseItemSyntax(
                                         pattern: ExpressionPatternSyntax(
-                                            expression: MemberAccessExprSyntax(
-                                                declName: DeclReferenceExprSyntax(baseName: "main")
-                                            )
+                                            expression: MemberAccessExprSyntax(name: "main")
                                         )
                                     )
                                 }
@@ -862,9 +816,7 @@ public struct StringGenerator {
                         ),
                         statements: CodeBlockItemListSyntax {
                             // .main
-                            MemberAccessExprSyntax(
-                                name: "main"
-                            )
+                            MemberAccessExprSyntax(name: "main")
                         }
                     )
 
@@ -876,9 +828,7 @@ public struct StringGenerator {
                                     SwitchCaseItemSyntax(
                                         pattern: ExpressionPatternSyntax(
                                             expression: FunctionCallExprSyntax(
-                                                calledExpression: MemberAccessExprSyntax(
-                                                    declName: DeclReferenceExprSyntax(baseName: "atURL")
-                                                ),
+                                                calledExpression: MemberAccessExprSyntax(name: "atURL"),
                                                 leftParen: .leftParenToken(),
                                                 rightParen: .rightParenToken()
                                             ) {
@@ -901,18 +851,12 @@ public struct StringGenerator {
                         statements: CodeBlockItemListSyntax {
                             // .atURL(url)
                             FunctionCallExprSyntax(
-                                calledExpression: MemberAccessExprSyntax(
-                                    declName: DeclReferenceExprSyntax(
-                                        baseName: "atURL"
-                                    )
-                                ),
+                                calledExpression: MemberAccessExprSyntax(name: "atURL"),
                                 leftParen: .leftParenToken(),
                                 rightParen: .rightParenToken()
                             ) {
                                 LabeledExprSyntax(
-                                    expression: DeclReferenceExprSyntax(
-                                        baseName: "url"
-                                    )
+                                    expression: DeclReferenceExprSyntax(baseName: "url")
                                 )
                             }
                         }
@@ -926,9 +870,7 @@ public struct StringGenerator {
                                     SwitchCaseItemSyntax(
                                         pattern: ExpressionPatternSyntax(
                                             expression: FunctionCallExprSyntax(
-                                                calledExpression: MemberAccessExprSyntax(
-                                                    declName: DeclReferenceExprSyntax(baseName: "forClass")
-                                                ),
+                                                calledExpression: MemberAccessExprSyntax(name: "forClass"),
                                                 leftParen: .leftParenToken(),
                                                 rightParen: .rightParenToken()
                                             ) {
@@ -951,18 +893,12 @@ public struct StringGenerator {
                         statements: CodeBlockItemListSyntax {
                             // .forClass(anyClass)
                             FunctionCallExprSyntax(
-                                calledExpression: MemberAccessExprSyntax(
-                                    declName: DeclReferenceExprSyntax(
-                                        baseName: "forClass"
-                                    )
-                                ),
+                                calledExpression: MemberAccessExprSyntax(name: "forClass"),
                                 leftParen: .leftParenToken(),
                                 rightParen: .rightParenToken()
                             ) {
                                 LabeledExprSyntax(
-                                    expression: DeclReferenceExprSyntax(
-                                        baseName: "anyClass"
-                                    )
+                                    expression: DeclReferenceExprSyntax(baseName: "anyClass")
                                 )
                             }
                         }
@@ -1015,50 +951,33 @@ public struct StringGenerator {
                 )
             ) {
                 FunctionCallExprSyntax(
-                    callee: MemberAccessExprSyntax(
-                        base: DeclReferenceExprSyntax(baseName: .keyword(.`self`)),
-                        name: .keyword(.`init`)
-                    )
+                    callee: MemberAccessExprSyntax(.keyword(.`self`), .keyword(.`init`))
                 ) {
                     // localizable.key,
                     LabeledExprSyntax(
-                        expression: MemberAccessExprSyntax(
-                            base: DeclReferenceExprSyntax(baseName: variableToken),
-                            declName: DeclReferenceExprSyntax(baseName: "key")
-                        )
+                        expression: MemberAccessExprSyntax(variableToken, "key")
                     )
                     // defaultValue: localizable.defaultValue,
                     LabeledExprSyntax(
                         label: "defaultValue",
-                        expression: MemberAccessExprSyntax(
-                            base: DeclReferenceExprSyntax(baseName: variableToken),
-                            declName: DeclReferenceExprSyntax(baseName: "defaultValue")
-                        )
+                        expression: MemberAccessExprSyntax(variableToken, "defaultValue")
                     )
                     // table: localizable.table,
                     LabeledExprSyntax(
                         label: "table",
-                        expression: MemberAccessExprSyntax(
-                            base: DeclReferenceExprSyntax(baseName: variableToken),
-                            declName: DeclReferenceExprSyntax(baseName: "table")
-                        )
+                        expression: MemberAccessExprSyntax(variableToken, "table")
                     )
                     // bundle: .from(description: localizable.bundle)
                     LabeledExprSyntax(
                         label: "bundle",
                         expression: FunctionCallExprSyntax(
-                            calledExpression: MemberAccessExprSyntax(
-                                declName: DeclReferenceExprSyntax(baseName: "from")
-                            ),
+                            calledExpression: MemberAccessExprSyntax(name: "from"),
                             leftParen: .leftParenToken(),
                             rightParen: .rightParenToken()
                         ) {
                             LabeledExprSyntax(
                                 label: "description",
-                                expression: MemberAccessExprSyntax(
-                                    base: DeclReferenceExprSyntax(baseName: variableToken),
-                                    declName: DeclReferenceExprSyntax(baseName: "bundle")
-                                )
+                                expression: MemberAccessExprSyntax(variableToken, "bundle")
                             )
                         }
                     )
@@ -1285,9 +1204,7 @@ extension Resource {
                     )
                     LabeledExprSyntax(
                         label: "bundle",
-                        expression: MemberAccessExprSyntax(
-                            name: .identifier("current")
-                        )
+                        expression: MemberAccessExprSyntax(name: "current")
                     )
                 }
                 .multiline()
@@ -1300,9 +1217,7 @@ extension Resource {
                     LabeledExprSyntax(
                         label: variableToken.text,
                         expression: FunctionCallExprSyntax(
-                            calledExpression: MemberAccessExprSyntax(
-                                declName: DeclReferenceExprSyntax(baseName: name)
-                            ),
+                            calledExpression: MemberAccessExprSyntax(name: name),
                             leftParen: arguments.isEmpty ? nil : .leftParenToken(),
                             rightParen: arguments.isEmpty ? nil : .rightParenToken()
                         ) {
