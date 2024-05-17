@@ -406,43 +406,32 @@ public struct StringGenerator {
                                         // case object(let object):
                                         //     stringInterpolation.appendInterpolation(string)
                                         for placeholder in String.LocalizationValue.Placeholder.allCases {
+                                            // case object(let value):
                                             SwitchCaseSyntax(
-                                                // case object(let value):
-                                                label: .case(
-                                                    SwitchCaseLabelSyntax(
-                                                        caseItems: SwitchCaseItemListSyntax {
-                                                            SwitchCaseItemSyntax(
-                                                                pattern: ExpressionPatternSyntax(
-                                                                    expression: FunctionCallExprSyntax(
-                                                                        callee: MemberAccessExprSyntax(name: placeholder.caseName)
-                                                                    ) {
-                                                                        LabeledExprSyntax(
-                                                                            expression: PatternExprSyntax(
-                                                                                pattern: ValueBindingPatternSyntax(
-                                                                                    bindingSpecifier: .keyword(.let),
-                                                                                    pattern: IdentifierPatternSyntax(
-                                                                                        identifier: "value"
-                                                                                    )
-                                                                                )
-                                                                            )
-                                                                        )
-                                                                    }
-                                                                )
-                                                            )
-                                                        }
-                                                    )
-                                                ),
-                                                // stringInterpolation.appendInterpolation(value)
-                                                statements: CodeBlockItemListSyntax {
-                                                    FunctionCallExprSyntax(
-                                                        callee: MemberAccessExprSyntax("stringInterpolation", "appendInterpolation")
+                                                singleCasePattern: ExpressionPatternSyntax(
+                                                    expression: FunctionCallExprSyntax(
+                                                        callee: MemberAccessExprSyntax(name: placeholder.caseName)
                                                     ) {
                                                         LabeledExprSyntax(
-                                                            expression: DeclReferenceExprSyntax(baseName: "value")
+                                                            expression: PatternExprSyntax(
+                                                                pattern: ValueBindingPatternSyntax(
+                                                                    bindingSpecifier: .keyword(.let),
+                                                                    pattern: IdentifierPatternSyntax(
+                                                                        identifier: "value"
+                                                                    )
+                                                                )
+                                                            )
                                                         )
                                                     }
+                                                )
+                                            ) {
+                                                // stringInterpolation.appendInterpolation(value)
+                                                FunctionCallExprSyntax(
+                                                    callee: MemberAccessExprSyntax("stringInterpolation", "appendInterpolation")
+                                                ) {
+                                                    LabeledExprSyntax(expression: DeclReferenceExprSyntax(baseName: "value"))
                                                 }
-                                            )
+                                            }
                                         }
                                     }
                                 }
@@ -507,37 +496,28 @@ public struct StringGenerator {
                                 // case object(let value):
                                 //     value
                                 for placeholder in String.LocalizationValue.Placeholder.allCases {
+                                    // case object(let value):
                                     SwitchCaseSyntax(
-                                        // case object(let value):
-                                        label: .case(
-                                            SwitchCaseLabelSyntax(
-                                                caseItems: SwitchCaseItemListSyntax {
-                                                    SwitchCaseItemSyntax(
-                                                        pattern: ExpressionPatternSyntax(
-                                                            expression: FunctionCallExprSyntax(
-                                                                callee: MemberAccessExprSyntax(name: placeholder.caseName)
-                                                            ) {
-                                                                LabeledExprSyntax(
-                                                                    expression: PatternExprSyntax(
-                                                                        pattern: ValueBindingPatternSyntax(
-                                                                            bindingSpecifier: .keyword(.let),
-                                                                            pattern: IdentifierPatternSyntax(
-                                                                                identifier: "value"
-                                                                            )
-                                                                        )
-                                                                    )
-                                                                )
-                                                            }
+                                        singleCasePattern: ExpressionPatternSyntax(
+                                            expression: FunctionCallExprSyntax(
+                                                callee: MemberAccessExprSyntax(name: placeholder.caseName)
+                                            ) {
+                                                LabeledExprSyntax(
+                                                    expression: PatternExprSyntax(
+                                                        pattern: ValueBindingPatternSyntax(
+                                                            bindingSpecifier: .keyword(.let),
+                                                            pattern: IdentifierPatternSyntax(
+                                                                identifier: "value"
+                                                            )
                                                         )
                                                     )
-                                                }
-                                            )
-                                        ),
+                                                )
+                                            }
+                                        )
+                                    ) {
                                         // value
-                                        statements: CodeBlockItemListSyntax {
-                                            DeclReferenceExprSyntax(baseName: "value")
-                                        }
-                                    )
+                                        DeclReferenceExprSyntax(baseName: "value")
+                                    }
                                 }
                             }
                         })
@@ -623,116 +603,89 @@ public struct StringGenerator {
                 ) {
                     // case .main:
                     SwitchCaseSyntax(
-                        label: .case(
-                            SwitchCaseLabelSyntax(
-                                caseItems: SwitchCaseItemListSyntax {
-                                    SwitchCaseItemSyntax(
-                                        pattern: ExpressionPatternSyntax(
-                                            expression: MemberAccessExprSyntax(name: "main")
-                                        )
-                                    )
-                                }
-                            )
-                        ),
-                        statements: CodeBlockItemListSyntax {
-                            // Bundle.main
-                            MemberAccessExprSyntax(.type(.Bundle), "main")
-                        }
-                    )
+                        singleCasePattern: ExpressionPatternSyntax(
+                            expression: MemberAccessExprSyntax(name: "main")
+                        )
+                    ) {
+                        // Bundle.main
+                        MemberAccessExprSyntax(.type(.Bundle), "main")
+                    }
 
                     // case .atURL(let url):
                     SwitchCaseSyntax(
-                        label: .case(
-                            SwitchCaseLabelSyntax(
-                                caseItems: SwitchCaseItemListSyntax {
-                                    SwitchCaseItemSyntax(
-                                        pattern: ExpressionPatternSyntax(
-                                            expression: FunctionCallExprSyntax(
-                                                calledExpression: MemberAccessExprSyntax(name: "atURL"),
-                                                leftParen: .leftParenToken(),
-                                                rightParen: .rightParenToken()
-                                            ) {
-                                                LabeledExprSyntax(
-                                                    expression: PatternExprSyntax(
-                                                        pattern: ValueBindingPatternSyntax(
-                                                            bindingSpecifier: .keyword(.let),
-                                                            pattern: IdentifierPatternSyntax(
-                                                                identifier: "url"
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            }
-                                        )
-                                    )
-                                }
-                            )
-                        ),
-                        statements: CodeBlockItemListSyntax {
-                            // Bundle(url: url)
-                            FunctionCallExprSyntax(
-                                calledExpression: DeclReferenceExprSyntax(
-                                    baseName: .type(.Bundle)
-                                ),
+                        singleCasePattern: ExpressionPatternSyntax(
+                            expression: FunctionCallExprSyntax(
+                                calledExpression: MemberAccessExprSyntax(name: "atURL"),
                                 leftParen: .leftParenToken(),
                                 rightParen: .rightParenToken()
                             ) {
                                 LabeledExprSyntax(
-                                    label: "url",
-                                    expression: DeclReferenceExprSyntax(
-                                        baseName: "url"
+                                    expression: PatternExprSyntax(
+                                        pattern: ValueBindingPatternSyntax(
+                                            bindingSpecifier: .keyword(.let),
+                                            pattern: IdentifierPatternSyntax(
+                                                identifier: "url"
+                                            )
+                                        )
                                     )
                                 )
                             }
+                        )
+                    ) {
+                        // Bundle(url: url)
+                        FunctionCallExprSyntax(
+                            calledExpression: DeclReferenceExprSyntax(
+                                baseName: .type(.Bundle)
+                            ),
+                            leftParen: .leftParenToken(),
+                            rightParen: .rightParenToken()
+                        ) {
+                            LabeledExprSyntax(
+                                label: "url",
+                                expression: DeclReferenceExprSyntax(
+                                    baseName: "url"
+                                )
+                            )
                         }
-                    )
+                    }
 
                     // case .forClass(let anyClass):
                     SwitchCaseSyntax(
-                        label: .case(
-                            SwitchCaseLabelSyntax(
-                                caseItems: SwitchCaseItemListSyntax {
-                                    SwitchCaseItemSyntax(
-                                        pattern: ExpressionPatternSyntax(
-                                            expression: FunctionCallExprSyntax(
-                                                calledExpression: MemberAccessExprSyntax(name: "forClass"),
-                                                leftParen: .leftParenToken(),
-                                                rightParen: .rightParenToken()
-                                            ) {
-                                                LabeledExprSyntax(
-                                                    expression: PatternExprSyntax(
-                                                        pattern: ValueBindingPatternSyntax(
-                                                            bindingSpecifier: .keyword(.let),
-                                                            pattern: IdentifierPatternSyntax(
-                                                                identifier: "anyClass"
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            }
-                                        )
-                                    )
-                                }
-                            )
-                        ),
-                        statements: CodeBlockItemListSyntax {
-                            // Bundle(for: anyClass)
-                            FunctionCallExprSyntax(
-                                calledExpression: DeclReferenceExprSyntax(
-                                    baseName: .type(.Bundle)
-                                ),
+                        singleCasePattern: ExpressionPatternSyntax(
+                            expression: FunctionCallExprSyntax(
+                                calledExpression: MemberAccessExprSyntax(name: "forClass"),
                                 leftParen: .leftParenToken(),
                                 rightParen: .rightParenToken()
                             ) {
                                 LabeledExprSyntax(
-                                    label: "for",
-                                    expression: DeclReferenceExprSyntax(
-                                        baseName: "anyClass"
+                                    expression: PatternExprSyntax(
+                                        pattern: ValueBindingPatternSyntax(
+                                            bindingSpecifier: .keyword(.let),
+                                            pattern: IdentifierPatternSyntax(
+                                                identifier: "anyClass"
+                                            )
+                                        )
                                     )
                                 )
                             }
+                        )
+                    ) {
+                        // Bundle(for: anyClass)
+                        FunctionCallExprSyntax(
+                            calledExpression: DeclReferenceExprSyntax(
+                                baseName: .type(.Bundle)
+                            ),
+                            leftParen: .leftParenToken(),
+                            rightParen: .rightParenToken()
+                        ) {
+                            LabeledExprSyntax(
+                                label: "for",
+                                expression: DeclReferenceExprSyntax(
+                                    baseName: "anyClass"
+                                )
+                            )
                         }
-                    )
+                    }
                 }
             }
         }
@@ -767,106 +720,79 @@ public struct StringGenerator {
                 ) {
                     // case .main:
                     SwitchCaseSyntax(
-                        label: .case(
-                            SwitchCaseLabelSyntax(
-                                caseItems: SwitchCaseItemListSyntax {
-                                    SwitchCaseItemSyntax(
-                                        pattern: ExpressionPatternSyntax(
-                                            expression: MemberAccessExprSyntax(name: "main")
-                                        )
-                                    )
-                                }
-                            )
-                        ),
-                        statements: CodeBlockItemListSyntax {
-                            // .main
-                            MemberAccessExprSyntax(name: "main")
-                        }
-                    )
+                        singleCasePattern: ExpressionPatternSyntax(
+                            expression: MemberAccessExprSyntax(name: "main")
+                        )
+                    ) {
+                        // .main
+                        MemberAccessExprSyntax(name: "main")
+                    }
 
                     // case .atURL(let url):
                     SwitchCaseSyntax(
-                        label: .case(
-                            SwitchCaseLabelSyntax(
-                                caseItems: SwitchCaseItemListSyntax {
-                                    SwitchCaseItemSyntax(
-                                        pattern: ExpressionPatternSyntax(
-                                            expression: FunctionCallExprSyntax(
-                                                calledExpression: MemberAccessExprSyntax(name: "atURL"),
-                                                leftParen: .leftParenToken(),
-                                                rightParen: .rightParenToken()
-                                            ) {
-                                                LabeledExprSyntax(
-                                                    expression: PatternExprSyntax(
-                                                        pattern: ValueBindingPatternSyntax(
-                                                            bindingSpecifier: .keyword(.let),
-                                                            pattern: IdentifierPatternSyntax(
-                                                                identifier: "url"
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            }
-                                        )
-                                    )
-                                }
-                            )
-                        ),
-                        statements: CodeBlockItemListSyntax {
-                            // .atURL(url)
-                            FunctionCallExprSyntax(
+                        singleCasePattern: ExpressionPatternSyntax(
+                            expression: FunctionCallExprSyntax(
                                 calledExpression: MemberAccessExprSyntax(name: "atURL"),
                                 leftParen: .leftParenToken(),
                                 rightParen: .rightParenToken()
                             ) {
                                 LabeledExprSyntax(
-                                    expression: DeclReferenceExprSyntax(baseName: "url")
+                                    expression: PatternExprSyntax(
+                                        pattern: ValueBindingPatternSyntax(
+                                            bindingSpecifier: .keyword(.let),
+                                            pattern: IdentifierPatternSyntax(
+                                                identifier: "url"
+                                            )
+                                        )
+                                    )
                                 )
                             }
+                        )
+                    ) {
+                        // .atURL(url)
+                        FunctionCallExprSyntax(
+                            calledExpression: MemberAccessExprSyntax(name: "atURL"),
+                            leftParen: .leftParenToken(),
+                            rightParen: .rightParenToken()
+                        ) {
+                            LabeledExprSyntax(
+                                expression: DeclReferenceExprSyntax(baseName: "url")
+                            )
                         }
-                    )
+                    }
 
                     // case .forClass(let anyClass):
                     SwitchCaseSyntax(
-                        label: .case(
-                            SwitchCaseLabelSyntax(
-                                caseItems: SwitchCaseItemListSyntax {
-                                    SwitchCaseItemSyntax(
-                                        pattern: ExpressionPatternSyntax(
-                                            expression: FunctionCallExprSyntax(
-                                                calledExpression: MemberAccessExprSyntax(name: "forClass"),
-                                                leftParen: .leftParenToken(),
-                                                rightParen: .rightParenToken()
-                                            ) {
-                                                LabeledExprSyntax(
-                                                    expression: PatternExprSyntax(
-                                                        pattern: ValueBindingPatternSyntax(
-                                                            bindingSpecifier: .keyword(.let),
-                                                            pattern: IdentifierPatternSyntax(
-                                                                identifier: "anyClass"
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            }
-                                        )
-                                    )
-                                }
-                            )
-                        ),
-                        statements: CodeBlockItemListSyntax {
-                            // .forClass(anyClass)
-                            FunctionCallExprSyntax(
+                        singleCasePattern: ExpressionPatternSyntax(
+                            expression: FunctionCallExprSyntax(
                                 calledExpression: MemberAccessExprSyntax(name: "forClass"),
                                 leftParen: .leftParenToken(),
                                 rightParen: .rightParenToken()
                             ) {
                                 LabeledExprSyntax(
-                                    expression: DeclReferenceExprSyntax(baseName: "anyClass")
+                                    expression: PatternExprSyntax(
+                                        pattern: ValueBindingPatternSyntax(
+                                            bindingSpecifier: .keyword(.let),
+                                            pattern: IdentifierPatternSyntax(
+                                                identifier: "anyClass"
+                                            )
+                                        )
+                                    )
                                 )
                             }
+                        )
+                    ) {
+                        // .forClass(anyClass)
+                        FunctionCallExprSyntax(
+                            calledExpression: MemberAccessExprSyntax(name: "forClass"),
+                            leftParen: .leftParenToken(),
+                            rightParen: .rightParenToken()
+                        ) {
+                            LabeledExprSyntax(
+                                expression: DeclReferenceExprSyntax(baseName: "anyClass")
+                            )
                         }
-                    )
+                    }
                 }
             }
         }
