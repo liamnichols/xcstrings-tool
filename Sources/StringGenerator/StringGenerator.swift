@@ -372,90 +372,28 @@ public struct StringGenerator {
                     accessorBlock: AccessorBlockSyntax(
                         accessors: .getter(CodeBlockItemListSyntax {
                             // var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
-                            VariableDeclSyntax(bindingSpecifier: .keyword(.var)) {
-                                PatternBindingSyntax(
-                                    pattern: IdentifierPatternSyntax(identifier: "stringInterpolation"),
-                                    initializer: InitializerClauseSyntax(
-                                        value: FunctionCallExprSyntax(
-                                            callee: MemberAccessExprSyntax(
-                                                .type(.String), .type(.LocalizationValue), .type(.StringInterpolation)
-                                            )
-                                        ) {
-                                            // literalCapacity: 0
-                                            LabeledExprSyntax(
-                                                label: "literalCapacity",
-                                                expression: IntegerLiteralExprSyntax(0)
-                                            )
-                                            // interpolationCount: arguments.count
-                                            LabeledExprSyntax(
-                                                label: "interpolationCount",
-                                                expression: MemberAccessExprSyntax("arguments", "count")
-                                            )
-                                        }
-                                    )
-                                )
-                            }
+                            StringInterpolationProtocolFactory.initializedVariable(
+                                named: "stringInterpolation",
+                                type: MemberAccessExprSyntax(
+                                    .type(.String), .type(.LocalizationValue), .type(.StringInterpolation)
+                                ),
+                                literalCapacity: IntegerLiteralExprSyntax(0),
+                                interpolationCount: MemberAccessExprSyntax("arguments", "count")
+                            )
 
                             // for argument in arguments { ... }
-                            ForStmtSyntax(
-                                pattern: IdentifierPatternSyntax(identifier: "argument"),
-                                sequence: DeclReferenceExprSyntax(baseName: "arguments"),
-                                body: CodeBlockSyntax {
-                                    // switch argument { ... }
-                                    SwitchExprSyntax(subject: DeclReferenceExprSyntax(baseName: "argument")) {
-                                        // case object(let object):
-                                        //     stringInterpolation.appendInterpolation(string)
-                                        for placeholder in String.LocalizationValue.Placeholder.allCases {
-                                            // case object(let value):
-                                            SwitchCaseSyntax(
-                                                singleCasePattern: ExpressionPatternSyntax(
-                                                    expression: FunctionCallExprSyntax(
-                                                        callee: MemberAccessExprSyntax(name: placeholder.caseName)
-                                                    ) {
-                                                        LabeledExprSyntax(
-                                                            expression: PatternExprSyntax(
-                                                                pattern: ValueBindingPatternSyntax(
-                                                                    bindingSpecifier: .keyword(.let),
-                                                                    pattern: IdentifierPatternSyntax(
-                                                                        identifier: "value"
-                                                                    )
-                                                                )
-                                                            )
-                                                        )
-                                                    }
-                                                )
-                                            ) {
-                                                // stringInterpolation.appendInterpolation(value)
-                                                FunctionCallExprSyntax(
-                                                    callee: MemberAccessExprSyntax("stringInterpolation", "appendInterpolation")
-                                                ) {
-                                                    LabeledExprSyntax(expression: DeclReferenceExprSyntax(baseName: "value"))
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
+                            StringInterpolationProtocolFactory.appendFormatSpecifiableInterpolations(
+                                fromArguments: "arguments",
+                                intoVariable: "stringInterpolation"
                             )
 
                             // let makeDefaultValue = String.LocalizationValue.init(stringInterpolation:)
-                            VariableDeclSyntax(bindingSpecifier: .keyword(.let)) {
-                                PatternBindingSyntax(
-                                    pattern: IdentifierPatternSyntax(identifier: "makeDefaultValue"),
-                                    initializer: InitializerClauseSyntax(
-                                        value: MemberAccessExprSyntax(
-                                            base: MemberAccessExprSyntax(.type(.String), .type(.LocalizationValue)),
-                                            declName: DeclReferenceExprSyntax(
-                                                baseName: .keyword(.`init`),
-                                                argumentNames: DeclNameArgumentsSyntax(
-                                                    arguments: DeclNameArgumentListSyntax {
-                                                        DeclNameArgumentSyntax(name: "stringInterpolation")
-                                                    }
-                                                )
-                                            )
-                                        )
-                                    )
+                            StringInterpolationProtocolFactory.initializerClosure(
+                                named: "makeDefaultValue",
+                                type: MemberAccessExprSyntax(
+                                    .type(.String), .type(.LocalizationValue)
                                 )
-                            }
+                            )
 
                             // return makeDefaultValue(stringInterpolation)
                             ReturnStmtSyntax(
@@ -1261,7 +1199,7 @@ extension Trivia {
     }
 }
 
-private extension String.LocalizationValue.Placeholder {
+extension String.LocalizationValue.Placeholder {
     var identifier: String {
         switch self {
         case .int: "Int"
