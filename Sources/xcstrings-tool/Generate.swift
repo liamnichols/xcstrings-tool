@@ -25,7 +25,7 @@ struct Generate: ParsableCommand {
         name: .shortAndLong,
         help: "Modify the Access Control for the generated source code"
     )
-    var accessLevel: StringGenerator.AccessLevel?
+    var accessLevel: AccessLevel?
 
     // MARK: - Program
     
@@ -65,7 +65,7 @@ struct Generate: ParsableCommand {
         input.lastPathComponent.replacingOccurrences(of: ".\(input.pathExtension)", with: "")
     }
 
-    var resolvedAccessLevel: StringGenerator.AccessLevel {
+    var resolvedAccessLevel: AccessLevel {
         .resolveFromEnvironment(or: accessLevel) ?? .internal
     }
 }

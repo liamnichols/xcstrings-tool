@@ -3,16 +3,23 @@ import SwiftSyntax
 extension TokenSyntax {
     enum MetaType: String {
         case String
+        case Int
+        case UInt
+        case Float
+        case Double
         case StaticString
         case LocalizationValue
         case StringInterpolation
         case Locale
         case Bundle
-        case AnyClass
+        case BundleLocator
         case BundleDescription
+        case AnyClass
+        case URL
         case LocalizedStringResource
         case Argument
         case CVarArg
+        case LocalizedStringKey
     }
 
     static func type(_ value: MetaType) -> TokenSyntax {
