@@ -68,101 +68,70 @@ public struct StringGenerator {
                 ],
                 name: structToken
             ) {
-                // BundleDescription
-                EnumDeclSyntax(
-                    name: .type(.BundleDescription),
-                    memberBlockBuilder: {
-                        EnumCaseDeclSyntax {
-                            EnumCaseElementSyntax(name: .identifier("main"))
-                        }
-                        EnumCaseDeclSyntax {
-                            EnumCaseElementSyntax(
-                                name: .identifier("atURL"),
-                                parameterClause: EnumCaseParameterClauseSyntax(
-                                    parameters: [
-                                        "URL"
-                                    ]
-                                )
-                            )
-                        }
-                        EnumCaseDeclSyntax {
-                            EnumCaseElementSyntax(
-                                name: .identifier("forClass"),
-                                parameterClause: EnumCaseParameterClauseSyntax(
-                                    parameters: [
-                                        "AnyClass"
-                                    ]
-                                )
-                            )
-                        }
+                // enum BundleDescription { ... }
+                EnumDeclSyntax(name: .type(.BundleDescription)) {
+                    // case main
+                    EnumCaseDeclSyntax {
+                        EnumCaseElementSyntax(name: "main")
                     }
-                )
+                    // case atURL(URL)
+                    EnumCaseDeclSyntax {
+                        EnumCaseElementSyntax(
+                            name: "atURL",
+                            parameters: "URL"
+                        )
+                    }
+                    // case forClass(AnyClass)
+                    EnumCaseDeclSyntax {
+                        EnumCaseElementSyntax(
+                            name: "forClass",
+                            parameters: "AnyClass"
+                        )
+                    }
+                }
                 .with(\.trailingTrivia, .newlines(2))
 
-                // Argument
-                EnumDeclSyntax(
-                    name: .type(.Argument),
-                    memberBlockBuilder: {
-                        // case object(String)
-                        EnumCaseDeclSyntax {
-                            EnumCaseElementSyntax(
-                                name: .identifier("object"),
-                                parameterClause: EnumCaseParameterClauseSyntax(
-                                    parameters: [
-                                        "String"
-                                    ]
-                                )
-                            )
-                        }
-                        // case int(Int)
-                        EnumCaseDeclSyntax {
-                            EnumCaseElementSyntax(
-                                name: .identifier("int"),
-                                parameterClause: EnumCaseParameterClauseSyntax(
-                                    parameters: [
-                                        "Int"
-                                    ]
-                                )
-                            )
-                        }
-                        // case uint(UInt)
-                        EnumCaseDeclSyntax {
-                            EnumCaseElementSyntax(
-                                name: .identifier("uint"),
-                                parameterClause: EnumCaseParameterClauseSyntax(
-                                    parameters: [
-                                        "UInt"
-                                    ]
-                                )
-                            )
-                        }
-                        // case double(Double)
-                        EnumCaseDeclSyntax {
-                            EnumCaseElementSyntax(
-                                name: .identifier("double"),
-                                parameterClause: EnumCaseParameterClauseSyntax(
-                                    parameters: [
-                                        "Double"
-                                    ]
-                                )
-                            )
-                        }
-                        // case float(Float)
-                        EnumCaseDeclSyntax {
-                            EnumCaseElementSyntax(
-                                name: .identifier("float"),
-                                parameterClause: EnumCaseParameterClauseSyntax(
-                                    parameters: [
-                                        "Float"
-                                    ]
-                                )
-                            )
-                        }
+                // enum Argument { ... }
+                EnumDeclSyntax(name: .type(.Argument)) {
+                    // case object(String)
+                    EnumCaseDeclSyntax {
+                        EnumCaseElementSyntax(
+                            name: "object",
+                            parameters: "String"
+                        )
                     }
-                )
+                    // case int(Int)
+                    EnumCaseDeclSyntax {
+                        EnumCaseElementSyntax(
+                            name: "int",
+                            parameters: "Int"
+                        )
+                    }
+                    // case uint(UInt)
+                    EnumCaseDeclSyntax {
+                        EnumCaseElementSyntax(
+                            name: "uint",
+                            parameters: "UInt"
+                        )
+                    }
+                    // case double(Double)
+                    EnumCaseDeclSyntax {
+                        EnumCaseElementSyntax(
+                            name: "double",
+                            parameters: "Double"
+                        )
+                    }
+                    // case float(Float)
+                    EnumCaseDeclSyntax {
+                        EnumCaseElementSyntax(
+                            name: "float",
+                            parameters: "Float"
+                        )
+                    }
+                }
                 .with(\.trailingTrivia, .newlines(2))
 
-                // Properties
+                // let key: StaticString
                 VariableDeclSyntax(
                     .let,
                     name: PatternSyntax(IdentifierPatternSyntax(identifier: "key")),
@@ -170,6 +139,7 @@ public struct StringGenerator {
                         type: .identifier(.StaticString)
                     )
                 )
+                // let arguments: [Argument]
                 VariableDeclSyntax(
                     .let,
                     name: PatternSyntax(IdentifierPatternSyntax(identifier: "arguments")),
@@ -177,6 +147,7 @@ public struct StringGenerator {
                         type: ArrayTypeSyntax(element: .identifier(.Argument))
                     )
                 )
+                // let table: String?
                 VariableDeclSyntax(
                     .let,
                     name: PatternSyntax(IdentifierPatternSyntax(identifier: "table")),
@@ -184,13 +155,14 @@ public struct StringGenerator {
                         type: OptionalTypeSyntax(wrappedType: .identifier(.String))
                     )
                 )
+                // let bundle: BundleDescription
                 VariableDeclSyntax(
                     .let,
                     name: PatternSyntax(IdentifierPatternSyntax(identifier: "bundle")),
                     type: TypeAnnotationSyntax(type: .identifier(.BundleDescription))
                 ).with(\.trailingTrivia, .newlines(2))
 
-                // Init
+                // fileprivate init(key:arguments:table:bundle:)
                 InitializerDeclSyntax(
                     modifiers: [
                         DeclModifierSyntax(name: .keyword(.fileprivate)),
@@ -217,35 +189,27 @@ public struct StringGenerator {
                     )
                     .multiline()
                 ) {
+                    // self.key = key
                     InfixOperatorExprSyntax(
-                        leftOperand: MemberAccessExprSyntax(
-                            base: DeclReferenceExprSyntax(baseName: .keyword(.`self`)),
-                            name: "key"
-                        ),
+                        leftOperand: MemberAccessExprSyntax(.keyword(.`self`), "key"),
                         operator: AssignmentExprSyntax(),
                         rightOperand: DeclReferenceExprSyntax(baseName: "key")
                     )
+                    // self.arguments = arguments
                     InfixOperatorExprSyntax(
-                        leftOperand: MemberAccessExprSyntax(
-                            base: DeclReferenceExprSyntax(baseName: .keyword(.`self`)),
-                            name: "arguments"
-                        ),
+                        leftOperand: MemberAccessExprSyntax(.keyword(.`self`), "arguments"),
                         operator: AssignmentExprSyntax(),
                         rightOperand: DeclReferenceExprSyntax(baseName: "arguments")
                     )
+                    // self.table = table
                     InfixOperatorExprSyntax(
-                        leftOperand: MemberAccessExprSyntax(
-                            base: DeclReferenceExprSyntax(baseName: .keyword(.`self`)),
-                            name: "table"
-                        ),
+                        leftOperand: MemberAccessExprSyntax(.keyword(.`self`), "table"),
                         operator: AssignmentExprSyntax(),
                         rightOperand: DeclReferenceExprSyntax(baseName: "table")
                     )
+                    // self.bundle = bundle
                     InfixOperatorExprSyntax(
-                        leftOperand: MemberAccessExprSyntax(
-                            base: DeclReferenceExprSyntax(baseName: .keyword(.`self`)),
-                            name: "bundle"
-                        ),
+                        leftOperand: MemberAccessExprSyntax(.keyword(.`self`), "bundle"),
                         operator: AssignmentExprSyntax(),
                         rightOperand: DeclReferenceExprSyntax(baseName: "bundle")
                     )
@@ -286,10 +250,7 @@ public struct StringGenerator {
                                 ) {
                                     LabeledExprSyntax(
                                         label: "description",
-                                        expression: MemberAccessExprSyntax(
-                                            base: DeclReferenceExprSyntax(baseName: variableToken),
-                                            name: "bundle"
-                                        )
+                                        expression: MemberAccessExprSyntax(variableToken, "bundle")
                                     )
                                 },
                                 operator: BinaryOperatorExprSyntax(operator: .binaryOperator("??")),
@@ -308,10 +269,7 @@ public struct StringGenerator {
                             ) {
                                 LabeledExprSyntax(
                                     label: "describing",
-                                    expression: MemberAccessExprSyntax(
-                                        base: DeclReferenceExprSyntax(baseName: variableToken),
-                                        name: "key"
-                                    )
+                                    expression: MemberAccessExprSyntax(variableToken, "key")
                                 )
                             }
                         )
@@ -328,10 +286,7 @@ public struct StringGenerator {
                     LabeledExprSyntax(
                         label: "format",
                         expression: FunctionCallExprSyntax(
-                            callee: MemberAccessExprSyntax(
-                                base: DeclReferenceExprSyntax(baseName: "bundle"),
-                                name: "localizedString"
-                            )
+                            callee: MemberAccessExprSyntax("bundle", "localizedString")
                         ) {
                             // forKey: key,
                             LabeledExprSyntax(
@@ -346,10 +301,7 @@ public struct StringGenerator {
                             // table: localizable.table
                             LabeledExprSyntax(
                                 label: "table",
-                                expression: MemberAccessExprSyntax(
-                                    base: DeclReferenceExprSyntax(baseName: variableToken),
-                                    name: "table"
-                                )
+                                expression: MemberAccessExprSyntax(variableToken, "table")
                             )
                         }
                     )
@@ -362,13 +314,7 @@ public struct StringGenerator {
                     LabeledExprSyntax(
                         label: "arguments",
                         expression: FunctionCallExprSyntax(
-                            callee: MemberAccessExprSyntax(
-                                base: MemberAccessExprSyntax(
-                                    base: DeclReferenceExprSyntax(baseName: variableToken),
-                                    declName: DeclReferenceExprSyntax(baseName: "arguments")
-                                ),
-                                declName: DeclReferenceExprSyntax(baseName: "map")
-                            )
+                            callee: MemberAccessExprSyntax(variableToken, "arguments", "map")
                         ) {
                             LabeledExprSyntax(
                                 expression: KeyPathExprSyntax(
@@ -425,117 +371,29 @@ public struct StringGenerator {
                     ),
                     accessorBlock: AccessorBlockSyntax(
                         accessors: .getter(CodeBlockItemListSyntax {
-                            // var interpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
-                            VariableDeclSyntax(bindingSpecifier: .keyword(.var)) {
-                                PatternBindingSyntax(
-                                    pattern: IdentifierPatternSyntax(identifier: .identifier("stringInterpolation")),
-                                    initializer: InitializerClauseSyntax(
-                                        value: FunctionCallExprSyntax(
-                                            callee: MemberAccessExprSyntax(
-                                                base: MemberAccessExprSyntax(
-                                                    base: DeclReferenceExprSyntax(baseName: .type(.String)),
-                                                    declName: DeclReferenceExprSyntax(baseName: .type(.LocalizationValue))
-                                                ),
-                                                declName: DeclReferenceExprSyntax(baseName: .type(.StringInterpolation))
-                                            )
-                                        ) {
-                                            // literalCapacity: 0
-                                            LabeledExprSyntax(
-                                                label: "literalCapacity",
-                                                expression: IntegerLiteralExprSyntax(0)
-                                            )
-                                            // interpolationCount: arguments.count
-                                            LabeledExprSyntax(
-                                                label: "interpolationCount",
-                                                expression: MemberAccessExprSyntax(
-                                                    base: DeclReferenceExprSyntax(baseName: "arguments"),
-                                                    declName: DeclReferenceExprSyntax(baseName: "count")
-                                                )
-                                            )
-                                        }
-                                    )
-                                )
-                            }
+                            // var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
+                            StringInterpolationProtocolFactory.initializedVariable(
+                                named: "stringInterpolation",
+                                type: MemberAccessExprSyntax(
+                                    .type(.String), .type(.LocalizationValue), .type(.StringInterpolation)
+                                ),
+                                literalCapacity: IntegerLiteralExprSyntax(0),
+                                interpolationCount: MemberAccessExprSyntax("arguments", "count")
+                            )
 
                             // for argument in arguments { ... }
-                            ForStmtSyntax(
-                                pattern: IdentifierPatternSyntax(identifier: "argument"),
-                                sequence: DeclReferenceExprSyntax(baseName: "arguments"),
-                                body: CodeBlockSyntax {
-                                    // switch argument { ... }
-                                    SwitchExprSyntax(subject: DeclReferenceExprSyntax(baseName: "argument")) {
-                                        // case object(let object):
-                                        //     stringInterpolation.appendInterpolation(string)
-                                        for placeholder in String.LocalizationValue.Placeholder.allCases {
-                                            SwitchCaseSyntax(
-                                                // case object(let value):
-                                                label: .case(
-                                                    SwitchCaseLabelSyntax(
-                                                        caseItems: SwitchCaseItemListSyntax {
-                                                            SwitchCaseItemSyntax(
-                                                                pattern: ExpressionPatternSyntax(
-                                                                    expression: FunctionCallExprSyntax(
-                                                                        callee: MemberAccessExprSyntax(
-                                                                            declName: DeclReferenceExprSyntax(baseName: placeholder.caseName)
-                                                                        )
-                                                                    ) {
-                                                                        LabeledExprSyntax(
-                                                                            expression: PatternExprSyntax(
-                                                                                pattern: ValueBindingPatternSyntax(
-                                                                                    bindingSpecifier: .keyword(.let),
-                                                                                    pattern: IdentifierPatternSyntax(
-                                                                                        identifier: "value"
-                                                                                    )
-                                                                                )
-                                                                            )
-                                                                        )
-                                                                    }
-                                                                )
-                                                            )
-                                                        }
-                                                    )
-                                                ),
-                                                // stringInterpolation.appendInterpolation(value)
-                                                statements: CodeBlockItemListSyntax {
-                                                    FunctionCallExprSyntax(
-                                                        callee: MemberAccessExprSyntax(
-                                                            base: DeclReferenceExprSyntax(baseName: "stringInterpolation"),
-                                                            name: "appendInterpolation"
-                                                        )
-                                                    ) {
-                                                        LabeledExprSyntax(
-                                                            expression: DeclReferenceExprSyntax(baseName: "value")
-                                                        )
-                                                    }
-                                                }
-                                            )
-                                        }
-                                    }
-                                }
+                            StringInterpolationProtocolFactory.appendFormatSpecifiableInterpolations(
+                                fromArguments: "arguments",
+                                intoVariable: "stringInterpolation"
                             )
 
                             // let makeDefaultValue = String.LocalizationValue.init(stringInterpolation:)
-                            VariableDeclSyntax(bindingSpecifier: .keyword(.let)) {
-                                PatternBindingSyntax(
-                                    pattern: IdentifierPatternSyntax(identifier: "makeDefaultValue"),
-                                    initializer: InitializerClauseSyntax(
-                                        value: MemberAccessExprSyntax(
-                                            base: MemberAccessExprSyntax(
-                                                base: DeclReferenceExprSyntax(baseName: .type(.String)),
-                                                declName: DeclReferenceExprSyntax(baseName: .type(.LocalizationValue))
-                                            ),
-                                            declName: DeclReferenceExprSyntax(
-                                                baseName: .keyword(.`init`),
-                                                argumentNames: DeclNameArgumentsSyntax(
-                                                    arguments: DeclNameArgumentListSyntax {
-                                                        DeclNameArgumentSyntax(name: "stringInterpolation")
-                                                    }
-                                                )
-                                            )
-                                        )
-                                    )
+                            StringInterpolationProtocolFactory.initializerClosure(
+                                named: "makeDefaultValue",
+                                type: MemberAccessExprSyntax(
+                                    .type(.String), .type(.LocalizationValue)
                                 )
-                            }
+                            )
 
                             // return makeDefaultValue(stringInterpolation)
                             ReturnStmtSyntax(
@@ -567,7 +425,7 @@ public struct StringGenerator {
                 PatternBindingSyntax(
                     pattern: IdentifierPatternSyntax(identifier: .identifier("value")),
                     typeAnnotation: TypeAnnotationSyntax(
-                        type: IdentifierTypeSyntax(name: .type(.CVarArg))
+                        type: .identifier(.CVarArg)
                     ),
                     accessorBlock: AccessorBlockSyntax(
                         accessors: .getter(CodeBlockItemListSyntax {
@@ -576,39 +434,28 @@ public struct StringGenerator {
                                 // case object(let value):
                                 //     value
                                 for placeholder in String.LocalizationValue.Placeholder.allCases {
+                                    // case object(let value):
                                     SwitchCaseSyntax(
-                                        // case object(let value):
-                                        label: .case(
-                                            SwitchCaseLabelSyntax(
-                                                caseItems: SwitchCaseItemListSyntax {
-                                                    SwitchCaseItemSyntax(
-                                                        pattern: ExpressionPatternSyntax(
-                                                            expression: FunctionCallExprSyntax(
-                                                                callee: MemberAccessExprSyntax(
-                                                                    declName: DeclReferenceExprSyntax(baseName: placeholder.caseName)
-                                                                )
-                                                            ) {
-                                                                LabeledExprSyntax(
-                                                                    expression: PatternExprSyntax(
-                                                                        pattern: ValueBindingPatternSyntax(
-                                                                            bindingSpecifier: .keyword(.let),
-                                                                            pattern: IdentifierPatternSyntax(
-                                                                                identifier: "value"
-                                                                            )
-                                                                        )
-                                                                    )
-                                                                )
-                                                            }
+                                        singleCasePattern: ExpressionPatternSyntax(
+                                            expression: FunctionCallExprSyntax(
+                                                callee: MemberAccessExprSyntax(name: placeholder.caseName)
+                                            ) {
+                                                LabeledExprSyntax(
+                                                    expression: PatternExprSyntax(
+                                                        pattern: ValueBindingPatternSyntax(
+                                                            bindingSpecifier: .keyword(.let),
+                                                            pattern: IdentifierPatternSyntax(
+                                                                identifier: "value"
+                                                            )
                                                         )
                                                     )
-                                                }
-                                            )
-                                        ),
+                                                )
+                                            }
+                                        )
+                                    ) {
                                         // value
-                                        statements: CodeBlockItemListSyntax {
-                                            DeclReferenceExprSyntax(baseName: "value")
-                                        }
-                                    )
+                                        DeclReferenceExprSyntax(baseName: "value")
+                                    }
                                 }
                             }
                         })
@@ -694,125 +541,89 @@ public struct StringGenerator {
                 ) {
                     // case .main:
                     SwitchCaseSyntax(
-                        label: .case(
-                            SwitchCaseLabelSyntax(
-                                caseItems: SwitchCaseItemListSyntax {
-                                    SwitchCaseItemSyntax(
-                                        pattern: ExpressionPatternSyntax(
-                                            expression: MemberAccessExprSyntax(
-                                                declName: DeclReferenceExprSyntax(baseName: "main")
-                                            )
-                                        )
-                                    )
-                                }
-                            )
-                        ),
-                        statements: CodeBlockItemListSyntax {
-                            // Bundle.main
-                            MemberAccessExprSyntax(
-                                base: DeclReferenceExprSyntax(baseName: .type(.Bundle)),
-                                name: "main"
-                            )
-                        }
-                    )
+                        singleCasePattern: ExpressionPatternSyntax(
+                            expression: MemberAccessExprSyntax(name: "main")
+                        )
+                    ) {
+                        // Bundle.main
+                        MemberAccessExprSyntax(.type(.Bundle), "main")
+                    }
 
                     // case .atURL(let url):
                     SwitchCaseSyntax(
-                        label: .case(
-                            SwitchCaseLabelSyntax(
-                                caseItems: SwitchCaseItemListSyntax {
-                                    SwitchCaseItemSyntax(
-                                        pattern: ExpressionPatternSyntax(
-                                            expression: FunctionCallExprSyntax(
-                                                calledExpression: MemberAccessExprSyntax(
-                                                    declName: DeclReferenceExprSyntax(baseName: "atURL")
-                                                ),
-                                                leftParen: .leftParenToken(),
-                                                rightParen: .rightParenToken()
-                                            ) {
-                                                LabeledExprSyntax(
-                                                    expression: PatternExprSyntax(
-                                                        pattern: ValueBindingPatternSyntax(
-                                                            bindingSpecifier: .keyword(.let),
-                                                            pattern: IdentifierPatternSyntax(
-                                                                identifier: "url"
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            }
-                                        )
-                                    )
-                                }
-                            )
-                        ),
-                        statements: CodeBlockItemListSyntax {
-                            // Bundle(url: url)
-                            FunctionCallExprSyntax(
-                                calledExpression: DeclReferenceExprSyntax(
-                                    baseName: .type(.Bundle)
-                                ),
+                        singleCasePattern: ExpressionPatternSyntax(
+                            expression: FunctionCallExprSyntax(
+                                calledExpression: MemberAccessExprSyntax(name: "atURL"),
                                 leftParen: .leftParenToken(),
                                 rightParen: .rightParenToken()
                             ) {
                                 LabeledExprSyntax(
-                                    label: "url",
-                                    expression: DeclReferenceExprSyntax(
-                                        baseName: "url"
+                                    expression: PatternExprSyntax(
+                                        pattern: ValueBindingPatternSyntax(
+                                            bindingSpecifier: .keyword(.let),
+                                            pattern: IdentifierPatternSyntax(
+                                                identifier: "url"
+                                            )
+                                        )
                                     )
                                 )
                             }
+                        )
+                    ) {
+                        // Bundle(url: url)
+                        FunctionCallExprSyntax(
+                            calledExpression: DeclReferenceExprSyntax(
+                                baseName: .type(.Bundle)
+                            ),
+                            leftParen: .leftParenToken(),
+                            rightParen: .rightParenToken()
+                        ) {
+                            LabeledExprSyntax(
+                                label: "url",
+                                expression: DeclReferenceExprSyntax(
+                                    baseName: "url"
+                                )
+                            )
                         }
-                    )
+                    }
 
                     // case .forClass(let anyClass):
                     SwitchCaseSyntax(
-                        label: .case(
-                            SwitchCaseLabelSyntax(
-                                caseItems: SwitchCaseItemListSyntax {
-                                    SwitchCaseItemSyntax(
-                                        pattern: ExpressionPatternSyntax(
-                                            expression: FunctionCallExprSyntax(
-                                                calledExpression: MemberAccessExprSyntax(
-                                                    declName: DeclReferenceExprSyntax(baseName: "forClass")
-                                                ),
-                                                leftParen: .leftParenToken(),
-                                                rightParen: .rightParenToken()
-                                            ) {
-                                                LabeledExprSyntax(
-                                                    expression: PatternExprSyntax(
-                                                        pattern: ValueBindingPatternSyntax(
-                                                            bindingSpecifier: .keyword(.let),
-                                                            pattern: IdentifierPatternSyntax(
-                                                                identifier: "anyClass"
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            }
-                                        )
-                                    )
-                                }
-                            )
-                        ),
-                        statements: CodeBlockItemListSyntax {
-                            // Bundle(for: anyClass)
-                            FunctionCallExprSyntax(
-                                calledExpression: DeclReferenceExprSyntax(
-                                    baseName: .type(.Bundle)
-                                ),
+                        singleCasePattern: ExpressionPatternSyntax(
+                            expression: FunctionCallExprSyntax(
+                                calledExpression: MemberAccessExprSyntax(name: "forClass"),
                                 leftParen: .leftParenToken(),
                                 rightParen: .rightParenToken()
                             ) {
                                 LabeledExprSyntax(
-                                    label: "for",
-                                    expression: DeclReferenceExprSyntax(
-                                        baseName: "anyClass"
+                                    expression: PatternExprSyntax(
+                                        pattern: ValueBindingPatternSyntax(
+                                            bindingSpecifier: .keyword(.let),
+                                            pattern: IdentifierPatternSyntax(
+                                                identifier: "anyClass"
+                                            )
+                                        )
                                     )
                                 )
                             }
+                        )
+                    ) {
+                        // Bundle(for: anyClass)
+                        FunctionCallExprSyntax(
+                            calledExpression: DeclReferenceExprSyntax(
+                                baseName: .type(.Bundle)
+                            ),
+                            leftParen: .leftParenToken(),
+                            rightParen: .rightParenToken()
+                        ) {
+                            LabeledExprSyntax(
+                                label: "for",
+                                expression: DeclReferenceExprSyntax(
+                                    baseName: "anyClass"
+                                )
+                            )
                         }
-                    )
+                    }
                 }
             }
         }
@@ -847,126 +658,79 @@ public struct StringGenerator {
                 ) {
                     // case .main:
                     SwitchCaseSyntax(
-                        label: .case(
-                            SwitchCaseLabelSyntax(
-                                caseItems: SwitchCaseItemListSyntax {
-                                    SwitchCaseItemSyntax(
-                                        pattern: ExpressionPatternSyntax(
-                                            expression: MemberAccessExprSyntax(
-                                                declName: DeclReferenceExprSyntax(baseName: "main")
-                                            )
-                                        )
-                                    )
-                                }
-                            )
-                        ),
-                        statements: CodeBlockItemListSyntax {
-                            // .main
-                            MemberAccessExprSyntax(
-                                name: "main"
-                            )
-                        }
-                    )
+                        singleCasePattern: ExpressionPatternSyntax(
+                            expression: MemberAccessExprSyntax(name: "main")
+                        )
+                    ) {
+                        // .main
+                        MemberAccessExprSyntax(name: "main")
+                    }
 
                     // case .atURL(let url):
                     SwitchCaseSyntax(
-                        label: .case(
-                            SwitchCaseLabelSyntax(
-                                caseItems: SwitchCaseItemListSyntax {
-                                    SwitchCaseItemSyntax(
-                                        pattern: ExpressionPatternSyntax(
-                                            expression: FunctionCallExprSyntax(
-                                                calledExpression: MemberAccessExprSyntax(
-                                                    declName: DeclReferenceExprSyntax(baseName: "atURL")
-                                                ),
-                                                leftParen: .leftParenToken(),
-                                                rightParen: .rightParenToken()
-                                            ) {
-                                                LabeledExprSyntax(
-                                                    expression: PatternExprSyntax(
-                                                        pattern: ValueBindingPatternSyntax(
-                                                            bindingSpecifier: .keyword(.let),
-                                                            pattern: IdentifierPatternSyntax(
-                                                                identifier: "url"
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            }
-                                        )
-                                    )
-                                }
-                            )
-                        ),
-                        statements: CodeBlockItemListSyntax {
-                            // .atURL(url)
-                            FunctionCallExprSyntax(
-                                calledExpression: MemberAccessExprSyntax(
-                                    declName: DeclReferenceExprSyntax(
-                                        baseName: "atURL"
-                                    )
-                                ),
+                        singleCasePattern: ExpressionPatternSyntax(
+                            expression: FunctionCallExprSyntax(
+                                calledExpression: MemberAccessExprSyntax(name: "atURL"),
                                 leftParen: .leftParenToken(),
                                 rightParen: .rightParenToken()
                             ) {
                                 LabeledExprSyntax(
-                                    expression: DeclReferenceExprSyntax(
-                                        baseName: "url"
+                                    expression: PatternExprSyntax(
+                                        pattern: ValueBindingPatternSyntax(
+                                            bindingSpecifier: .keyword(.let),
+                                            pattern: IdentifierPatternSyntax(
+                                                identifier: "url"
+                                            )
+                                        )
                                     )
                                 )
                             }
+                        )
+                    ) {
+                        // .atURL(url)
+                        FunctionCallExprSyntax(
+                            calledExpression: MemberAccessExprSyntax(name: "atURL"),
+                            leftParen: .leftParenToken(),
+                            rightParen: .rightParenToken()
+                        ) {
+                            LabeledExprSyntax(
+                                expression: DeclReferenceExprSyntax(baseName: "url")
+                            )
                         }
-                    )
+                    }
 
                     // case .forClass(let anyClass):
                     SwitchCaseSyntax(
-                        label: .case(
-                            SwitchCaseLabelSyntax(
-                                caseItems: SwitchCaseItemListSyntax {
-                                    SwitchCaseItemSyntax(
-                                        pattern: ExpressionPatternSyntax(
-                                            expression: FunctionCallExprSyntax(
-                                                calledExpression: MemberAccessExprSyntax(
-                                                    declName: DeclReferenceExprSyntax(baseName: "forClass")
-                                                ),
-                                                leftParen: .leftParenToken(),
-                                                rightParen: .rightParenToken()
-                                            ) {
-                                                LabeledExprSyntax(
-                                                    expression: PatternExprSyntax(
-                                                        pattern: ValueBindingPatternSyntax(
-                                                            bindingSpecifier: .keyword(.let),
-                                                            pattern: IdentifierPatternSyntax(
-                                                                identifier: "anyClass"
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            }
-                                        )
-                                    )
-                                }
-                            )
-                        ),
-                        statements: CodeBlockItemListSyntax {
-                            // .forClass(anyClass)
-                            FunctionCallExprSyntax(
-                                calledExpression: MemberAccessExprSyntax(
-                                    declName: DeclReferenceExprSyntax(
-                                        baseName: "forClass"
-                                    )
-                                ),
+                        singleCasePattern: ExpressionPatternSyntax(
+                            expression: FunctionCallExprSyntax(
+                                calledExpression: MemberAccessExprSyntax(name: "forClass"),
                                 leftParen: .leftParenToken(),
                                 rightParen: .rightParenToken()
                             ) {
                                 LabeledExprSyntax(
-                                    expression: DeclReferenceExprSyntax(
-                                        baseName: "anyClass"
+                                    expression: PatternExprSyntax(
+                                        pattern: ValueBindingPatternSyntax(
+                                            bindingSpecifier: .keyword(.let),
+                                            pattern: IdentifierPatternSyntax(
+                                                identifier: "anyClass"
+                                            )
+                                        )
                                     )
                                 )
                             }
+                        )
+                    ) {
+                        // .forClass(anyClass)
+                        FunctionCallExprSyntax(
+                            calledExpression: MemberAccessExprSyntax(name: "forClass"),
+                            leftParen: .leftParenToken(),
+                            rightParen: .rightParenToken()
+                        ) {
+                            LabeledExprSyntax(
+                                expression: DeclReferenceExprSyntax(baseName: "anyClass")
+                            )
                         }
-                    )
+                    }
                 }
             }
         }
@@ -1015,50 +779,33 @@ public struct StringGenerator {
                 )
             ) {
                 FunctionCallExprSyntax(
-                    callee: MemberAccessExprSyntax(
-                        base: DeclReferenceExprSyntax(baseName: .keyword(.`self`)),
-                        name: .keyword(.`init`)
-                    )
+                    callee: MemberAccessExprSyntax(.keyword(.`self`), .keyword(.`init`))
                 ) {
                     // localizable.key,
                     LabeledExprSyntax(
-                        expression: MemberAccessExprSyntax(
-                            base: DeclReferenceExprSyntax(baseName: variableToken),
-                            declName: DeclReferenceExprSyntax(baseName: "key")
-                        )
+                        expression: MemberAccessExprSyntax(variableToken, "key")
                     )
                     // defaultValue: localizable.defaultValue,
                     LabeledExprSyntax(
                         label: "defaultValue",
-                        expression: MemberAccessExprSyntax(
-                            base: DeclReferenceExprSyntax(baseName: variableToken),
-                            declName: DeclReferenceExprSyntax(baseName: "defaultValue")
-                        )
+                        expression: MemberAccessExprSyntax(variableToken, "defaultValue")
                     )
                     // table: localizable.table,
                     LabeledExprSyntax(
                         label: "table",
-                        expression: MemberAccessExprSyntax(
-                            base: DeclReferenceExprSyntax(baseName: variableToken),
-                            declName: DeclReferenceExprSyntax(baseName: "table")
-                        )
+                        expression: MemberAccessExprSyntax(variableToken, "table")
                     )
                     // bundle: .from(description: localizable.bundle)
                     LabeledExprSyntax(
                         label: "bundle",
                         expression: FunctionCallExprSyntax(
-                            calledExpression: MemberAccessExprSyntax(
-                                declName: DeclReferenceExprSyntax(baseName: "from")
-                            ),
+                            calledExpression: MemberAccessExprSyntax(name: "from"),
                             leftParen: .leftParenToken(),
                             rightParen: .rightParenToken()
                         ) {
                             LabeledExprSyntax(
                                 label: "description",
-                                expression: MemberAccessExprSyntax(
-                                    base: DeclReferenceExprSyntax(baseName: variableToken),
-                                    declName: DeclReferenceExprSyntax(baseName: "bundle")
-                                )
+                                expression: MemberAccessExprSyntax(variableToken, "bundle")
                             )
                         }
                     )
@@ -1285,9 +1032,7 @@ extension Resource {
                     )
                     LabeledExprSyntax(
                         label: "bundle",
-                        expression: MemberAccessExprSyntax(
-                            name: .identifier("current")
-                        )
+                        expression: MemberAccessExprSyntax(name: "current")
                     )
                 }
                 .multiline()
@@ -1300,9 +1045,7 @@ extension Resource {
                     LabeledExprSyntax(
                         label: variableToken.text,
                         expression: FunctionCallExprSyntax(
-                            calledExpression: MemberAccessExprSyntax(
-                                declName: DeclReferenceExprSyntax(baseName: name)
-                            ),
+                            calledExpression: MemberAccessExprSyntax(name: name),
                             leftParen: arguments.isEmpty ? nil : .leftParenToken(),
                             rightParen: arguments.isEmpty ? nil : .rightParenToken()
                         ) {
@@ -1456,7 +1199,7 @@ extension Trivia {
     }
 }
 
-private extension String.LocalizationValue.Placeholder {
+extension String.LocalizationValue.Placeholder {
     var identifier: String {
         switch self {
         case .int: "Int"
