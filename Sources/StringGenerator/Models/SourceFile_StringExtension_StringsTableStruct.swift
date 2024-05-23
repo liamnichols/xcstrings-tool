@@ -13,8 +13,10 @@ extension SourceFile.StringExtension {
             [.type(.String), type]
         }
 
-        var resources: [Resource] {
-            sourceFile.resources
+        var accessors: [ResourceAccessor] {
+            sourceFile.resources.map { resource in
+                ResourceAccessor(sourceFile: sourceFile, resource: resource)
+            }
         }
 
         var accessLevel: AccessLevel {
@@ -52,7 +54,7 @@ extension SourceFile.StringExtension {
         )
 
         public var example: (name: String, value: String) {
-            if let resource = resources.first(where: { $0.arguments.isEmpty }){
+            if let resource = sourceFile.resources.first(where: { $0.arguments.isEmpty }){
                 (
                     name: resource.identifier,
                     value: resource.sourceLocalization.replacingOccurrences(of: "\n", with: "\\n")

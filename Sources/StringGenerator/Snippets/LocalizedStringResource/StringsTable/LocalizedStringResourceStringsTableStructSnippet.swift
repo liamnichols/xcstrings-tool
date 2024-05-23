@@ -12,13 +12,12 @@ extension LocalizedStringResourceStringsTableStructSnippet: Snippet {
             modifiers: modifiers,
             name: stringsTable.type
         ) {
-            for resource in stringsTable.resources {
-                resource.declaration(
-                    tableName: stringsTable.sourceFile.tableName,
-                    variableToken: .identifier(stringsTable.sourceFile.tableVariableIdentifier),
-                    accessLevel: stringsTable.accessLevel.token,
-                    isLocalizedStringResource: true
-                )
+            for accessor in stringsTable.accessors {
+                if accessor.hasArguments {
+                    LocalizedStringResourceStringsTableResourceFunctionSnippet(accessor: accessor)
+                } else {
+                    LocalizedStringResourceStringsTableResourceVariableSnippet(accessor: accessor)
+                }
             }
         }
         .spacingMembers()

@@ -13,8 +13,10 @@ extension SourceFile.LocalizedStringResourceExtension {
             [.type(.LocalizedStringResource), type]
         }
 
-        var resources: [Resource] {
-            sourceFile.resources
+        var accessors: [ResourceAccessor] {
+            sourceFile.resources.map { resource in
+                ResourceAccessor(sourceFile: sourceFile, resource: resource)
+            }
         }
 
         var accessLevel: AccessLevel {
