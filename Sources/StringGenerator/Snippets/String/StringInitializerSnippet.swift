@@ -2,10 +2,10 @@ import SwiftSyntax
 import SwiftSyntaxBuilder
 
 struct StringInitializerSnippet: Snippet {
-    let stringsTable: StringsTable
+    let stringsTable: SourceFile.StringExtension.StringsTableStruct
 
     var variableToken: TokenSyntax {
-        .identifier(stringsTable.name.variableIdentifier)
+        .identifier(stringsTable.sourceFile.tableVariableIdentifier)
     }
 
     var syntax: some DeclSyntaxProtocol {
@@ -18,7 +18,7 @@ struct StringInitializerSnippet: Snippet {
                 parameterClause: FunctionParameterClauseSyntax {
                     FunctionParameterSyntax(
                         firstName: variableToken,
-                        type: IdentifierTypeSyntax(name: stringsTable.name.token)
+                        type: IdentifierTypeSyntax(name: stringsTable.type)
                     )
                     FunctionParameterSyntax(
                         firstName: "locale",
@@ -42,7 +42,7 @@ struct StringInitializerSnippet: Snippet {
                             ) {
                                 LabeledExprSyntax(
                                     label: "description",
-                                    expression: MemberAccessExprSyntax(variableToken, "bundle")
+                                    expression: MemberAccessExprSyntax(variableToken, stringsTable.bundleProperty.name)
                                 )
                             },
                             operator: BinaryOperatorExprSyntax(operator: .binaryOperator("??")),
@@ -61,7 +61,7 @@ struct StringInitializerSnippet: Snippet {
                         ) {
                             LabeledExprSyntax(
                                 label: "describing",
-                                expression: MemberAccessExprSyntax(variableToken, "key")
+                                expression: MemberAccessExprSyntax(variableToken, stringsTable.keyProperty.name)
                             )
                         }
                     )
@@ -93,7 +93,7 @@ struct StringInitializerSnippet: Snippet {
                         // table: localizable.table
                         LabeledExprSyntax(
                             label: "table",
-                            expression: MemberAccessExprSyntax(variableToken, "table")
+                            expression: MemberAccessExprSyntax(variableToken, stringsTable.tableProperty.name)
                         )
                     }
                 )
@@ -106,7 +106,7 @@ struct StringInitializerSnippet: Snippet {
                 LabeledExprSyntax(
                     label: "arguments",
                     expression: FunctionCallExprSyntax(
-                        callee: MemberAccessExprSyntax(variableToken, "arguments", "map")
+                        callee: MemberAccessExprSyntax(variableToken, stringsTable.argumentsProperty.name, "map")
                     ) {
                         LabeledExprSyntax(
                             expression: KeyPathExprSyntax(

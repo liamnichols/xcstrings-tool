@@ -6,14 +6,10 @@ import SwiftSyntax
 import SwiftSyntaxBuilder
 
 public struct StringGenerator {
-    let stringsTable: StringsTable
+    let sourceFile: SourceFile
 
     init(tableName: String, accessLevel: AccessLevel, resources: [Resource]) {
-        self.stringsTable = StringsTable(
-            name: .init(rawValue: tableName),
-            accessLevel: accessLevel,
-            resources: resources
-        )
+        self.sourceFile = SourceFile(tableName: tableName, accessLevel: accessLevel, resources: resources)
     }
 
     public static func generateSource(
@@ -31,31 +27,40 @@ public struct StringGenerator {
         SourceFileSyntax {
             ImportSnippet(module: .Foundation)
 
-            ExtensionSnippet(extending: StringsTable.enclosingType) {
-                StringStringsTableStructSnippet(stringsTable: stringsTable)
-                StringInitializerSnippet(stringsTable: stringsTable)
+            ExtensionSnippet(extending: .type(.String)) {
+                StringStringsTableStructSnippet(stringsTable: sourceFile.stringExtension.stringsTableStruct)
+                StringInitializerSnippet(stringsTable: sourceFile.stringExtension.stringsTableStruct)
             }
 
-            ExtensionSnippet(extending: stringsTable.fullyQualifiedName) {
-                for resource in stringsTable.resources {
+            ExtensionSnippet(extending: sourceFile.stringExtension.stringsTableStruct.fullyQualifiedType) {
+                for resource in sourceFile.stringExtension.stringsTableStruct.resources {
                     resource.declaration(
-                        tableName: stringsTable.name.identifier,
-                        variableToken: .identifier(stringsTable.name.variableIdentifier),
-                        accessLevel: stringsTable.accessLevel.token,
+                        tableName: sourceFile.tableName,
+                        variableToken: .identifier(sourceFile.tableVariableIdentifier),
+                        accessLevel: sourceFile.accessLevel.token,
                         isLocalizedStringResource: false
                     )
                 }
             }
 
-            ExtensionSnippet(availability: .wwdc2021, accessLevel: .private, extending: stringsTable.fullyQualifiedName) {
+            ExtensionSnippet(
+                availability: .wwdc2021,
+                accessLevel: .private,
+                extending: sourceFile.stringExtension.stringsTableStruct.fullyQualifiedType
+            ) {
                 StringStringsTableDefaultValueComputedPropertySnippet()
             }
             
-            ExtensionSnippet(extending: Argument(stringsTable: stringsTable).fullyQualifiedName) {
+            ExtensionSnippet(
+                extending: sourceFile.stringExtension.stringsTableStruct.argumentEnum.fullyQualifiedType
+            ) {
                 StringStringsTableArgumentValueComputedProperty()
             }
 
-            ExtensionSnippet(accessLevel: .private, extending: BundleDescription(stringsTable: stringsTable).fullyQualifiedName) {
+            ExtensionSnippet(
+                accessLevel: .private,
+                extending: sourceFile.stringExtension.stringsTableStruct.bundleDescriptionEnum.fullyQualifiedType
+            ) {
                 IfConfigDeclSyntax(
                     prefixOperator: "!",
                     reference: "SWIFT_PACKAGE",
@@ -69,7 +74,7 @@ public struct StringGenerator {
 
             ExtensionSnippet(extending: .type(.Bundle)) {
                 ConvertBundleDescriptionMethodSnippet.toFoundationBundle(
-                    from: BundleDescription(stringsTable: stringsTable)
+                    from: sourceFile.stringExtension.stringsTableStruct.bundleDescriptionEnum
                 )
             }
 
@@ -79,34 +84,28 @@ public struct StringGenerator {
                 extending: [.type(.LocalizedStringResource), .type(.BundleDescription)]
             ) {
                 ConvertBundleDescriptionMethodSnippet.toLocalizedStringResourceBundleDescription(
-                    from: BundleDescription(stringsTable: stringsTable)
+                    from: sourceFile.stringExtension.stringsTableStruct.bundleDescriptionEnum
                 )
             }
 
-            generateLocalizedStringResourceExtension()
+            ExtensionSnippet(
+                availability: .wwdc2022,
+                extending: .type(.LocalizedStringResource)
+            ) {
+                LocalizedStringResourceStringsTableStructSnippet(
+                    stringsTable: sourceFile.localizedStringResourceExtension.stringsTableStruct
+                )
+
+                LocalizedStringResourceInitializerSnippet(
+                    stringsTable: sourceFile.stringExtension.stringsTableStruct
+                )
+
+                LocalizedStringResourceStringsTableComputedPropertySnippet(
+                    sourceFile: sourceFile
+                )
+            }
         }
         .spacingStatements()
-    }
-
-    // MARK: - Source File Contents
-
-    func generateLocalizedStringResourceExtension() -> ExtensionSnippet {
-        ExtensionSnippet(
-            availability: .wwdc2022,
-            extending: .type(.LocalizedStringResource)
-        ) {
-            LocalizedStringResourceStringsTableStructSnippet(
-                stringsTable: LocalizedStringResourceTable(stringsTable: stringsTable)
-            )
-
-            LocalizedStringResourceInitializerSnippet(
-                stringsTable: LocalizedStringResourceTable(stringsTable: stringsTable)
-            )
-
-            LocalizedStringResourceStringsTableComputedPropertySnippet(
-                stringsTable: LocalizedStringResourceTable(stringsTable: stringsTable)
-            )
-        }
     }
 
 //    func generateSwiftUI(

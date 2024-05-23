@@ -2,12 +2,12 @@ import SwiftSyntax
 import SwiftSyntaxBuilder
 
 struct StringStringsTableArgumentEnumSnippet: Snippet {
-    let argument: Argument
+    let argument: SourceFile.StringExtension.StringsTableStruct.ArgumentEnum
 
     var syntax: some DeclSyntaxProtocol {
-        EnumDeclSyntax(name: argument.token) {
+        EnumDeclSyntax(name: argument.type) {
             for enumCase in argument.cases {
-                Case(model: enumCase)
+                Case(enumCase: enumCase)
             }
         }
     }
@@ -15,15 +15,15 @@ struct StringStringsTableArgumentEnumSnippet: Snippet {
 
 extension StringStringsTableArgumentEnumSnippet {
     struct Case: Snippet {
-        let model: Argument.Case
+        let enumCase: SourceFile.StringExtension.StringsTableStruct.ArgumentEnum.Case
 
         var syntax: some DeclSyntaxProtocol {
             EnumCaseDeclSyntax {
                 EnumCaseElementSyntax(
-                    name: model.name,
+                    name: enumCase.name,
                     parameterClause: EnumCaseParameterClauseSyntax(
                         parameters: EnumCaseParameterListSyntax {
-                            for parameter in model.parameters {
+                            for parameter in enumCase.parameters {
                                 EnumCaseParameterSyntax(type: IdentifierTypeSyntax(name: parameter))
                             }
                         }

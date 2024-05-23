@@ -2,7 +2,7 @@ import SwiftSyntax
 import SwiftSyntaxBuilder
 
 struct LocalizedStringResourceStringsTableStructSnippet {
-    let stringsTable: LocalizedStringResourceTable
+    let stringsTable: SourceFile.LocalizedStringResourceExtension.StringsTableStruct
 }
 
 extension LocalizedStringResourceStringsTableStructSnippet: Snippet {
@@ -10,13 +10,13 @@ extension LocalizedStringResourceStringsTableStructSnippet: Snippet {
         StructDeclSyntax(
             leadingTrivia: leadingTrivia,
             modifiers: modifiers,
-            name: stringsTable.stringsTable.name.token
+            name: stringsTable.type
         ) {
-            for resource in stringsTable.stringsTable.resources {
+            for resource in stringsTable.resources {
                 resource.declaration(
-                    tableName: stringsTable.stringsTable.name.identifier,
-                    variableToken: .identifier(stringsTable.stringsTable.name.variableIdentifier),
-                    accessLevel: stringsTable.stringsTable.accessLevel.token,
+                    tableName: stringsTable.sourceFile.tableName,
+                    variableToken: .identifier(stringsTable.sourceFile.tableVariableIdentifier),
+                    accessLevel: stringsTable.accessLevel.token,
                     isLocalizedStringResource: true
                 )
             }
@@ -30,6 +30,6 @@ extension LocalizedStringResourceStringsTableStructSnippet: Snippet {
 
     @DeclModifierListBuilder
     var modifiers: DeclModifierListSyntax {
-        DeclModifierSyntax(name: stringsTable.stringsTable.accessLevel.token)
+        DeclModifierSyntax(name: stringsTable.accessLevel.token)
     }
 }

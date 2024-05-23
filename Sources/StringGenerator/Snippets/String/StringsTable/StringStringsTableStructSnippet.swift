@@ -3,7 +3,7 @@ import SwiftSyntaxBuilder
 
 /// The struct declaration that describes the strings table being generated
 struct StringStringsTableStructSnippet: Snippet {
-    let stringsTable: StringsTable
+    let stringsTable: SourceFile.StringExtension.StringsTableStruct
 
     var syntax: some DeclSyntaxProtocol {
         // /// headerdoc
@@ -11,26 +11,26 @@ struct StringStringsTableStructSnippet: Snippet {
         StructDeclSyntax(
             leadingTrivia: leadingTrivia,
             modifiers: modifiers,
-            name: stringsTable.name.token
+            name: stringsTable.type
         ) {
             // enum BundleDescription { ... }
-            StringStringsTableBundleDescriptionEnumSnippet(bundleDescription: BundleDescription(stringsTable: stringsTable))
+            StringStringsTableBundleDescriptionEnumSnippet(bundleDescription: stringsTable.bundleDescriptionEnum)
                 .syntax
                 .with(\.trailingTrivia, .newlines(2))
 
             // enum Argument { ... }
-            StringStringsTableArgumentEnumSnippet(argument: Argument(stringsTable: stringsTable))
+            StringStringsTableArgumentEnumSnippet(argument: stringsTable.argumentEnum)
                 .syntax
                 .with(\.trailingTrivia, .newlines(2))
 
             // let property: Type
             // ...
             MemberBlockItemListSyntax {
-                for (name, type) in stringsTable.storedProperties {
+                for property in stringsTable.storedProperties {
                     VariableDeclSyntax(
                         .let,
-                        name: PatternSyntax(IdentifierPatternSyntax(identifier: name)),
-                        type: TypeAnnotationSyntax(type: type)
+                        name: PatternSyntax(IdentifierPatternSyntax(identifier: property.name)),
+                        type: TypeAnnotationSyntax(type: property.type)
                     )
                 }
             }
@@ -44,18 +44,18 @@ struct StringStringsTableStructSnippet: Snippet {
                 modifiers: [DeclModifierSyntax(name: .keyword(.fileprivate)),],
                 signature: FunctionSignatureSyntax(
                     parameterClause: FunctionParameterClauseSyntax {
-                        for (name, type) in stringsTable.storedProperties {
-                            FunctionParameterSyntax(firstName: name, type: type)
+                        for property in stringsTable.storedProperties {
+                            FunctionParameterSyntax(firstName: property.name, type: property.type)
                         }
                     }
                 )
                 .multiline()
             ) {
-                for (name, _) in stringsTable.storedProperties {
+                for property in stringsTable.storedProperties {
                     InfixOperatorExprSyntax(
-                        leftOperand: MemberAccessExprSyntax(.keyword(.`self`), name),
+                        leftOperand: MemberAccessExprSyntax(.keyword(.`self`), property.name),
                         operator: AssignmentExprSyntax(),
-                        rightOperand: DeclReferenceExprSyntax(baseName: name)
+                        rightOperand: DeclReferenceExprSyntax(baseName: property.name)
                     )
                 }
             }

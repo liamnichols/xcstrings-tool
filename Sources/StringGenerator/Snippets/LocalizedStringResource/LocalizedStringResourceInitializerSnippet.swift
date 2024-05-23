@@ -2,10 +2,10 @@ import SwiftSyntax
 import SwiftSyntaxBuilder
 
 struct LocalizedStringResourceInitializerSnippet {
-    let stringsTable: LocalizedStringResourceTable
+    let stringsTable: SourceFile.StringExtension.StringsTableStruct
 
     var variableToken: TokenSyntax {
-        .identifier(stringsTable.stringsTable.name.variableIdentifier)
+        .identifier(stringsTable.sourceFile.tableVariableIdentifier)
     }
 }
 
@@ -20,7 +20,7 @@ extension LocalizedStringResourceInitializerSnippet: Snippet {
                 ) {
                     FunctionParameterSyntax(
                         firstName: variableToken,
-                        type: typeSyntax(from: stringsTable.stringsTable.fullyQualifiedName)
+                        type: typeSyntax(from: stringsTable.fullyQualifiedType)
                     )
                 }
             )
@@ -30,17 +30,17 @@ extension LocalizedStringResourceInitializerSnippet: Snippet {
             ) {
                 // localizable.key,
                 LabeledExprSyntax(
-                    expression: MemberAccessExprSyntax(variableToken, "key")
+                    expression: MemberAccessExprSyntax(variableToken, stringsTable.keyProperty.name)
                 )
                 // defaultValue: localizable.defaultValue,
                 LabeledExprSyntax(
                     label: "defaultValue",
-                    expression: MemberAccessExprSyntax(variableToken, "defaultValue")
+                    expression: MemberAccessExprSyntax(variableToken, stringsTable.defaultValueProperty.name)
                 )
                 // table: localizable.table,
                 LabeledExprSyntax(
                     label: "table",
-                    expression: MemberAccessExprSyntax(variableToken, "table")
+                    expression: MemberAccessExprSyntax(variableToken, stringsTable.tableProperty.name)
                 )
                 // bundle: .from(description: localizable.bundle)
                 LabeledExprSyntax(
@@ -52,7 +52,7 @@ extension LocalizedStringResourceInitializerSnippet: Snippet {
                     ) {
                         LabeledExprSyntax(
                             label: "description",
-                            expression: MemberAccessExprSyntax(variableToken, "bundle")
+                            expression: MemberAccessExprSyntax(variableToken, stringsTable.bundleProperty.name)
                         )
                     }
                 )

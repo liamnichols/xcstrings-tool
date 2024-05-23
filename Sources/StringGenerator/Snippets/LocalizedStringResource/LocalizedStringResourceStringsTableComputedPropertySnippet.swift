@@ -2,7 +2,7 @@ import SwiftSyntax
 import SwiftSyntaxBuilder
 
 struct LocalizedStringResourceStringsTableComputedPropertySnippet {
-    let stringsTable: LocalizedStringResourceTable
+    let sourceFile: SourceFile
 }
 
 extension LocalizedStringResourceStringsTableComputedPropertySnippet: Snippet {
@@ -12,12 +12,12 @@ extension LocalizedStringResourceStringsTableComputedPropertySnippet: Snippet {
             modifiers: modifiers,
             .let,
             name: PatternSyntax(IdentifierPatternSyntax(
-                identifier: .identifier(stringsTable.stringsTable.name.variableIdentifier))
+                identifier: .identifier(sourceFile.tableVariableIdentifier))
             ),
             initializer: InitializerClauseSyntax(
                 value: FunctionCallExprSyntax(
                     calledExpression: DeclReferenceExprSyntax(
-                        baseName: stringsTable.stringsTable.name.token
+                        baseName: sourceFile.localizedStringResourceExtension.stringsTableStruct.type
                     ),
                     leftParen: .leftParenToken(),
                     arguments: [],
@@ -29,7 +29,7 @@ extension LocalizedStringResourceStringsTableComputedPropertySnippet: Snippet {
 
     @DeclModifierListBuilder
     var modifiers: DeclModifierListSyntax {
-        DeclModifierSyntax(name: stringsTable.stringsTable.accessLevel.token)
+        DeclModifierSyntax(name: sourceFile.accessLevel.token)
         DeclModifierSyntax(name: .keyword(.static))
     }
 }

@@ -2,19 +2,19 @@ import SwiftSyntax
 import SwiftSyntaxBuilder
 
 struct ConvertBundleDescriptionMethodSnippet {
-    let bundleDescription: BundleDescription
+    let bundleDescriptionEnum: SourceFile.StringExtension.StringsTableStruct.BundleDescriptionEnum
     let returnClause: ReturnClauseSyntax
-    let statements: (BundleDescription.Case) -> CodeBlockItemListSyntax
+    let statements: (SourceFile.StringExtension.StringsTableStruct.BundleDescriptionEnum.Case) -> CodeBlockItemListSyntax
 }
 
 extension ConvertBundleDescriptionMethodSnippet {
     init(
-        bundleDescription: BundleDescription,
+        bundleDescriptionEnum: SourceFile.StringExtension.StringsTableStruct.BundleDescriptionEnum,
         returnType: some TypeSyntaxProtocol,
-        @CodeBlockItemListBuilder statementBuilder: @escaping (BundleDescription.Case) -> CodeBlockItemListSyntax
+        @CodeBlockItemListBuilder statementBuilder: @escaping (SourceFile.StringExtension.StringsTableStruct.BundleDescriptionEnum.Case) -> CodeBlockItemListSyntax
     ) {
         self.init(
-            bundleDescription: bundleDescription,
+            bundleDescriptionEnum: bundleDescriptionEnum,
             returnClause: ReturnClauseSyntax(type: returnType),
             statements: statementBuilder
         )
@@ -32,7 +32,7 @@ extension ConvertBundleDescriptionMethodSnippet: Snippet {
                 parameterClause: FunctionParameterClauseSyntax {
                     FunctionParameterSyntax(
                         firstName: "description",
-                        type: typeSyntax(from: bundleDescription.fullyQualifiedName)
+                        type: typeSyntax(from: bundleDescriptionEnum.fullyQualifiedType)
                     )
                 },
                 returnClause: returnClause
@@ -41,7 +41,7 @@ extension ConvertBundleDescriptionMethodSnippet: Snippet {
             SwitchExprSyntax(
                 subject: DeclReferenceExprSyntax(baseName: "description")
             ) {
-                for enumCase in bundleDescription.cases {
+                for enumCase in bundleDescriptionEnum.cases {
                     Case(
                         enumCase: enumCase,
                         statements: statements(enumCase)
@@ -54,7 +54,7 @@ extension ConvertBundleDescriptionMethodSnippet: Snippet {
 
 extension ConvertBundleDescriptionMethodSnippet {
     struct Case {
-        let enumCase: BundleDescription.Case
+        let enumCase: SourceFile.StringExtension.StringsTableStruct.BundleDescriptionEnum.Case
         let statements: CodeBlockItemListSyntax
 
         var syntax: SwitchCaseSyntax {
@@ -97,9 +97,11 @@ extension ConvertBundleDescriptionMethodSnippet {
 
 // MARK: - Conversions
 extension ConvertBundleDescriptionMethodSnippet {
-    static func toFoundationBundle(from bundleDescription: BundleDescription) -> Self {
+    static func toFoundationBundle(
+        from bundleDescriptionEnum: SourceFile.StringExtension.StringsTableStruct.BundleDescriptionEnum
+    ) -> Self {
         ConvertBundleDescriptionMethodSnippet(
-            bundleDescription: bundleDescription,
+            bundleDescriptionEnum: bundleDescriptionEnum,
             returnType: OptionalTypeSyntax(wrappedType: .identifier(.Bundle))
         ) { enumCase in
             switch enumCase {
@@ -143,10 +145,10 @@ extension ConvertBundleDescriptionMethodSnippet {
     }
 
     static func toLocalizedStringResourceBundleDescription(
-        from bundleDescription: BundleDescription
+        from bundleDescriptionEnum: SourceFile.StringExtension.StringsTableStruct.BundleDescriptionEnum
     ) -> Self {
         ConvertBundleDescriptionMethodSnippet(
-            bundleDescription: bundleDescription,
+            bundleDescriptionEnum: bundleDescriptionEnum,
             returnType: IdentifierTypeSyntax(name: .keyword(.Self))
         ) { enumCase in
             switch enumCase {

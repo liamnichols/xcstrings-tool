@@ -11,12 +11,12 @@ import SwiftSyntaxBuilder
 /// }
 /// ```
 struct StringStringsTableBundleDescriptionEnumSnippet: Snippet {
-    let bundleDescription: BundleDescription
+    let bundleDescription: SourceFile.StringExtension.StringsTableStruct.BundleDescriptionEnum
 
     var syntax: some DeclSyntaxProtocol {
-        EnumDeclSyntax(name: bundleDescription.token) {
+        EnumDeclSyntax(name: bundleDescription.type) {
             for enumCase in bundleDescription.cases {
-                Case(model: enumCase)
+                Case(enumCase: enumCase)
             }
         }
     }
@@ -24,24 +24,24 @@ struct StringStringsTableBundleDescriptionEnumSnippet: Snippet {
 
 extension StringStringsTableBundleDescriptionEnumSnippet {
     struct Case: Snippet {
-        let model: BundleDescription.Case
+        let enumCase: SourceFile.StringExtension.StringsTableStruct.BundleDescriptionEnum.Case
 
         var syntax: some DeclSyntaxProtocol {
             EnumCaseDeclSyntax {
                 EnumCaseElementSyntax(
-                    name: model.name,
+                    name: enumCase.name,
                     parameterClause: parameterClause
                 )
             }
         }
 
         var parameterClause: EnumCaseParameterClauseSyntax? {
-            if model.parameters.isEmpty {
+            if enumCase.parameters.isEmpty {
                 nil
             } else {
                 EnumCaseParameterClauseSyntax(
                     parameters: EnumCaseParameterListSyntax {
-                        for (_, type) in model.parameters {
+                        for (_, type) in enumCase.parameters {
                             EnumCaseParameterSyntax(type: IdentifierTypeSyntax(name: type))
                         }
                     }
