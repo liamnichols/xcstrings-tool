@@ -51,7 +51,8 @@ final class PluginTests: XCTestCase {
         var environment = EnvironmentValues()
         environment.locale = Locale(identifier: "en")
 
-        let text = Text(featureOne: .pluralExample(3))
+        let key = LocalizedStringKey(featureOne: .pluralExample(3))
+        let text = Text(key)
         let resolved = text._resolveText(in: environment)
 
         XCTAssertEqual(resolved, "3 strings remaining")

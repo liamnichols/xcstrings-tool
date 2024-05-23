@@ -65,6 +65,9 @@ struct SourceFileSnippet: Snippet {
                     availability: .wwdc2019,
                     extending: .type(.LocalizedStringKey)
                 ) {
+                    LocalizedStringKeyInitializerSnippet(
+                        stringsTable: sourceFile.stringExtension.stringsTableStruct
+                    )
                     LocalizedStringKeyOverrideKeySnippet()
                 }
             }

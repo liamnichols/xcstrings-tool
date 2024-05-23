@@ -294,6 +294,16 @@ extension Text {
 
 @available(macOS 10.5, iOS 13, tvOS 13, watchOS 6, *)
 extension LocalizedStringKey {
+    init(localizable: String.Localizable) {
+        let text = Text(localizable: localizable)
+
+        var stringInterpolation = LocalizedStringKey.StringInterpolation(literalCapacity: 0, interpolationCount: 1)
+        stringInterpolation.appendInterpolation(text)
+
+        let makeKey = LocalizedStringKey.init(stringInterpolation:)
+        self = makeKey(stringInterpolation)
+    }
+
     fileprivate mutating func overrideKeyForLookup(using key: StaticString) {
         withUnsafeMutablePointer(to: &self) { pointer in
             let raw = UnsafeMutableRawPointer(pointer)
