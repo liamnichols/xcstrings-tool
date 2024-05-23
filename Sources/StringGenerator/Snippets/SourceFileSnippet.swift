@@ -36,12 +36,12 @@ struct SourceFileSnippet: Snippet {
                     stringsTable: sourceFile.localizedStringResourceExtension.stringsTableStruct
                 )
 
-                LocalizedStringResourceInitializerSnippet(
-                    stringsTable: sourceFile.stringExtension.stringsTableStruct
-                )
-
                 LocalizedStringResourceStringsTableComputedPropertySnippet(
                     sourceFile: sourceFile
+                )
+
+                LocalizedStringResourceInitializerSnippet(
+                    stringsTable: sourceFile.stringExtension.stringsTableStruct
                 )
             }
         }

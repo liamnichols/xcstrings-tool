@@ -12,7 +12,6 @@ struct LocalizedStringResourceInitializerSnippet {
 extension LocalizedStringResourceInitializerSnippet: Snippet {
     var syntax: some DeclSyntaxProtocol {
         InitializerDeclSyntax(
-            modifiers: modifiers,
             signature: FunctionSignatureSyntax(
                 parameterClause: FunctionParameterClauseSyntax(
                     leftParen: .leftParenToken(),
@@ -59,10 +58,5 @@ extension LocalizedStringResourceInitializerSnippet: Snippet {
             }
             .multiline()
         }
-    }
-    
-    @DeclModifierListBuilder
-    var modifiers: DeclModifierListSyntax {
-        DeclModifierSyntax(name: .keyword(.private))
     }
 }

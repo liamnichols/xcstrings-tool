@@ -232,7 +232,9 @@ extension LocalizedStringResource {
         }
     }
 
-    private init(positional: String.Positional) {
+    internal static let positional = Positional()
+
+    init(positional: String.Positional) {
         self.init(
             positional.key,
             defaultValue: positional.defaultValue,
@@ -240,6 +242,4 @@ extension LocalizedStringResource {
             bundle: .from(description: positional.bundle)
         )
     }
-
-    internal static let positional = Positional()
 }

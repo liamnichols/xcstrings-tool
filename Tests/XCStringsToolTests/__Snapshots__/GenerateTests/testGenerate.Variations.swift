@@ -196,7 +196,9 @@ extension LocalizedStringResource {
         }
     }
 
-    private init(variations: String.Variations) {
+    internal static let variations = Variations()
+
+    init(variations: String.Variations) {
         self.init(
             variations.key,
             defaultValue: variations.defaultValue,
@@ -204,6 +206,4 @@ extension LocalizedStringResource {
             bundle: .from(description: variations.bundle)
         )
     }
-
-    internal static let variations = Variations()
 }

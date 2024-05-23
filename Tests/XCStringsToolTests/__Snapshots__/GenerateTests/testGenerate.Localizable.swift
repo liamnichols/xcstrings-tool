@@ -245,7 +245,9 @@ extension LocalizedStringResource {
         }
     }
 
-    private init(localizable: String.Localizable) {
+    internal static let localizable = Localizable()
+
+    init(localizable: String.Localizable) {
         self.init(
             localizable.key,
             defaultValue: localizable.defaultValue,
@@ -253,6 +255,4 @@ extension LocalizedStringResource {
             bundle: .from(description: localizable.bundle)
         )
     }
-
-    internal static let localizable = Localizable()
 }

@@ -513,7 +513,9 @@ extension LocalizedStringResource {
         }
     }
 
-    private init(formatSpecifiers: String.FormatSpecifiers) {
+    internal static let formatSpecifiers = FormatSpecifiers()
+
+    init(formatSpecifiers: String.FormatSpecifiers) {
         self.init(
             formatSpecifiers.key,
             defaultValue: formatSpecifiers.defaultValue,
@@ -521,6 +523,4 @@ extension LocalizedStringResource {
             bundle: .from(description: formatSpecifiers.bundle)
         )
     }
-
-    internal static let formatSpecifiers = FormatSpecifiers()
 }
