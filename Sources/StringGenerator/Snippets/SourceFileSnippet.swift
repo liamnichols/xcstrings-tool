@@ -46,5 +46,6 @@ struct SourceFileSnippet: Snippet {
             }
         }
         .spacingStatements()
+        .with(\.trailingTrivia, .newline)
     }
 }
