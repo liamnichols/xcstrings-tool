@@ -61,6 +61,17 @@ struct StringStringsTableStructSnippet: Snippet {
             }
             .with(\.trailingTrivia, .newlines(2))
 
+            MemberBlockItemListSyntax {
+                for accessor in stringsTable.accessors {
+                    if accessor.hasArguments {
+                        StringStringsTableResourceFunctionSnippet(accessor: accessor)
+                    } else {
+                        StringStringsTableResourceVariableSnippet(accessor: accessor)
+                    }
+                }
+            }
+            .map { $0.with(\.trailingTrivia, .newlines(2)) }
+
             // @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
             // fileprivate var defaultValue: String.LocalizedValue { ... }
             StringStringsTableDefaultValueComputedPropertySnippet(

@@ -68,6 +68,69 @@ extension String {
             self.bundle = bundle
         }
 
+        /// This is a comment
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Default Value
+        /// ```
+        internal static var key: Localizable {
+            Localizable(
+                key: "Key",
+                arguments: [],
+                table: "Localizable",
+                bundle: .current
+            )
+        }
+
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Multiplatform Original
+        /// ```
+        internal static var myDeviceVariant: Localizable {
+            Localizable(
+                key: "myDeviceVariant",
+                arguments: [],
+                table: "Localizable",
+                bundle: .current
+            )
+        }
+
+        /// ### Source Localization
+        ///
+        /// ```
+        /// I have %lld plurals
+        /// ```
+        internal static func myPlural(_ arg1: Int) -> Localizable {
+            Localizable(
+                key: "myPlural",
+                arguments: [
+                    .int(arg1)
+                ],
+                table: "Localizable",
+                bundle: .current
+            )
+        }
+
+        /// ### Source Localization
+        ///
+        /// ```
+        /// %lld: People liked %lld posts
+        /// ```
+        internal static func mySubstitute(_ arg1: Int, count arg2: Int) -> Localizable {
+            Localizable(
+                key: "mySubstitute",
+                arguments: [
+                    .int(arg1),
+                    .int(arg2)
+                ],
+                table: "Localizable",
+                bundle: .current
+            )
+        }
+
         @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
         fileprivate var defaultValue: String.LocalizationValue {
             var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
@@ -97,71 +160,6 @@ extension String {
             format: bundle.localizedString(forKey: key, value: nil, table: localizable.table),
             locale: locale,
             arguments: localizable.arguments.map(\.value)
-        )
-    }
-}
-
-extension String.Localizable {
-    /// This is a comment
-    ///
-    /// ### Source Localization
-    ///
-    /// ```
-    /// Default Value
-    /// ```
-    internal static var key: Self {
-        Self (
-            key: "Key",
-            arguments: [],
-            table: "Localizable",
-            bundle: .current
-        )
-    }
-
-    /// ### Source Localization
-    ///
-    /// ```
-    /// Multiplatform Original
-    /// ```
-    internal static var myDeviceVariant: Self {
-        Self (
-            key: "myDeviceVariant",
-            arguments: [],
-            table: "Localizable",
-            bundle: .current
-        )
-    }
-
-    /// ### Source Localization
-    ///
-    /// ```
-    /// I have %lld plurals
-    /// ```
-    internal static func myPlural(_ arg1: Int) -> Self {
-        Self (
-            key: "myPlural",
-            arguments: [
-                .int(arg1)
-            ],
-            table: "Localizable",
-            bundle: .current
-        )
-    }
-
-    /// ### Source Localization
-    ///
-    /// ```
-    /// %lld: People liked %lld posts
-    /// ```
-    internal static func mySubstitute(_ arg1: Int, count arg2: Int) -> Self {
-        Self (
-            key: "mySubstitute",
-            arguments: [
-                .int(arg1),
-                .int(arg2)
-            ],
-            table: "Localizable",
-            bundle: .current
         )
     }
 }

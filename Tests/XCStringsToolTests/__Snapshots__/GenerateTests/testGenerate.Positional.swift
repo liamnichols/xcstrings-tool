@@ -68,6 +68,61 @@ extension String {
             self.bundle = bundle
         }
 
+        /// A string where the second argument is at the front of the string and the first argument is at the end
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Second: %2$@ - First: %1$lld
+        /// ```
+        internal static func reorder(_ arg1: Int, _ arg2: String) -> Positional {
+            Positional(
+                key: "reorder",
+                arguments: [
+                    .int(arg1),
+                    .object(arg2)
+                ],
+                table: "Positional",
+                bundle: .current
+            )
+        }
+
+        /// A string that uses the same argument twice
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// %1$lld, I repeat: %1$lld
+        /// ```
+        internal static func repeatExplicit(_ arg1: Int) -> Positional {
+            Positional(
+                key: "repeatExplicit",
+                arguments: [
+                    .int(arg1)
+                ],
+                table: "Positional",
+                bundle: .current
+            )
+        }
+
+        /// A string that uses the same argument twice implicitly because a positional specifier wasn't provided in one instance
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// %@, are you there? %1$@?
+        /// ```
+        internal static func repeatImplicit(_ arg1: String) -> Positional {
+            Positional(
+                key: "repeatImplicit",
+                arguments: [
+                    .object(arg1)
+                ],
+                table: "Positional",
+                bundle: .current
+            )
+        }
+
         @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
         fileprivate var defaultValue: String.LocalizationValue {
             var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
@@ -97,63 +152,6 @@ extension String {
             format: bundle.localizedString(forKey: key, value: nil, table: positional.table),
             locale: locale,
             arguments: positional.arguments.map(\.value)
-        )
-    }
-}
-
-extension String.Positional {
-    /// A string where the second argument is at the front of the string and the first argument is at the end
-    ///
-    /// ### Source Localization
-    ///
-    /// ```
-    /// Second: %2$@ - First: %1$lld
-    /// ```
-    internal static func reorder(_ arg1: Int, _ arg2: String) -> Self {
-        Self (
-            key: "reorder",
-            arguments: [
-                .int(arg1),
-                .object(arg2)
-            ],
-            table: "Positional",
-            bundle: .current
-        )
-    }
-
-    /// A string that uses the same argument twice
-    ///
-    /// ### Source Localization
-    ///
-    /// ```
-    /// %1$lld, I repeat: %1$lld
-    /// ```
-    internal static func repeatExplicit(_ arg1: Int) -> Self {
-        Self (
-            key: "repeatExplicit",
-            arguments: [
-                .int(arg1)
-            ],
-            table: "Positional",
-            bundle: .current
-        )
-    }
-
-    /// A string that uses the same argument twice implicitly because a positional specifier wasn't provided in one instance
-    ///
-    /// ### Source Localization
-    ///
-    /// ```
-    /// %@, are you there? %1$@?
-    /// ```
-    internal static func repeatImplicit(_ arg1: String) -> Self {
-        Self (
-            key: "repeatImplicit",
-            arguments: [
-                .object(arg1)
-            ],
-            table: "Positional",
-            bundle: .current
         )
     }
 }

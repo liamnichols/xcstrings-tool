@@ -15,4 +15,3 @@ extension SourceFileSyntax {
         return copy
     }
 }
-

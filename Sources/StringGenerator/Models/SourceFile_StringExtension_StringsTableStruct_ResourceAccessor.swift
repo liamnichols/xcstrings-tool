@@ -14,8 +14,8 @@ extension SourceFile.StringExtension.StringsTableStruct {
             .identifier(resource.identifier)
         }
 
-        var type: some TypeSyntaxProtocol {
-            IdentifierTypeSyntax(name: .keyword(.Self))
+        var type: TokenSyntax {
+            sourceFile.stringExtension.stringsTableStruct.type
         }
 
         var headerDocumentation: String {

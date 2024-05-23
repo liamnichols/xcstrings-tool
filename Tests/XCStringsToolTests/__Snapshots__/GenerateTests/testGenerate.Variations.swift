@@ -68,6 +68,38 @@ extension String {
             self.bundle = bundle
         }
 
+        /// A string that should have a macOS variation to replace 'Tap' with 'Click'
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Tap to open
+        /// ```
+        internal static var stringDevice: Variations {
+            Variations(
+                key: "String.Device",
+                arguments: [],
+                table: "Variations",
+                bundle: .current
+            )
+        }
+
+        /// ### Source Localization
+        ///
+        /// ```
+        /// I have %lld strings
+        /// ```
+        internal static func stringPlural(_ arg1: Int) -> Variations {
+            Variations(
+                key: "String.Plural",
+                arguments: [
+                    .int(arg1)
+                ],
+                table: "Variations",
+                bundle: .current
+            )
+        }
+
         @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
         fileprivate var defaultValue: String.LocalizationValue {
             var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
@@ -97,40 +129,6 @@ extension String {
             format: bundle.localizedString(forKey: key, value: nil, table: variations.table),
             locale: locale,
             arguments: variations.arguments.map(\.value)
-        )
-    }
-}
-
-extension String.Variations {
-    /// A string that should have a macOS variation to replace 'Tap' with 'Click'
-    ///
-    /// ### Source Localization
-    ///
-    /// ```
-    /// Tap to open
-    /// ```
-    internal static var stringDevice: Self {
-        Self (
-            key: "String.Device",
-            arguments: [],
-            table: "Variations",
-            bundle: .current
-        )
-    }
-
-    /// ### Source Localization
-    ///
-    /// ```
-    /// I have %lld strings
-    /// ```
-    internal static func stringPlural(_ arg1: Int) -> Self {
-        Self (
-            key: "String.Plural",
-            arguments: [
-                .int(arg1)
-            ],
-            table: "Variations",
-            bundle: .current
         )
     }
 }

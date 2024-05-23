@@ -68,6 +68,26 @@ extension String {
             self.bundle = bundle
         }
 
+        /// A string that uses substitutions as well as arguments
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// %@! There are %lld strings and you have %lld remaining
+        /// ```
+        internal static func substitutions_exampleString(_ arg1: String, totalStrings arg2: Int, remainingStrings arg3: Int) -> Substitution {
+            Substitution(
+                key: "substitutions_example.string",
+                arguments: [
+                    .object(arg1),
+                    .int(arg2),
+                    .int(arg3)
+                ],
+                table: "Substitution",
+                bundle: .current
+            )
+        }
+
         @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
         fileprivate var defaultValue: String.LocalizationValue {
             var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
@@ -97,28 +117,6 @@ extension String {
             format: bundle.localizedString(forKey: key, value: nil, table: substitution.table),
             locale: locale,
             arguments: substitution.arguments.map(\.value)
-        )
-    }
-}
-
-extension String.Substitution {
-    /// A string that uses substitutions as well as arguments
-    ///
-    /// ### Source Localization
-    ///
-    /// ```
-    /// %@! There are %lld strings and you have %lld remaining
-    /// ```
-    internal static func substitutions_exampleString(_ arg1: String, totalStrings arg2: Int, remainingStrings arg3: Int) -> Self {
-        Self (
-            key: "substitutions_example.string",
-            arguments: [
-                .object(arg1),
-                .int(arg2),
-                .int(arg3)
-            ],
-            table: "Substitution",
-            bundle: .current
         )
     }
 }

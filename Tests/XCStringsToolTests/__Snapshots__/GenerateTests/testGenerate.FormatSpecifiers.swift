@@ -68,6 +68,232 @@ extension String {
             self.bundle = bundle
         }
 
+        /// %@ should convert to a String argument
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Test %@
+        /// ```
+        internal static func at(_ arg1: String) -> FormatSpecifiers {
+            FormatSpecifiers(
+                key: "at",
+                arguments: [
+                    .object(arg1)
+                ],
+                table: "FormatSpecifiers",
+                bundle: .current
+            )
+        }
+
+        /// %d should convert to an Int argument
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Test %d
+        /// ```
+        internal static func d(_ arg1: Int) -> FormatSpecifiers {
+            FormatSpecifiers(
+                key: "d",
+                arguments: [
+                    .int(arg1)
+                ],
+                table: "FormatSpecifiers",
+                bundle: .current
+            )
+        }
+
+        /// %lld should covert to an Int
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Test %lld
+        /// ```
+        internal static func d_length(_ arg1: Int) -> FormatSpecifiers {
+            FormatSpecifiers(
+                key: "d_length",
+                arguments: [
+                    .int(arg1)
+                ],
+                table: "FormatSpecifiers",
+                bundle: .current
+            )
+        }
+
+        /// %f should convert to a Double argument
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Test %f
+        /// ```
+        internal static func f(_ arg1: Double) -> FormatSpecifiers {
+            FormatSpecifiers(
+                key: "f",
+                arguments: [
+                    .double(arg1)
+                ],
+                table: "FormatSpecifiers",
+                bundle: .current
+            )
+        }
+
+        /// %.2f should convert to a Double argument
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Test %.2f
+        /// ```
+        internal static func f_precision(_ arg1: Double) -> FormatSpecifiers {
+            FormatSpecifiers(
+                key: "f_precision",
+                arguments: [
+                    .double(arg1)
+                ],
+                table: "FormatSpecifiers",
+                bundle: .current
+            )
+        }
+
+        /// %i should convert to an Int argument
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Test %i
+        /// ```
+        internal static func i(_ arg1: Int) -> FormatSpecifiers {
+            FormatSpecifiers(
+                key: "i",
+                arguments: [
+                    .int(arg1)
+                ],
+                table: "FormatSpecifiers",
+                bundle: .current
+            )
+        }
+
+        /// %o should convert to a UInt argument
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Test %o
+        /// ```
+        internal static func o(_ arg1: UInt) -> FormatSpecifiers {
+            FormatSpecifiers(
+                key: "o",
+                arguments: [
+                    .uint(arg1)
+                ],
+                table: "FormatSpecifiers",
+                bundle: .current
+            )
+        }
+
+        /// % should not be converted to an argument
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Test %
+        /// ```
+        internal static var percentage: FormatSpecifiers {
+            FormatSpecifiers(
+                key: "percentage",
+                arguments: [],
+                table: "FormatSpecifiers",
+                bundle: .current
+            )
+        }
+
+        /// %% should not be converted to an argument
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Test %%
+        /// ```
+        internal static var percentage_escaped: FormatSpecifiers {
+            FormatSpecifiers(
+                key: "percentage_escaped",
+                arguments: [],
+                table: "FormatSpecifiers",
+                bundle: .current
+            )
+        }
+
+        /// %% should not be converted to an argument
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Test 50%% off
+        /// ```
+        internal static var percentage_escaped_space_o: FormatSpecifiers {
+            FormatSpecifiers(
+                key: "percentage_escaped_space_o",
+                arguments: [],
+                table: "FormatSpecifiers",
+                bundle: .current
+            )
+        }
+
+        /// '% o' should not be converted to an argument
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Test 50% off
+        /// ```
+        internal static var percentage_space_o: FormatSpecifiers {
+            FormatSpecifiers(
+                key: "percentage_space_o",
+                arguments: [],
+                table: "FormatSpecifiers",
+                bundle: .current
+            )
+        }
+
+        /// %u should convert to a UInt argument
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Test %u
+        /// ```
+        internal static func u(_ arg1: UInt) -> FormatSpecifiers {
+            FormatSpecifiers(
+                key: "u",
+                arguments: [
+                    .uint(arg1)
+                ],
+                table: "FormatSpecifiers",
+                bundle: .current
+            )
+        }
+
+        /// %x should convert to a UInt argument
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Test %x
+        /// ```
+        internal static func x(_ arg1: UInt) -> FormatSpecifiers {
+            FormatSpecifiers(
+                key: "x",
+                arguments: [
+                    .uint(arg1)
+                ],
+                table: "FormatSpecifiers",
+                bundle: .current
+            )
+        }
+
         @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
         fileprivate var defaultValue: String.LocalizationValue {
             var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
@@ -97,234 +323,6 @@ extension String {
             format: bundle.localizedString(forKey: key, value: nil, table: formatSpecifiers.table),
             locale: locale,
             arguments: formatSpecifiers.arguments.map(\.value)
-        )
-    }
-}
-
-extension String.FormatSpecifiers {
-    /// %@ should convert to a String argument
-    ///
-    /// ### Source Localization
-    ///
-    /// ```
-    /// Test %@
-    /// ```
-    internal static func at(_ arg1: String) -> Self {
-        Self (
-            key: "at",
-            arguments: [
-                .object(arg1)
-            ],
-            table: "FormatSpecifiers",
-            bundle: .current
-        )
-    }
-
-    /// %d should convert to an Int argument
-    ///
-    /// ### Source Localization
-    ///
-    /// ```
-    /// Test %d
-    /// ```
-    internal static func d(_ arg1: Int) -> Self {
-        Self (
-            key: "d",
-            arguments: [
-                .int(arg1)
-            ],
-            table: "FormatSpecifiers",
-            bundle: .current
-        )
-    }
-
-    /// %lld should covert to an Int
-    ///
-    /// ### Source Localization
-    ///
-    /// ```
-    /// Test %lld
-    /// ```
-    internal static func d_length(_ arg1: Int) -> Self {
-        Self (
-            key: "d_length",
-            arguments: [
-                .int(arg1)
-            ],
-            table: "FormatSpecifiers",
-            bundle: .current
-        )
-    }
-
-    /// %f should convert to a Double argument
-    ///
-    /// ### Source Localization
-    ///
-    /// ```
-    /// Test %f
-    /// ```
-    internal static func f(_ arg1: Double) -> Self {
-        Self (
-            key: "f",
-            arguments: [
-                .double(arg1)
-            ],
-            table: "FormatSpecifiers",
-            bundle: .current
-        )
-    }
-
-    /// %.2f should convert to a Double argument
-    ///
-    /// ### Source Localization
-    ///
-    /// ```
-    /// Test %.2f
-    /// ```
-    internal static func f_precision(_ arg1: Double) -> Self {
-        Self (
-            key: "f_precision",
-            arguments: [
-                .double(arg1)
-            ],
-            table: "FormatSpecifiers",
-            bundle: .current
-        )
-    }
-
-    /// %i should convert to an Int argument
-    ///
-    /// ### Source Localization
-    ///
-    /// ```
-    /// Test %i
-    /// ```
-    internal static func i(_ arg1: Int) -> Self {
-        Self (
-            key: "i",
-            arguments: [
-                .int(arg1)
-            ],
-            table: "FormatSpecifiers",
-            bundle: .current
-        )
-    }
-
-    /// %o should convert to a UInt argument
-    ///
-    /// ### Source Localization
-    ///
-    /// ```
-    /// Test %o
-    /// ```
-    internal static func o(_ arg1: UInt) -> Self {
-        Self (
-            key: "o",
-            arguments: [
-                .uint(arg1)
-            ],
-            table: "FormatSpecifiers",
-            bundle: .current
-        )
-    }
-
-    /// % should not be converted to an argument
-    ///
-    /// ### Source Localization
-    ///
-    /// ```
-    /// Test %
-    /// ```
-    internal static var percentage: Self {
-        Self (
-            key: "percentage",
-            arguments: [],
-            table: "FormatSpecifiers",
-            bundle: .current
-        )
-    }
-
-    /// %% should not be converted to an argument
-    ///
-    /// ### Source Localization
-    ///
-    /// ```
-    /// Test %%
-    /// ```
-    internal static var percentage_escaped: Self {
-        Self (
-            key: "percentage_escaped",
-            arguments: [],
-            table: "FormatSpecifiers",
-            bundle: .current
-        )
-    }
-
-    /// %% should not be converted to an argument
-    ///
-    /// ### Source Localization
-    ///
-    /// ```
-    /// Test 50%% off
-    /// ```
-    internal static var percentage_escaped_space_o: Self {
-        Self (
-            key: "percentage_escaped_space_o",
-            arguments: [],
-            table: "FormatSpecifiers",
-            bundle: .current
-        )
-    }
-
-    /// '% o' should not be converted to an argument
-    ///
-    /// ### Source Localization
-    ///
-    /// ```
-    /// Test 50% off
-    /// ```
-    internal static var percentage_space_o: Self {
-        Self (
-            key: "percentage_space_o",
-            arguments: [],
-            table: "FormatSpecifiers",
-            bundle: .current
-        )
-    }
-
-    /// %u should convert to a UInt argument
-    ///
-    /// ### Source Localization
-    ///
-    /// ```
-    /// Test %u
-    /// ```
-    internal static func u(_ arg1: UInt) -> Self {
-        Self (
-            key: "u",
-            arguments: [
-                .uint(arg1)
-            ],
-            table: "FormatSpecifiers",
-            bundle: .current
-        )
-    }
-
-    /// %x should convert to a UInt argument
-    ///
-    /// ### Source Localization
-    ///
-    /// ```
-    /// Test %x
-    /// ```
-    internal static func x(_ arg1: UInt) -> Self {
-        Self (
-            key: "x",
-            arguments: [
-                .uint(arg1)
-            ],
-            table: "FormatSpecifiers",
-            bundle: .current
         )
     }
 }

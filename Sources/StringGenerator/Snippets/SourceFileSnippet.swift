@@ -12,16 +12,6 @@ struct SourceFileSnippet: Snippet {
                 StringInitializerSnippet(stringsTable: sourceFile.stringExtension.stringsTableStruct)
             }
 
-            ExtensionSnippet(extending: sourceFile.stringExtension.stringsTableStruct.fullyQualifiedType) {
-                for accessor in sourceFile.stringExtension.stringsTableStruct.accessors {
-                    if accessor.hasArguments {
-                        StringStringsTableResourceFunctionSnippet(accessor: accessor)
-                    } else {
-                        StringStringsTableResourceVariableSnippet(accessor: accessor)
-                    }
-                }
-            }
-
             ExtensionSnippet(extending: .type(.Bundle)) {
                 ConvertBundleDescriptionMethodSnippet.toFoundationBundle(
                     from: sourceFile.stringExtension.stringsTableStruct.bundleDescriptionEnum

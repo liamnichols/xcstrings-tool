@@ -68,6 +68,27 @@ extension String {
             self.bundle = bundle
         }
 
+        /// This example tests the following:
+        /// 1. That line breaks in the defaultValue are supported
+        /// 2. That line breaks in the comment are supported
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Options:
+        /// - One
+        /// - Two
+        /// - Three
+        /// ```
+        internal static var multiline: Multiline {
+            Multiline(
+                key: "multiline",
+                arguments: [],
+                table: "Multiline",
+                bundle: .current
+            )
+        }
+
         @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
         fileprivate var defaultValue: String.LocalizationValue {
             var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
@@ -97,29 +118,6 @@ extension String {
             format: bundle.localizedString(forKey: key, value: nil, table: multiline.table),
             locale: locale,
             arguments: multiline.arguments.map(\.value)
-        )
-    }
-}
-
-extension String.Multiline {
-    /// This example tests the following:
-    /// 1. That line breaks in the defaultValue are supported
-    /// 2. That line breaks in the comment are supported
-    ///
-    /// ### Source Localization
-    ///
-    /// ```
-    /// Options:
-    /// - One
-    /// - Two
-    /// - Three
-    /// ```
-    internal static var multiline: Self {
-        Self (
-            key: "multiline",
-            arguments: [],
-            table: "Multiline",
-            bundle: .current
         )
     }
 }

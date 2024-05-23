@@ -68,6 +68,22 @@ extension String {
             self.bundle = bundle
         }
 
+        /// This is a simple key and value
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// My Value
+        /// ```
+        internal static var simpleKey: Simple {
+            Simple(
+                key: "SimpleKey",
+                arguments: [],
+                table: "Simple",
+                bundle: .current
+            )
+        }
+
         @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
         fileprivate var defaultValue: String.LocalizationValue {
             var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
@@ -97,24 +113,6 @@ extension String {
             format: bundle.localizedString(forKey: key, value: nil, table: simple.table),
             locale: locale,
             arguments: simple.arguments.map(\.value)
-        )
-    }
-}
-
-extension String.Simple {
-    /// This is a simple key and value
-    ///
-    /// ### Source Localization
-    ///
-    /// ```
-    /// My Value
-    /// ```
-    internal static var simpleKey: Self {
-        Self (
-            key: "SimpleKey",
-            arguments: [],
-            table: "Simple",
-            bundle: .current
         )
     }
 }
