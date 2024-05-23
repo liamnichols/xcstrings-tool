@@ -33,14 +33,6 @@ struct SourceFileSnippet: Snippet {
             }
 
             ExtensionSnippet(
-                extending: sourceFile.stringExtension.stringsTableStruct.argumentEnum.fullyQualifiedType
-            ) {
-                StringStringsTableArgumentValueComputedProperty(
-                    argumentEnum: sourceFile.stringExtension.stringsTableStruct.argumentEnum
-                )
-            }
-
-            ExtensionSnippet(
                 accessLevel: .private,
                 extending: sourceFile.stringExtension.stringsTableStruct.bundleDescriptionEnum.fullyQualifiedType
             ) {

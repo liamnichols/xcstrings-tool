@@ -21,6 +21,21 @@ extension String {
             case float(Float)
             case double(Double)
             case object(String)
+
+            var value: CVarArg {
+                switch self {
+                case .int(let value):
+                    value
+                case .uint(let value):
+                    value
+                case .float(let value):
+                    value
+                case .double(let value):
+                    value
+                case .object(let value):
+                    value
+                }
+            }
         }
 
         let key: StaticString
@@ -90,23 +105,6 @@ private extension String.Simple {
         }
         let makeDefaultValue = String.LocalizationValue.init(stringInterpolation:)
         return makeDefaultValue(stringInterpolation)
-    }
-}
-
-extension String.Simple.Argument {
-    var value: CVarArg {
-        switch self {
-        case .int(let value):
-            value
-        case .uint(let value):
-            value
-        case .float(let value):
-            value
-        case .double(let value):
-            value
-        case .object(let value):
-            value
-        }
     }
 }
 
