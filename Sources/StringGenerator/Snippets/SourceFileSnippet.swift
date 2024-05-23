@@ -44,8 +44,31 @@ struct SourceFileSnippet: Snippet {
                     stringsTable: sourceFile.stringExtension.stringsTableStruct
                 )
             }
+
+            IfCanImportSnippet(module: .SwiftUI) {
+                ImportSnippet(module: .SwiftUI)
+                    .syntax
+                    .with(\.trailingTrivia, .newlines(2))
+
+                ExtensionSnippet(
+                    availability: .wwdc2019,
+                    extending: .type(.Text)
+                ) {
+                    TextInitializerSnippet(
+                        stringsTable: sourceFile.stringExtension.stringsTableStruct
+                    )
+                }
+                .syntax
+                .with(\.trailingTrivia, .newlines(2))
+
+                ExtensionSnippet(
+                    availability: .wwdc2019,
+                    extending: .type(.LocalizedStringKey)
+                ) {
+                    LocalizedStringKeyOverrideKeySnippet()
+                }
+            }
         }
         .spacingStatements()
-        .with(\.trailingTrivia, .newline)
     }
 }

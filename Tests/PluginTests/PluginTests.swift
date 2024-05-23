@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 import XCTest
 
 final class PluginTests: XCTestCase {
@@ -44,5 +45,15 @@ final class PluginTests: XCTestCase {
             String(featureOne: .pluralExample(10)),
             "10 strings remaining"
         )
+    }
+
+    func testSwiftUI() {
+        var environment = EnvironmentValues()
+        environment.locale = Locale(identifier: "en")
+
+        let text = Text(featureOne: .pluralExample(3))
+        let resolved = text._resolveText(in: environment)
+
+        XCTAssertEqual(resolved, "3 strings remaining")
     }
 }

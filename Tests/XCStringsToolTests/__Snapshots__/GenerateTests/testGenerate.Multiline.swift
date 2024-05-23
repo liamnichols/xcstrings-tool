@@ -192,3 +192,50 @@ extension LocalizedStringResource {
         )
     }
 }
+
+#if canImport (SwiftUI)
+import SwiftUI
+
+@available(macOS 10.5, iOS 13, tvOS 13, watchOS 6, *)
+extension Text {
+    init(multiline: String.Multiline) {
+        if #available (macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
+            self.init(LocalizedStringResource(multiline: multiline))
+            return
+        }
+
+        var stringInterpolation = LocalizedStringKey.StringInterpolation(literalCapacity: 0, interpolationCount: multiline.arguments.count)
+        for argument in multiline.arguments {
+            switch argument {
+            case .int(let value):
+                stringInterpolation.appendInterpolation(value)
+            case .uint(let value):
+                stringInterpolation.appendInterpolation(value)
+            case .float(let value):
+                stringInterpolation.appendInterpolation(value)
+            case .double(let value):
+                stringInterpolation.appendInterpolation(value)
+            case .object(let value):
+                stringInterpolation.appendInterpolation(value)
+            }
+        }
+        let makeKey = LocalizedStringKey.init(stringInterpolation:)
+
+        var key = makeKey(stringInterpolation)
+        key.overrideKeyForLookup(using: multiline.key)
+
+        self.init(key, tableName: multiline.table, bundle: .from(description: multiline.bundle))
+    }
+}
+
+@available(macOS 10.5, iOS 13, tvOS 13, watchOS 6, *)
+extension LocalizedStringKey {
+    fileprivate mutating func overrideKeyForLookup(using key: StaticString) {
+        withUnsafeMutablePointer(to: &self) { pointer in
+            let raw = UnsafeMutableRawPointer(pointer)
+            let bound = raw.assumingMemoryBound(to: String.self)
+            bound.pointee = String(describing: key)
+        }
+    }
+}
+#endif

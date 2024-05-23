@@ -1,9 +1,9 @@
 import SwiftSyntax
 
-struct ExpressibleByStringInterplationInitializerClosureSnippet {
+struct ExpressibleByStringInterplationInitializerClosureSnippet<T: ExprSyntaxProtocol> {
     var bindingSpecifier: Keyword = .let
     let variableName: TokenSyntax
-    let type: MemberAccessExprSyntax
+    let type: T
 }
 
 extension ExpressibleByStringInterplationInitializerClosureSnippet: Snippet {
