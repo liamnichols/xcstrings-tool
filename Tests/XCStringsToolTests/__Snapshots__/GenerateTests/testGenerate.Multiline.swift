@@ -181,7 +181,9 @@ extension LocalizedStringResource {
         }
     }
 
-    private init(multiline: String.Multiline) {
+    internal static let multiline = Multiline()
+
+    init(multiline: String.Multiline) {
         self.init(
             multiline.key,
             defaultValue: multiline.defaultValue,
@@ -189,6 +191,4 @@ extension LocalizedStringResource {
             bundle: .from(description: multiline.bundle)
         )
     }
-
-    internal static let multiline = Multiline()
 }

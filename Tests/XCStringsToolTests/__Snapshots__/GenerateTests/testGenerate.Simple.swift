@@ -171,7 +171,9 @@ extension LocalizedStringResource {
         }
     }
 
-    private init(simple: String.Simple) {
+    internal static let simple = Simple()
+
+    init(simple: String.Simple) {
         self.init(
             simple.key,
             defaultValue: simple.defaultValue,
@@ -179,6 +181,4 @@ extension LocalizedStringResource {
             bundle: .from(description: simple.bundle)
         )
     }
-
-    internal static let simple = Simple()
 }

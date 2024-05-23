@@ -175,7 +175,9 @@ extension LocalizedStringResource {
         }
     }
 
-    private init(substitution: String.Substitution) {
+    internal static let substitution = Substitution()
+
+    init(substitution: String.Substitution) {
         self.init(
             substitution.key,
             defaultValue: substitution.defaultValue,
@@ -183,6 +185,4 @@ extension LocalizedStringResource {
             bundle: .from(description: substitution.bundle)
         )
     }
-
-    internal static let substitution = Substitution()
 }
