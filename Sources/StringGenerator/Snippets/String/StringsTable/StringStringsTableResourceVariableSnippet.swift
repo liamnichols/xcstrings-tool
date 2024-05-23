@@ -12,7 +12,7 @@ struct StringStringsTableResourceVariableSnippet: Snippet {
             bindings: [
                 PatternBindingSyntax(
                     pattern: IdentifierPatternSyntax(identifier: accessor.name),
-                    typeAnnotation: TypeAnnotationSyntax(type: accessor.type),
+                    typeAnnotation: TypeAnnotationSyntax(type: IdentifierTypeSyntax(name: accessor.type)),
                     accessorBlock: AccessorBlockSyntax(
                         accessors: .getter(getter)
                     )
@@ -34,9 +34,7 @@ struct StringStringsTableResourceVariableSnippet: Snippet {
     @CodeBlockItemListBuilder
     var getter: CodeBlockItemListSyntax {
         FunctionCallExprSyntax(
-            callee: DeclReferenceExprSyntax(
-                baseName: .keyword(.Self)
-            )
+            callee: DeclReferenceExprSyntax(baseName: accessor.type)
         ) {
             LabeledExprSyntax(
                 label: "key",

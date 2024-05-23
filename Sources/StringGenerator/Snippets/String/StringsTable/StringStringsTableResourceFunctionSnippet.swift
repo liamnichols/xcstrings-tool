@@ -15,7 +15,7 @@ struct StringStringsTableResourceFunctionSnippet: Snippet {
                         FunctionParameterSyntax(argument: argument)
                     }
                 }.commaSeparated(),
-                returnClause: ReturnClauseSyntax(type: accessor.type)
+                returnClause: ReturnClauseSyntax(type: IdentifierTypeSyntax(name: accessor.type))
             ),
             body: CodeBlockSyntax(statements: body)
         )
@@ -34,9 +34,7 @@ struct StringStringsTableResourceFunctionSnippet: Snippet {
     @CodeBlockItemListBuilder
     var body: CodeBlockItemListSyntax {
         FunctionCallExprSyntax(
-            callee: DeclReferenceExprSyntax(
-                baseName: .keyword(.Self)
-            )
+            callee: DeclReferenceExprSyntax(baseName: accessor.type)
         ) {
             LabeledExprSyntax(
                 label: "key",

@@ -13,6 +13,19 @@ extension String {
             case main
             case atURL(URL)
             case forClass(AnyClass)
+
+            #if !SWIFT_PACKAGE
+            private class BundleLocator {
+            }
+            #endif
+
+            static var current: BundleDescription {
+                #if SWIFT_PACKAGE
+                .atURL(Bundle.module.bundleURL)
+                #else
+                .forClass(BundleLocator.self)
+                #endif
+            }
         }
 
         enum Argument {
@@ -21,6 +34,21 @@ extension String {
             case float(Float)
             case double(Double)
             case object(String)
+
+            var value: CVarArg {
+                switch self {
+                case .int(let value):
+                    value
+                case .uint(let value):
+                    value
+                case .float(let value):
+                    value
+                case .double(let value):
+                    value
+                case .object(let value):
+                    value
+                }
+            }
         }
 
         let key: StaticString
@@ -39,6 +67,47 @@ extension String {
             self.table = table
             self.bundle = bundle
         }
+
+        /// A string that uses substitutions as well as arguments
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// %@! There are %lld strings and you have %lld remaining
+        /// ```
+        internal static func substitutions_exampleString(_ arg1: String, totalStrings arg2: Int, remainingStrings arg3: Int) -> Substitution {
+            Substitution(
+                key: "substitutions_example.string",
+                arguments: [
+                    .object(arg1),
+                    .int(arg2),
+                    .int(arg3)
+                ],
+                table: "Substitution",
+                bundle: .current
+            )
+        }
+
+        @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
+        fileprivate var defaultValue: String.LocalizationValue {
+            var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
+            for argument in arguments {
+                switch argument {
+                case .int(let value):
+                    stringInterpolation.appendInterpolation(value)
+                case .uint(let value):
+                    stringInterpolation.appendInterpolation(value)
+                case .float(let value):
+                    stringInterpolation.appendInterpolation(value)
+                case .double(let value):
+                    stringInterpolation.appendInterpolation(value)
+                case .object(let value):
+                    stringInterpolation.appendInterpolation(value)
+                }
+            }
+            let makeDefaultValue = String.LocalizationValue.init(stringInterpolation:)
+            return makeDefaultValue(stringInterpolation)
+        }
     }
 
     internal init(substitution: Substitution, locale: Locale? = nil) {
@@ -49,83 +118,6 @@ extension String {
             locale: locale,
             arguments: substitution.arguments.map(\.value)
         )
-    }
-}
-
-extension String.Substitution {
-    /// A string that uses substitutions as well as arguments
-    ///
-    /// ### Source Localization
-    ///
-    /// ```
-    /// %@! There are %lld strings and you have %lld remaining
-    /// ```
-    internal static func substitutions_exampleString(_ arg1: String, totalStrings arg2: Int, remainingStrings arg3: Int) -> Self {
-        Self (
-            key: "substitutions_example.string",
-            arguments: [
-                .object(arg1),
-                .int(arg2),
-                .int(arg3)
-            ],
-            table: "Substitution",
-            bundle: .current
-        )
-    }
-}
-
-@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
-private extension String.Substitution {
-    var defaultValue: String.LocalizationValue {
-        var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
-        for argument in arguments {
-            switch argument {
-            case .int(let value):
-                stringInterpolation.appendInterpolation(value)
-            case .uint(let value):
-                stringInterpolation.appendInterpolation(value)
-            case .float(let value):
-                stringInterpolation.appendInterpolation(value)
-            case .double(let value):
-                stringInterpolation.appendInterpolation(value)
-            case .object(let value):
-                stringInterpolation.appendInterpolation(value)
-            }
-        }
-        let makeDefaultValue = String.LocalizationValue.init(stringInterpolation:)
-        return makeDefaultValue(stringInterpolation)
-    }
-}
-
-extension String.Substitution.Argument {
-    var value: CVarArg {
-        switch self {
-        case .int(let value):
-            value
-        case .uint(let value):
-            value
-        case .float(let value):
-            value
-        case .double(let value):
-            value
-        case .object(let value):
-            value
-        }
-    }
-}
-
-private extension String.Substitution.BundleDescription {
-    #if !SWIFT_PACKAGE
-    private class BundleLocator {
-    }
-    #endif
-
-    static var current: Self {
-        #if SWIFT_PACKAGE
-        .atURL(Bundle.module.bundleURL)
-        #else
-        .forClass(BundleLocator.self)
-        #endif
     }
 }
 

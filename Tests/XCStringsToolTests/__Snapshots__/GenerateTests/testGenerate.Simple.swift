@@ -13,6 +13,19 @@ extension String {
             case main
             case atURL(URL)
             case forClass(AnyClass)
+
+            #if !SWIFT_PACKAGE
+            private class BundleLocator {
+            }
+            #endif
+
+            static var current: BundleDescription {
+                #if SWIFT_PACKAGE
+                .atURL(Bundle.module.bundleURL)
+                #else
+                .forClass(BundleLocator.self)
+                #endif
+            }
         }
 
         enum Argument {
@@ -21,6 +34,21 @@ extension String {
             case float(Float)
             case double(Double)
             case object(String)
+
+            var value: CVarArg {
+                switch self {
+                case .int(let value):
+                    value
+                case .uint(let value):
+                    value
+                case .float(let value):
+                    value
+                case .double(let value):
+                    value
+                case .object(let value):
+                    value
+                }
+            }
         }
 
         let key: StaticString
@@ -39,6 +67,43 @@ extension String {
             self.table = table
             self.bundle = bundle
         }
+
+        /// This is a simple key and value
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// My Value
+        /// ```
+        internal static var simpleKey: Simple {
+            Simple(
+                key: "SimpleKey",
+                arguments: [],
+                table: "Simple",
+                bundle: .current
+            )
+        }
+
+        @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
+        fileprivate var defaultValue: String.LocalizationValue {
+            var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
+            for argument in arguments {
+                switch argument {
+                case .int(let value):
+                    stringInterpolation.appendInterpolation(value)
+                case .uint(let value):
+                    stringInterpolation.appendInterpolation(value)
+                case .float(let value):
+                    stringInterpolation.appendInterpolation(value)
+                case .double(let value):
+                    stringInterpolation.appendInterpolation(value)
+                case .object(let value):
+                    stringInterpolation.appendInterpolation(value)
+                }
+            }
+            let makeDefaultValue = String.LocalizationValue.init(stringInterpolation:)
+            return makeDefaultValue(stringInterpolation)
+        }
     }
 
     internal init(simple: Simple, locale: Locale? = nil) {
@@ -49,79 +114,6 @@ extension String {
             locale: locale,
             arguments: simple.arguments.map(\.value)
         )
-    }
-}
-
-extension String.Simple {
-    /// This is a simple key and value
-    ///
-    /// ### Source Localization
-    ///
-    /// ```
-    /// My Value
-    /// ```
-    internal static var simpleKey: Self {
-        Self (
-            key: "SimpleKey",
-            arguments: [],
-            table: "Simple",
-            bundle: .current
-        )
-    }
-}
-
-@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
-private extension String.Simple {
-    var defaultValue: String.LocalizationValue {
-        var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
-        for argument in arguments {
-            switch argument {
-            case .int(let value):
-                stringInterpolation.appendInterpolation(value)
-            case .uint(let value):
-                stringInterpolation.appendInterpolation(value)
-            case .float(let value):
-                stringInterpolation.appendInterpolation(value)
-            case .double(let value):
-                stringInterpolation.appendInterpolation(value)
-            case .object(let value):
-                stringInterpolation.appendInterpolation(value)
-            }
-        }
-        let makeDefaultValue = String.LocalizationValue.init(stringInterpolation:)
-        return makeDefaultValue(stringInterpolation)
-    }
-}
-
-extension String.Simple.Argument {
-    var value: CVarArg {
-        switch self {
-        case .int(let value):
-            value
-        case .uint(let value):
-            value
-        case .float(let value):
-            value
-        case .double(let value):
-            value
-        case .object(let value):
-            value
-        }
-    }
-}
-
-private extension String.Simple.BundleDescription {
-    #if !SWIFT_PACKAGE
-    private class BundleLocator {
-    }
-    #endif
-
-    static var current: Self {
-        #if SWIFT_PACKAGE
-        .atURL(Bundle.module.bundleURL)
-        #else
-        .forClass(BundleLocator.self)
-        #endif
     }
 }
 

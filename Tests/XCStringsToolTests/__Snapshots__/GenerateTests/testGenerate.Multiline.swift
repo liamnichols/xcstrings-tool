@@ -13,6 +13,19 @@ extension String {
             case main
             case atURL(URL)
             case forClass(AnyClass)
+
+            #if !SWIFT_PACKAGE
+            private class BundleLocator {
+            }
+            #endif
+
+            static var current: BundleDescription {
+                #if SWIFT_PACKAGE
+                .atURL(Bundle.module.bundleURL)
+                #else
+                .forClass(BundleLocator.self)
+                #endif
+            }
         }
 
         enum Argument {
@@ -21,6 +34,21 @@ extension String {
             case float(Float)
             case double(Double)
             case object(String)
+
+            var value: CVarArg {
+                switch self {
+                case .int(let value):
+                    value
+                case .uint(let value):
+                    value
+                case .float(let value):
+                    value
+                case .double(let value):
+                    value
+                case .object(let value):
+                    value
+                }
+            }
         }
 
         let key: StaticString
@@ -39,6 +67,48 @@ extension String {
             self.table = table
             self.bundle = bundle
         }
+
+        /// This example tests the following:
+        /// 1. That line breaks in the defaultValue are supported
+        /// 2. That line breaks in the comment are supported
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Options:
+        /// - One
+        /// - Two
+        /// - Three
+        /// ```
+        internal static var multiline: Multiline {
+            Multiline(
+                key: "multiline",
+                arguments: [],
+                table: "Multiline",
+                bundle: .current
+            )
+        }
+
+        @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
+        fileprivate var defaultValue: String.LocalizationValue {
+            var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
+            for argument in arguments {
+                switch argument {
+                case .int(let value):
+                    stringInterpolation.appendInterpolation(value)
+                case .uint(let value):
+                    stringInterpolation.appendInterpolation(value)
+                case .float(let value):
+                    stringInterpolation.appendInterpolation(value)
+                case .double(let value):
+                    stringInterpolation.appendInterpolation(value)
+                case .object(let value):
+                    stringInterpolation.appendInterpolation(value)
+                }
+            }
+            let makeDefaultValue = String.LocalizationValue.init(stringInterpolation:)
+            return makeDefaultValue(stringInterpolation)
+        }
     }
 
     internal init(multiline: Multiline, locale: Locale? = nil) {
@@ -49,84 +119,6 @@ extension String {
             locale: locale,
             arguments: multiline.arguments.map(\.value)
         )
-    }
-}
-
-extension String.Multiline {
-    /// This example tests the following:
-    /// 1. That line breaks in the defaultValue are supported
-    /// 2. That line breaks in the comment are supported
-    ///
-    /// ### Source Localization
-    ///
-    /// ```
-    /// Options:
-    /// - One
-    /// - Two
-    /// - Three
-    /// ```
-    internal static var multiline: Self {
-        Self (
-            key: "multiline",
-            arguments: [],
-            table: "Multiline",
-            bundle: .current
-        )
-    }
-}
-
-@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
-private extension String.Multiline {
-    var defaultValue: String.LocalizationValue {
-        var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
-        for argument in arguments {
-            switch argument {
-            case .int(let value):
-                stringInterpolation.appendInterpolation(value)
-            case .uint(let value):
-                stringInterpolation.appendInterpolation(value)
-            case .float(let value):
-                stringInterpolation.appendInterpolation(value)
-            case .double(let value):
-                stringInterpolation.appendInterpolation(value)
-            case .object(let value):
-                stringInterpolation.appendInterpolation(value)
-            }
-        }
-        let makeDefaultValue = String.LocalizationValue.init(stringInterpolation:)
-        return makeDefaultValue(stringInterpolation)
-    }
-}
-
-extension String.Multiline.Argument {
-    var value: CVarArg {
-        switch self {
-        case .int(let value):
-            value
-        case .uint(let value):
-            value
-        case .float(let value):
-            value
-        case .double(let value):
-            value
-        case .object(let value):
-            value
-        }
-    }
-}
-
-private extension String.Multiline.BundleDescription {
-    #if !SWIFT_PACKAGE
-    private class BundleLocator {
-    }
-    #endif
-
-    static var current: Self {
-        #if SWIFT_PACKAGE
-        .atURL(Bundle.module.bundleURL)
-        #else
-        .forClass(BundleLocator.self)
-        #endif
     }
 }
 

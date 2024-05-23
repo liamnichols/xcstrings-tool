@@ -13,6 +13,19 @@ extension String {
             case main
             case atURL(URL)
             case forClass(AnyClass)
+
+            #if !SWIFT_PACKAGE
+            private class BundleLocator {
+            }
+            #endif
+
+            static var current: BundleDescription {
+                #if SWIFT_PACKAGE
+                .atURL(Bundle.module.bundleURL)
+                #else
+                .forClass(BundleLocator.self)
+                #endif
+            }
         }
 
         enum Argument {
@@ -21,6 +34,21 @@ extension String {
             case float(Float)
             case double(Double)
             case object(String)
+
+            var value: CVarArg {
+                switch self {
+                case .int(let value):
+                    value
+                case .uint(let value):
+                    value
+                case .float(let value):
+                    value
+                case .double(let value):
+                    value
+                case .object(let value):
+                    value
+                }
+            }
         }
 
         let key: StaticString
@@ -39,6 +67,59 @@ extension String {
             self.table = table
             self.bundle = bundle
         }
+
+        /// A string that should have a macOS variation to replace 'Tap' with 'Click'
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Tap to open
+        /// ```
+        internal static var stringDevice: Variations {
+            Variations(
+                key: "String.Device",
+                arguments: [],
+                table: "Variations",
+                bundle: .current
+            )
+        }
+
+        /// ### Source Localization
+        ///
+        /// ```
+        /// I have %lld strings
+        /// ```
+        internal static func stringPlural(_ arg1: Int) -> Variations {
+            Variations(
+                key: "String.Plural",
+                arguments: [
+                    .int(arg1)
+                ],
+                table: "Variations",
+                bundle: .current
+            )
+        }
+
+        @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
+        fileprivate var defaultValue: String.LocalizationValue {
+            var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
+            for argument in arguments {
+                switch argument {
+                case .int(let value):
+                    stringInterpolation.appendInterpolation(value)
+                case .uint(let value):
+                    stringInterpolation.appendInterpolation(value)
+                case .float(let value):
+                    stringInterpolation.appendInterpolation(value)
+                case .double(let value):
+                    stringInterpolation.appendInterpolation(value)
+                case .object(let value):
+                    stringInterpolation.appendInterpolation(value)
+                }
+            }
+            let makeDefaultValue = String.LocalizationValue.init(stringInterpolation:)
+            return makeDefaultValue(stringInterpolation)
+        }
     }
 
     internal init(variations: Variations, locale: Locale? = nil) {
@@ -49,95 +130,6 @@ extension String {
             locale: locale,
             arguments: variations.arguments.map(\.value)
         )
-    }
-}
-
-extension String.Variations {
-    /// A string that should have a macOS variation to replace 'Tap' with 'Click'
-    ///
-    /// ### Source Localization
-    ///
-    /// ```
-    /// Tap to open
-    /// ```
-    internal static var stringDevice: Self {
-        Self (
-            key: "String.Device",
-            arguments: [],
-            table: "Variations",
-            bundle: .current
-        )
-    }
-
-    /// ### Source Localization
-    ///
-    /// ```
-    /// I have %lld strings
-    /// ```
-    internal static func stringPlural(_ arg1: Int) -> Self {
-        Self (
-            key: "String.Plural",
-            arguments: [
-                .int(arg1)
-            ],
-            table: "Variations",
-            bundle: .current
-        )
-    }
-}
-
-@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
-private extension String.Variations {
-    var defaultValue: String.LocalizationValue {
-        var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
-        for argument in arguments {
-            switch argument {
-            case .int(let value):
-                stringInterpolation.appendInterpolation(value)
-            case .uint(let value):
-                stringInterpolation.appendInterpolation(value)
-            case .float(let value):
-                stringInterpolation.appendInterpolation(value)
-            case .double(let value):
-                stringInterpolation.appendInterpolation(value)
-            case .object(let value):
-                stringInterpolation.appendInterpolation(value)
-            }
-        }
-        let makeDefaultValue = String.LocalizationValue.init(stringInterpolation:)
-        return makeDefaultValue(stringInterpolation)
-    }
-}
-
-extension String.Variations.Argument {
-    var value: CVarArg {
-        switch self {
-        case .int(let value):
-            value
-        case .uint(let value):
-            value
-        case .float(let value):
-            value
-        case .double(let value):
-            value
-        case .object(let value):
-            value
-        }
-    }
-}
-
-private extension String.Variations.BundleDescription {
-    #if !SWIFT_PACKAGE
-    private class BundleLocator {
-    }
-    #endif
-
-    static var current: Self {
-        #if SWIFT_PACKAGE
-        .atURL(Bundle.module.bundleURL)
-        #else
-        .forClass(BundleLocator.self)
-        #endif
     }
 }
 

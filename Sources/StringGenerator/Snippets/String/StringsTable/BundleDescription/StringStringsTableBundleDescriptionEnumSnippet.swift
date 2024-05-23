@@ -15,9 +15,23 @@ struct StringStringsTableBundleDescriptionEnumSnippet: Snippet {
 
     var syntax: some DeclSyntaxProtocol {
         EnumDeclSyntax(name: bundleDescription.type) {
-            for enumCase in bundleDescription.cases {
-                Case(enumCase: enumCase)
+            MemberBlockItemListSyntax {
+                for enumCase in bundleDescription.cases {
+                    Case(enumCase: enumCase)
+                }
             }
+            .with(\.trailingTrivia, .newlines(2))
+
+            IfConfigDeclSyntax(
+                prefixOperator: "!",
+                reference: "SWIFT_PACKAGE",
+                elements: .decls(MemberBlockItemListSyntax {
+                    StringStringsTableBundleLocatorClassSnippet()
+                })
+            )
+            .with(\.trailingTrivia, .newlines(2))
+
+            StringStringsTableBundleDescriptionCurrentComputedPropertySnippet()
         }
     }
 }

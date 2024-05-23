@@ -12,49 +12,6 @@ struct SourceFileSnippet: Snippet {
                 StringInitializerSnippet(stringsTable: sourceFile.stringExtension.stringsTableStruct)
             }
 
-            ExtensionSnippet(extending: sourceFile.stringExtension.stringsTableStruct.fullyQualifiedType) {
-                for accessor in sourceFile.stringExtension.stringsTableStruct.accessors {
-                    if accessor.hasArguments {
-                        StringStringsTableResourceFunctionSnippet(accessor: accessor)
-                    } else {
-                        StringStringsTableResourceVariableSnippet(accessor: accessor)
-                    }
-                }
-            }
-
-            ExtensionSnippet(
-                availability: .wwdc2021,
-                accessLevel: .private,
-                extending: sourceFile.stringExtension.stringsTableStruct.fullyQualifiedType
-            ) {
-                StringStringsTableDefaultValueComputedPropertySnippet(
-                    stringsTable: sourceFile.stringExtension.stringsTableStruct
-                )
-            }
-
-            ExtensionSnippet(
-                extending: sourceFile.stringExtension.stringsTableStruct.argumentEnum.fullyQualifiedType
-            ) {
-                StringStringsTableArgumentValueComputedProperty(
-                    argumentEnum: sourceFile.stringExtension.stringsTableStruct.argumentEnum
-                )
-            }
-
-            ExtensionSnippet(
-                accessLevel: .private,
-                extending: sourceFile.stringExtension.stringsTableStruct.bundleDescriptionEnum.fullyQualifiedType
-            ) {
-                IfConfigDeclSyntax(
-                    prefixOperator: "!",
-                    reference: "SWIFT_PACKAGE",
-                    elements: .decls(MemberBlockItemListSyntax {
-                        StringStringsTableBundleLocatorClassSnippet()
-                    })
-                )
-
-                StringStringsTableBundleDescriptionCurrentComputedPropertySnippet()
-            }
-
             ExtensionSnippet(extending: .type(.Bundle)) {
                 ConvertBundleDescriptionMethodSnippet.toFoundationBundle(
                     from: sourceFile.stringExtension.stringsTableStruct.bundleDescriptionEnum

@@ -6,9 +6,16 @@ struct StringStringsTableArgumentEnumSnippet: Snippet {
 
     var syntax: some DeclSyntaxProtocol {
         EnumDeclSyntax(name: argument.type) {
-            for enumCase in argument.cases {
-                Case(enumCase: enumCase)
+            MemberBlockItemListSyntax {
+                for enumCase in argument.cases {
+                    Case(enumCase: enumCase)
+                }
             }
+            .with(\.trailingTrivia, .newlines(2))
+
+            StringStringsTableArgumentValueComputedProperty(
+                argumentEnum: argument
+            )
         }
     }
 }
