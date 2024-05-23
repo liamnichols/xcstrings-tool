@@ -13,6 +13,19 @@ extension String {
             case main
             case atURL(URL)
             case forClass(AnyClass)
+
+            #if !SWIFT_PACKAGE
+            private class BundleLocator {
+            }
+            #endif
+
+            static var current: BundleDescription {
+                #if SWIFT_PACKAGE
+                .atURL(Bundle.module.bundleURL)
+                #else
+                .forClass(BundleLocator.self)
+                #endif
+            }
         }
 
         enum Argument {
@@ -119,21 +132,6 @@ extension String.Variations {
             table: "Variations",
             bundle: .current
         )
-    }
-}
-
-private extension String.Variations.BundleDescription {
-    #if !SWIFT_PACKAGE
-    private class BundleLocator {
-    }
-    #endif
-
-    static var current: Self {
-        #if SWIFT_PACKAGE
-        .atURL(Bundle.module.bundleURL)
-        #else
-        .forClass(BundleLocator.self)
-        #endif
     }
 }
 

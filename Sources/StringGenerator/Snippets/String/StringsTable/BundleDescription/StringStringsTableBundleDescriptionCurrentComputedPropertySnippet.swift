@@ -11,7 +11,7 @@ struct StringStringsTableBundleDescriptionCurrentComputedPropertySnippet: Snippe
             bindings: [
                 PatternBindingSyntax(
                     pattern: IdentifierPatternSyntax(identifier: "current"),
-                    typeAnnotation: TypeAnnotationSyntax(type: IdentifierTypeSyntax(name: "Self")),
+                    typeAnnotation: TypeAnnotationSyntax(type: .identifier(.BundleDescription)),
                     accessorBlock: AccessorBlockSyntax(
                         accessors: .getter([
                             CodeBlockItemSyntax(

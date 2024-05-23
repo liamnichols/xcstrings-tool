@@ -22,21 +22,6 @@ struct SourceFileSnippet: Snippet {
                 }
             }
 
-            ExtensionSnippet(
-                accessLevel: .private,
-                extending: sourceFile.stringExtension.stringsTableStruct.bundleDescriptionEnum.fullyQualifiedType
-            ) {
-                IfConfigDeclSyntax(
-                    prefixOperator: "!",
-                    reference: "SWIFT_PACKAGE",
-                    elements: .decls(MemberBlockItemListSyntax {
-                        StringStringsTableBundleLocatorClassSnippet()
-                    })
-                )
-
-                StringStringsTableBundleDescriptionCurrentComputedPropertySnippet()
-            }
-
             ExtensionSnippet(extending: .type(.Bundle)) {
                 ConvertBundleDescriptionMethodSnippet.toFoundationBundle(
                     from: sourceFile.stringExtension.stringsTableStruct.bundleDescriptionEnum
