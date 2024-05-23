@@ -20,12 +20,10 @@ extension StringStringsTableArgumentEnumSnippet {
         var syntax: some DeclSyntaxProtocol {
             EnumCaseDeclSyntax {
                 EnumCaseElementSyntax(
-                    name: enumCase.name,
+                    name: enumCase.caseName,
                     parameterClause: EnumCaseParameterClauseSyntax(
                         parameters: EnumCaseParameterListSyntax {
-                            for parameter in enumCase.parameters {
-                                EnumCaseParameterSyntax(type: IdentifierTypeSyntax(name: parameter))
-                            }
+                            EnumCaseParameterSyntax(type: IdentifierTypeSyntax(name: enumCase.typeName))
                         }
                     )
                 )

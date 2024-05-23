@@ -27,13 +27,17 @@ struct SourceFileSnippet: Snippet {
                 accessLevel: .private,
                 extending: sourceFile.stringExtension.stringsTableStruct.fullyQualifiedType
             ) {
-                StringStringsTableDefaultValueComputedPropertySnippet()
+                StringStringsTableDefaultValueComputedPropertySnippet(
+                    stringsTable: sourceFile.stringExtension.stringsTableStruct
+                )
             }
 
             ExtensionSnippet(
                 extending: sourceFile.stringExtension.stringsTableStruct.argumentEnum.fullyQualifiedType
             ) {
-                StringStringsTableArgumentValueComputedProperty()
+                StringStringsTableArgumentValueComputedProperty(
+                    argumentEnum: sourceFile.stringExtension.stringsTableStruct.argumentEnum
+                )
             }
 
             ExtensionSnippet(

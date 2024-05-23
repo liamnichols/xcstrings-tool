@@ -16,11 +16,11 @@ extension String {
         }
 
         enum Argument {
-            case object(String)
             case int(Int)
             case uint(UInt)
-            case double(Double)
             case float(Float)
+            case double(Double)
+            case object(String)
         }
 
         let key: StaticString

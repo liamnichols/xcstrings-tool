@@ -2,6 +2,8 @@ import SwiftSyntax
 import SwiftSyntaxBuilder
 
 struct StringStringsTableDefaultValueComputedPropertySnippet: Snippet {
+    let stringsTable: SourceFile.StringExtension.StringsTableStruct
+
     var syntax: some DeclSyntaxProtocol {
         // var defaultValue: String.LocalizationValue { ... }
         VariableDeclSyntax(bindingSpecifier: .keyword(.var)) {
@@ -26,8 +28,8 @@ struct StringStringsTableDefaultValueComputedPropertySnippet: Snippet {
     var body: CodeBlockItemListSyntax {
         CodeBlockItemListSyntax {
             // var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
-            StringInterpolationProtocolFactory.initializedVariable(
-                named: "stringInterpolation",
+            StringInterpolationVariableInitializerSnippet(
+                variableName: "stringInterpolation",
                 type: MemberAccessExprSyntax(
                     .type(.String), .type(.LocalizationValue), .type(.StringInterpolation)
                 ),
@@ -36,14 +38,15 @@ struct StringStringsTableDefaultValueComputedPropertySnippet: Snippet {
             )
 
             // for argument in arguments { ... }
-            StringInterpolationProtocolFactory.appendFormatSpecifiableInterpolations(
-                fromArguments: "arguments",
-                intoVariable: "stringInterpolation"
+            AppendFormatSpecifiableInterpolationsSnippet(
+                argumentsEnum: stringsTable.argumentEnum,
+                sequenceName: "arguments",
+                variableName: "stringInterpolation"
             )
 
             // let makeDefaultValue = String.LocalizationValue.init(stringInterpolation:)
-            StringInterpolationProtocolFactory.initializerClosure(
-                named: "makeDefaultValue",
+            ExpressibleByStringInterplationInitializerClosureSnippet(
+                variableName: "makeDefaultValue",
                 type: MemberAccessExprSyntax(
                     .type(.String), .type(.LocalizationValue)
                 )
