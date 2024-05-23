@@ -54,6 +54,27 @@ extension String {
             self.table = table
             self.bundle = bundle
         }
+
+        @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
+        fileprivate var defaultValue: String.LocalizationValue {
+            var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
+            for argument in arguments {
+                switch argument {
+                case .int(let value):
+                    stringInterpolation.appendInterpolation(value)
+                case .uint(let value):
+                    stringInterpolation.appendInterpolation(value)
+                case .float(let value):
+                    stringInterpolation.appendInterpolation(value)
+                case .double(let value):
+                    stringInterpolation.appendInterpolation(value)
+                case .object(let value):
+                    stringInterpolation.appendInterpolation(value)
+                }
+            }
+            let makeDefaultValue = String.LocalizationValue.init(stringInterpolation:)
+            return makeDefaultValue(stringInterpolation)
+        }
     }
 
     internal init(simple: Simple, locale: Locale? = nil) {
@@ -82,29 +103,6 @@ extension String.Simple {
             table: "Simple",
             bundle: .current
         )
-    }
-}
-
-@available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
-private extension String.Simple {
-    var defaultValue: String.LocalizationValue {
-        var stringInterpolation = String.LocalizationValue.StringInterpolation(literalCapacity: 0, interpolationCount: arguments.count)
-        for argument in arguments {
-            switch argument {
-            case .int(let value):
-                stringInterpolation.appendInterpolation(value)
-            case .uint(let value):
-                stringInterpolation.appendInterpolation(value)
-            case .float(let value):
-                stringInterpolation.appendInterpolation(value)
-            case .double(let value):
-                stringInterpolation.appendInterpolation(value)
-            case .object(let value):
-                stringInterpolation.appendInterpolation(value)
-            }
-        }
-        let makeDefaultValue = String.LocalizationValue.init(stringInterpolation:)
-        return makeDefaultValue(stringInterpolation)
     }
 }
 

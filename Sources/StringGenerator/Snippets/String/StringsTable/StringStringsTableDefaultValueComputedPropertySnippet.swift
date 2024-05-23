@@ -5,14 +5,30 @@ struct StringStringsTableDefaultValueComputedPropertySnippet: Snippet {
     let stringsTable: SourceFile.StringExtension.StringsTableStruct
 
     var syntax: some DeclSyntaxProtocol {
-        // var defaultValue: String.LocalizationValue { ... }
-        VariableDeclSyntax(bindingSpecifier: .keyword(.var)) {
+        // @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
+        // fileprivate var defaultValue: String.LocalizationValue { ... }
+        VariableDeclSyntax(
+            attributes: attributes,
+            modifiers: modifiers,
+            bindingSpecifier: .keyword(.var)
+        ) {
             PatternBindingSyntax(
                 pattern: IdentifierPatternSyntax(identifier: .identifier("defaultValue")),
                 typeAnnotation: typeAnnotation,
                 accessorBlock: AccessorBlockSyntax(accessors: .getter(body))
             )
         }
+    }
+
+    @AttributeListBuilder
+    var attributes: AttributeListSyntax {
+        AttributeSyntax(availability: .wwdc2021)
+            .with(\.trailingTrivia, .newline)
+    }
+
+    @DeclModifierListBuilder
+    var modifiers: DeclModifierListSyntax {
+        DeclModifierSyntax(name: .keyword(.fileprivate))
     }
 
     var typeAnnotation: TypeAnnotationSyntax {

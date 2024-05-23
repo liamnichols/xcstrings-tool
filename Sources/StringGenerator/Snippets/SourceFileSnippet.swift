@@ -23,16 +23,6 @@ struct SourceFileSnippet: Snippet {
             }
 
             ExtensionSnippet(
-                availability: .wwdc2021,
-                accessLevel: .private,
-                extending: sourceFile.stringExtension.stringsTableStruct.fullyQualifiedType
-            ) {
-                StringStringsTableDefaultValueComputedPropertySnippet(
-                    stringsTable: sourceFile.stringExtension.stringsTableStruct
-                )
-            }
-
-            ExtensionSnippet(
                 accessLevel: .private,
                 extending: sourceFile.stringExtension.stringsTableStruct.bundleDescriptionEnum.fullyQualifiedType
             ) {
