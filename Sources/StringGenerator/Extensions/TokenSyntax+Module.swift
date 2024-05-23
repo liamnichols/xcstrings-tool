@@ -1,11 +1,12 @@
 import SwiftSyntax
 
 extension TokenSyntax {
-    enum Import: String {
+    enum Module: String {
         case Foundation = "Foundation"
+        case SwiftUI = "SwiftUI"
     }
 
-    static func `import`(_ value: Import) -> TokenSyntax {
+    static func module(_ value: Module) -> TokenSyntax {
         .identifier(value.rawValue)
     }
 }

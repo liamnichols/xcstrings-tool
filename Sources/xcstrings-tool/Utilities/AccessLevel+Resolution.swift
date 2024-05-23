@@ -2,7 +2,7 @@ import ArgumentParser
 import Foundation
 import StringGenerator
 
-extension StringGenerator.AccessLevel {
+extension AccessLevel {
     /// Resolves the appropriate value either from the command line input or from the environment
     static func resolveFromEnvironment(
         _ environment: [String: String] = ProcessInfo.processInfo.environment,
@@ -13,7 +13,7 @@ extension StringGenerator.AccessLevel {
         }
 
         let buildSetting = environment["XCSTRINGS_TOOL_ACCESS_LEVEL"]?.lowercased()
-        if let accessLevel = buildSetting.flatMap(StringGenerator.AccessLevel.init(rawValue:)) {
+        if let accessLevel = buildSetting.flatMap(AccessLevel.init(rawValue:)) {
             return accessLevel
         }
 
@@ -31,5 +31,5 @@ extension StringGenerator.AccessLevel {
     }
 }
 
-extension StringGenerator.AccessLevel: ExpressibleByArgument {
+extension AccessLevel: ExpressibleByArgument {
 }
