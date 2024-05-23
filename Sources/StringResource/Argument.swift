@@ -8,9 +8,9 @@ public struct Argument: Equatable {
     public let name: String
 
     /// The type of the argument
-    public let placeholderType: String.LocalizationValue.Placeholder
+    public let placeholderType: PlaceholderType
 
-    public init(label: String?, name: String, placeholderType: String.LocalizationValue.Placeholder) {
+    public init(label: String?, name: String, placeholderType: PlaceholderType) {
         self.label = label
         self.name = name
         self.placeholderType = placeholderType

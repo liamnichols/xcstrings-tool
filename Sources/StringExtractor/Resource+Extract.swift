@@ -18,7 +18,7 @@ extension Resource {
                 sourceLocalization.append(placeholder.rawValue)
             case .placeholder(let placeholder):
                 // If the placeholder is an unsupported type, raise an error about the invalid string
-                guard let _type = placeholder.type, let type = String.LocalizationValue.Placeholder(_type) else {
+                guard let _type = placeholder.type, let type = PlaceholderType(_type) else {
                     throw ExtractionError.unsupported(
                         ExtractionError.Context(
                             key: key,
@@ -85,8 +85,9 @@ extension Resource {
     }
 }
 
-private extension String.LocalizationValue.Placeholder {
+private extension PlaceholderType {
     init?(_ formatSpecifier: String) {
+        // TODO: Be more strict about lengths
         // By using `.last`, we are dropping any potential length info
         switch formatSpecifier.last {
         case "@":

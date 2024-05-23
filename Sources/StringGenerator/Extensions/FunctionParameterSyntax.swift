@@ -6,7 +6,7 @@ extension FunctionParameterSyntax {
         self.init(
             firstName: argument.label.flatMap { .identifier($0) } ?? .wildcardToken(),
             secondName: .identifier(argument.name),
-            type: IdentifierTypeSyntax(name: .identifier(argument.placeholderType.identifier))
+            type: IdentifierTypeSyntax(name: argument.placeholderType.typeName)
         )
     }
 }

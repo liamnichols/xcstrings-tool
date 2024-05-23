@@ -1,3 +1,4 @@
+import StringResource
 import SwiftSyntax
 import SwiftSyntaxBuilder
 
@@ -43,7 +44,7 @@ enum StringInterpolationProtocolFactory {
                 SwitchExprSyntax(subject: DeclReferenceExprSyntax(baseName: "argument")) {
                     // case object(let object):
                     //     stringInterpolation.appendInterpolation(string)
-                    for placeholder in String.LocalizationValue.Placeholder.allCases {
+                    for placeholder in PlaceholderType.allCases {
                         // case object(let value):
                         SwitchCaseSyntax(
                             singleCasePattern: ExpressionPatternSyntax(

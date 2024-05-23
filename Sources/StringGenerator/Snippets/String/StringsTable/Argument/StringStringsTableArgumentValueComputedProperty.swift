@@ -1,7 +1,10 @@
+import StringResource
 import SwiftSyntax
 import SwiftSyntaxBuilder
 
 struct StringStringsTableArgumentValueComputedProperty: Snippet {
+    let argumentEnum: SourceFile.StringExtension.StringsTableStruct.ArgumentEnum
+
     var syntax: some DeclSyntaxProtocol {
         // var value: CVarArg { ... }
         VariableDeclSyntax(bindingSpecifier: .keyword(.var)) {
@@ -16,12 +19,12 @@ struct StringStringsTableArgumentValueComputedProperty: Snippet {
                         SwitchExprSyntax(subject: DeclReferenceExprSyntax(baseName: .keyword(.`self`))) {
                             // case object(let value):
                             //     value
-                            for placeholder in String.LocalizationValue.Placeholder.allCases {
+                            for enumCase in argumentEnum.cases {
                                 // case object(let value):
                                 SwitchCaseSyntax(
                                     singleCasePattern: ExpressionPatternSyntax(
                                         expression: FunctionCallExprSyntax(
-                                            callee: MemberAccessExprSyntax(name: placeholder.caseName)
+                                            callee: MemberAccessExprSyntax(name: enumCase.caseName)
                                         ) {
                                             LabeledExprSyntax(
                                                 expression: PatternExprSyntax(
