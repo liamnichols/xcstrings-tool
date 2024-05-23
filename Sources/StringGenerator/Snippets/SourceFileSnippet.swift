@@ -27,7 +27,9 @@ struct SourceFileSnippet: Snippet {
                 accessLevel: .private,
                 extending: sourceFile.stringExtension.stringsTableStruct.fullyQualifiedType
             ) {
-                StringStringsTableDefaultValueComputedPropertySnippet()
+                StringStringsTableDefaultValueComputedPropertySnippet(
+                    stringsTable: sourceFile.stringExtension.stringsTableStruct
+                )
             }
 
             ExtensionSnippet(
