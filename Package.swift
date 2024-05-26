@@ -38,7 +38,8 @@ let package = Package(
                 .target(name: "StringExtractor"),
                 .target(name: "StringGenerator"),
                 .target(name: "StringResource"),
-                .target(name: "StringValidator")
+                .target(name: "StringValidator"),
+                .target(name: "Version")
             ]
         ),
 
@@ -57,7 +58,8 @@ let package = Package(
                 .target(name: "SwiftIdentifier"),
                 .product(name: "SwiftBasicFormat", package: "swift-syntax"),
                 .product(name: "SwiftSyntax", package: "swift-syntax"),
-                .product(name: "SwiftSyntaxBuilder", package: "swift-syntax")
+                .product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
+                .target(name: "Version")
             ]
         ),
 
@@ -71,6 +73,10 @@ let package = Package(
 
         .target(
             name: "SwiftIdentifier"
+        ),
+
+        .target(
+            name: "Version"
         ),
 
         .target(

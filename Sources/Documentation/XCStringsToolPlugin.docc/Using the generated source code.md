@@ -4,10 +4,7 @@ How to use the generated source code effectively in your project.
 
 ## Overview
 
-For each Strings Catalog in your target, XCStrings Tool will produce a self-contained source file that consists primarily of a struct that is named after the Strings Catalog. The generated code extends two main Foundation APIs
-
-- [Resolving a String](#Resolving-a-String)
-- [Using LocalizedStringResource](#Using-LocalizedStringResource)
+For each Strings Catalog in your target, XCStrings Tool will produce a self-contained source file named after the Strings Catalog. Within the source file contains a struct with a static method or property for each localization and a series of extensions that allow you to create instances of `String`, `LocalizedStringResource`, `LocalizedStringKey` or `Text`.
 
 ### Resolving a String
 
@@ -25,49 +22,34 @@ Lets break down the generated code that makes this example possible:
 2. `String.Localizable.headingTitle` - A static variable that describes the `HeadingTitle` key from the strings catalog. 
 3. `String.init(localizable:locale:)` - An initializer that can be used to resolve the localized value of the phrase.
 
-The source code used in this example is compatible across all OS versions as it uses `Bundle.localizedString(forKey:value:table:)` internally.
+The source code used in this example is compatible across all OS versions as it uses [`Bundle.localizedString(forKey:value:table:)`](https://developer.apple.com/documentation/foundation/bundle/1417694-localizedstring) internally.
 
-### Using LocalizedStringResource
+### Converting to LocalizedStringResource
 
 Stating in iOS 16/macOS 13/watchOS 9/tvOS 16, a new `LocalizedStringResource` type was introduced to help defer the resolution of localized text in order to support features such as App Intents and the SwiftUI environment. 
 
-For example, if the SwiftUI environment overrides the `locale`, it is expected that Text and other localized resources are resolved using that `locale` rather than the app or device language.
+For example, if the SwiftUI environment overrides the `locale`, it is expected that `Text` and other localized resources are resolved using that `locale` rather than the app or device language.
 
-XCStrings Tool will also generate the following:
-
-```swift
-let resource = LocalizedStringResource.localizable.headingTitle
-```
-
-If your project needs to override the language, you can leverage the `LocalizedStringResource` like in the following examples:
-
-#### SwiftUI
+You can create a `LocalizedStringResource` like so:
 
 ```swift
-Text(.localizable.headingTitle)
-    .environment(\.locale, Locale(identifier: "fr"))
-```
-
-> Not all SwiftUI types have been updated to accept `LocalizedStringResource`. 
->
-> In some instances, you might need to wrap the `LocalizedStringResource` in `Text` or `LocalizedStringKey` as per the following examples
->
-> ```swift
-> // Text
-> Button(action: { rows.append("New Row") }, label: {
->     Text(.localizable.addRow)
-> })
->
-> // LocalizedStringKey
-> Button("\(.localizable.addRow)") { rows.append("New Row") }
-> ```
-
-#### Foundation
-
-```swift
-var resource = LocalizedStringResource.localizable.headingTitle
+var resource = LocalizedStringResource(localizable: .headingTitle)
 resource.locale = Locale(identifier: "fr")
 let frenchValue = String(localized: resource)
 ```
 
+### Working with SwiftUI
 
+While `LocalizedStringResource` is supported on some SwiftUI types, it is not available everywhere and it cannot work on older operating system versions. As a result, your generated code will contain additionl methods to improve usage.
+
+This consists of `Text.init(localizable:)`, `LocalizedStringKey.init(localizable:)` as well as the `LocalizedStringKey.localizable(_:)` and `LocalizedStringResource.localizable(_:)` convenience methods.
+
+```swift
+var body: some View {
+    List {
+        Text(localizable: .listContent)
+    }
+    .navigationTitle(.localizable(.headingTitle))
+    .environment(\.locale, Locale(identifier: "fr"))
+}
+```

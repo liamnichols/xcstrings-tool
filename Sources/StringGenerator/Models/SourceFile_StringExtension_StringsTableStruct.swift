@@ -1,5 +1,6 @@
 import StringResource
 import SwiftSyntax
+import Version
 
 extension SourceFile.StringExtension {
     struct StringsTableStruct {
@@ -111,7 +112,7 @@ extension SourceFile.StringExtension {
         }
         ```
 
-        - SeeAlso: [XCStrings Tool Documentation](https://swiftpackageindex.com/liamnichols/xcstrings-tool/documentation/documentation/using-the-generated-source-code)
+        - SeeAlso: [XCStrings Tool Documentation - Using the generated source code](https://swiftpackageindex.com/liamnichols/xcstrings-tool/\(version)/documentation/documentation/using-the-generated-source-code)
         """
         }
     }

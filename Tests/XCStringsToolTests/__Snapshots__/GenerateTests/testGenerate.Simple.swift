@@ -46,7 +46,7 @@ extension String {
     /// }
     /// ```
     ///
-    /// - SeeAlso: [XCStrings Tool Documentation](https://swiftpackageindex.com/liamnichols/xcstrings-tool/documentation/documentation/using-the-generated-source-code)
+    /// - SeeAlso: [XCStrings Tool Documentation - Using the generated source code](https://swiftpackageindex.com/liamnichols/xcstrings-tool/0.3.0/documentation/documentation/using-the-generated-source-code)
     internal struct Simple {
         enum BundleDescription {
             case main
