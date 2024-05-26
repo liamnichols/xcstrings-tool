@@ -43,6 +43,11 @@ struct SourceFileSnippet: Snippet {
                 LocalizedStringResourceInitializerSnippet(
                     stringsTable: sourceFile.stringExtension.stringsTableStruct
                 )
+
+                StringsTableConversionStaticMethodSnippet(
+                    stringsTable: sourceFile.stringExtension.stringsTableStruct,
+                    returnType: .type(.LocalizedStringResource)
+                )
             }
 
             IfCanImportSnippet(module: .SwiftUI) {
@@ -68,6 +73,12 @@ struct SourceFileSnippet: Snippet {
                     LocalizedStringKeyInitializerSnippet(
                         stringsTable: sourceFile.stringExtension.stringsTableStruct
                     )
+
+                    StringsTableConversionStaticMethodSnippet(
+                        stringsTable: sourceFile.stringExtension.stringsTableStruct,
+                        returnType: .type(.LocalizedStringKey)
+                    )
+
                     LocalizedStringKeyOverrideKeySnippet()
                 }
             }

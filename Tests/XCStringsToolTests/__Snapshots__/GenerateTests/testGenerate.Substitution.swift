@@ -177,13 +177,17 @@ extension LocalizedStringResource {
 
     internal static let substitution = Substitution()
 
-    init(substitution: String.Substitution) {
+    internal init(substitution: String.Substitution) {
         self.init(
             substitution.key,
             defaultValue: substitution.defaultValue,
             table: substitution.table,
             bundle: .from(description: substitution.bundle)
         )
+    }
+
+    internal static func substitution(_ substitution: String.Substitution) -> LocalizedStringResource {
+        LocalizedStringResource(substitution: substitution)
     }
 }
 
@@ -224,7 +228,7 @@ extension Text {
 
 @available(macOS 10.5, iOS 13, tvOS 13, watchOS 6, *)
 extension LocalizedStringKey {
-    init(substitution: String.Substitution) {
+    internal init(substitution: String.Substitution) {
         let text = Text(substitution: substitution)
 
         var stringInterpolation = LocalizedStringKey.StringInterpolation(literalCapacity: 0, interpolationCount: 1)
@@ -232,6 +236,10 @@ extension LocalizedStringKey {
 
         let makeKey = LocalizedStringKey.init(stringInterpolation:)
         self = makeKey(stringInterpolation)
+    }
+
+    internal static func substitution(_ substitution: String.Substitution) -> LocalizedStringKey {
+        LocalizedStringKey(substitution: substitution)
     }
 
     fileprivate mutating func overrideKeyForLookup(using key: StaticString) {

@@ -11,7 +11,7 @@ struct LocalizedStringKeyInitializerSnippet {
 
 extension LocalizedStringKeyInitializerSnippet: Snippet {
     var syntax: some DeclSyntaxProtocol {
-        InitializerDeclSyntax(signature: signature) {
+        InitializerDeclSyntax(modifiers: modifiers, signature: signature) {
             // let text = Text(localizable: localizable)
             VariableDeclSyntax(
                 .let,
@@ -65,6 +65,11 @@ extension LocalizedStringKeyInitializerSnippet: Snippet {
                 }
             )
         }
+    }
+
+    @DeclModifierListBuilder
+    var modifiers: DeclModifierListSyntax {
+        DeclModifierSyntax(name: stringsTable.accessLevel.token)
     }
 
     var signature: FunctionSignatureSyntax {

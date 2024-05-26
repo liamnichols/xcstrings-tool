@@ -247,13 +247,17 @@ extension LocalizedStringResource {
 
     package static let localizable = Localizable()
 
-    init(localizable: String.Localizable) {
+    package init(localizable: String.Localizable) {
         self.init(
             localizable.key,
             defaultValue: localizable.defaultValue,
             table: localizable.table,
             bundle: .from(description: localizable.bundle)
         )
+    }
+
+    package static func localizable(_ localizable: String.Localizable) -> LocalizedStringResource {
+        LocalizedStringResource(localizable: localizable)
     }
 }
 
@@ -294,7 +298,7 @@ extension Text {
 
 @available(macOS 10.5, iOS 13, tvOS 13, watchOS 6, *)
 extension LocalizedStringKey {
-    init(localizable: String.Localizable) {
+    package init(localizable: String.Localizable) {
         let text = Text(localizable: localizable)
 
         var stringInterpolation = LocalizedStringKey.StringInterpolation(literalCapacity: 0, interpolationCount: 1)
@@ -302,6 +306,10 @@ extension LocalizedStringKey {
 
         let makeKey = LocalizedStringKey.init(stringInterpolation:)
         self = makeKey(stringInterpolation)
+    }
+
+    package static func localizable(_ localizable: String.Localizable) -> LocalizedStringKey {
+        LocalizedStringKey(localizable: localizable)
     }
 
     fileprivate mutating func overrideKeyForLookup(using key: StaticString) {

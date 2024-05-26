@@ -515,13 +515,17 @@ extension LocalizedStringResource {
 
     internal static let formatSpecifiers = FormatSpecifiers()
 
-    init(formatSpecifiers: String.FormatSpecifiers) {
+    internal init(formatSpecifiers: String.FormatSpecifiers) {
         self.init(
             formatSpecifiers.key,
             defaultValue: formatSpecifiers.defaultValue,
             table: formatSpecifiers.table,
             bundle: .from(description: formatSpecifiers.bundle)
         )
+    }
+
+    internal static func formatSpecifiers(_ formatSpecifiers: String.FormatSpecifiers) -> LocalizedStringResource {
+        LocalizedStringResource(formatSpecifiers: formatSpecifiers)
     }
 }
 
@@ -562,7 +566,7 @@ extension Text {
 
 @available(macOS 10.5, iOS 13, tvOS 13, watchOS 6, *)
 extension LocalizedStringKey {
-    init(formatSpecifiers: String.FormatSpecifiers) {
+    internal init(formatSpecifiers: String.FormatSpecifiers) {
         let text = Text(formatSpecifiers: formatSpecifiers)
 
         var stringInterpolation = LocalizedStringKey.StringInterpolation(literalCapacity: 0, interpolationCount: 1)
@@ -570,6 +574,10 @@ extension LocalizedStringKey {
 
         let makeKey = LocalizedStringKey.init(stringInterpolation:)
         self = makeKey(stringInterpolation)
+    }
+
+    internal static func formatSpecifiers(_ formatSpecifiers: String.FormatSpecifiers) -> LocalizedStringKey {
+        LocalizedStringKey(formatSpecifiers: formatSpecifiers)
     }
 
     fileprivate mutating func overrideKeyForLookup(using key: StaticString) {

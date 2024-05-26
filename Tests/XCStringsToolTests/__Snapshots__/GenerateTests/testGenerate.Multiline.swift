@@ -183,13 +183,17 @@ extension LocalizedStringResource {
 
     internal static let multiline = Multiline()
 
-    init(multiline: String.Multiline) {
+    internal init(multiline: String.Multiline) {
         self.init(
             multiline.key,
             defaultValue: multiline.defaultValue,
             table: multiline.table,
             bundle: .from(description: multiline.bundle)
         )
+    }
+
+    internal static func multiline(_ multiline: String.Multiline) -> LocalizedStringResource {
+        LocalizedStringResource(multiline: multiline)
     }
 }
 
@@ -230,7 +234,7 @@ extension Text {
 
 @available(macOS 10.5, iOS 13, tvOS 13, watchOS 6, *)
 extension LocalizedStringKey {
-    init(multiline: String.Multiline) {
+    internal init(multiline: String.Multiline) {
         let text = Text(multiline: multiline)
 
         var stringInterpolation = LocalizedStringKey.StringInterpolation(literalCapacity: 0, interpolationCount: 1)
@@ -238,6 +242,10 @@ extension LocalizedStringKey {
 
         let makeKey = LocalizedStringKey.init(stringInterpolation:)
         self = makeKey(stringInterpolation)
+    }
+
+    internal static func multiline(_ multiline: String.Multiline) -> LocalizedStringKey {
+        LocalizedStringKey(multiline: multiline)
     }
 
     fileprivate mutating func overrideKeyForLookup(using key: StaticString) {

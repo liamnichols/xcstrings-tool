@@ -173,13 +173,17 @@ extension LocalizedStringResource {
 
     internal static let simple = Simple()
 
-    init(simple: String.Simple) {
+    internal init(simple: String.Simple) {
         self.init(
             simple.key,
             defaultValue: simple.defaultValue,
             table: simple.table,
             bundle: .from(description: simple.bundle)
         )
+    }
+
+    internal static func simple(_ simple: String.Simple) -> LocalizedStringResource {
+        LocalizedStringResource(simple: simple)
     }
 }
 
@@ -220,7 +224,7 @@ extension Text {
 
 @available(macOS 10.5, iOS 13, tvOS 13, watchOS 6, *)
 extension LocalizedStringKey {
-    init(simple: String.Simple) {
+    internal init(simple: String.Simple) {
         let text = Text(simple: simple)
 
         var stringInterpolation = LocalizedStringKey.StringInterpolation(literalCapacity: 0, interpolationCount: 1)
@@ -228,6 +232,10 @@ extension LocalizedStringKey {
 
         let makeKey = LocalizedStringKey.init(stringInterpolation:)
         self = makeKey(stringInterpolation)
+    }
+
+    internal static func simple(_ simple: String.Simple) -> LocalizedStringKey {
+        LocalizedStringKey(simple: simple)
     }
 
     fileprivate mutating func overrideKeyForLookup(using key: StaticString) {

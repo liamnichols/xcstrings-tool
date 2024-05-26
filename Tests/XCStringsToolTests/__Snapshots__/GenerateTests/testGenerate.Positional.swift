@@ -234,13 +234,17 @@ extension LocalizedStringResource {
 
     internal static let positional = Positional()
 
-    init(positional: String.Positional) {
+    internal init(positional: String.Positional) {
         self.init(
             positional.key,
             defaultValue: positional.defaultValue,
             table: positional.table,
             bundle: .from(description: positional.bundle)
         )
+    }
+
+    internal static func positional(_ positional: String.Positional) -> LocalizedStringResource {
+        LocalizedStringResource(positional: positional)
     }
 }
 
@@ -281,7 +285,7 @@ extension Text {
 
 @available(macOS 10.5, iOS 13, tvOS 13, watchOS 6, *)
 extension LocalizedStringKey {
-    init(positional: String.Positional) {
+    internal init(positional: String.Positional) {
         let text = Text(positional: positional)
 
         var stringInterpolation = LocalizedStringKey.StringInterpolation(literalCapacity: 0, interpolationCount: 1)
@@ -289,6 +293,10 @@ extension LocalizedStringKey {
 
         let makeKey = LocalizedStringKey.init(stringInterpolation:)
         self = makeKey(stringInterpolation)
+    }
+
+    internal static func positional(_ positional: String.Positional) -> LocalizedStringKey {
+        LocalizedStringKey(positional: positional)
     }
 
     fileprivate mutating func overrideKeyForLookup(using key: StaticString) {

@@ -198,13 +198,17 @@ extension LocalizedStringResource {
 
     internal static let variations = Variations()
 
-    init(variations: String.Variations) {
+    internal init(variations: String.Variations) {
         self.init(
             variations.key,
             defaultValue: variations.defaultValue,
             table: variations.table,
             bundle: .from(description: variations.bundle)
         )
+    }
+
+    internal static func variations(_ variations: String.Variations) -> LocalizedStringResource {
+        LocalizedStringResource(variations: variations)
     }
 }
 
@@ -245,7 +249,7 @@ extension Text {
 
 @available(macOS 10.5, iOS 13, tvOS 13, watchOS 6, *)
 extension LocalizedStringKey {
-    init(variations: String.Variations) {
+    internal init(variations: String.Variations) {
         let text = Text(variations: variations)
 
         var stringInterpolation = LocalizedStringKey.StringInterpolation(literalCapacity: 0, interpolationCount: 1)
@@ -253,6 +257,10 @@ extension LocalizedStringKey {
 
         let makeKey = LocalizedStringKey.init(stringInterpolation:)
         self = makeKey(stringInterpolation)
+    }
+
+    internal static func variations(_ variations: String.Variations) -> LocalizedStringKey {
+        LocalizedStringKey(variations: variations)
     }
 
     fileprivate mutating func overrideKeyForLookup(using key: StaticString) {
