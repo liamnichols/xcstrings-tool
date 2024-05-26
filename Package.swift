@@ -114,6 +114,10 @@ let package = Package(
             dependencies: [
                 .target(name: "XCStringsToolPlugin")
             ],
+            resources: [
+                .process("FeatureOne.xcstrings"),
+                .process("Localizable.xcstrings")
+            ],
             swiftSettings: [
                 .define("XCSTRINGS_TOOL_ACCESS_LEVEL_PUBLIC")
             ]
