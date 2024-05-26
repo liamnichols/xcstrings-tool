@@ -11,8 +11,17 @@ struct StringStringsTableStructSnippet: Snippet {
         StructDeclSyntax(
             leadingTrivia: leadingTrivia,
             modifiers: modifiers,
-            name: stringsTable.type
-        ) {
+            name: stringsTable.type,
+            memberBlock: memberBlock
+        )
+    }
+
+    var leadingTrivia: Trivia? {
+        Trivia(docComment: stringsTable.headerDocumentation)
+    }
+
+    var memberBlock: MemberBlockSyntax {
+        MemberBlockSyntax {
             // enum BundleDescription { ... }
             StringStringsTableBundleDescriptionEnumSnippet(bundleDescription: stringsTable.bundleDescriptionEnum)
                 .syntax
@@ -78,10 +87,6 @@ struct StringStringsTableStructSnippet: Snippet {
                 stringsTable: stringsTable
             )
         }
-    }
-
-    var leadingTrivia: Trivia? {
-        Trivia(docComment: stringsTable.headerDocumentation)
     }
 
     @DeclModifierListBuilder

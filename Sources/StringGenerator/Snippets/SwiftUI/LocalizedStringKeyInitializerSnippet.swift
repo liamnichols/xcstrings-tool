@@ -11,7 +11,41 @@ struct LocalizedStringKeyInitializerSnippet {
 
 extension LocalizedStringKeyInitializerSnippet: Snippet {
     var syntax: some DeclSyntaxProtocol {
-        InitializerDeclSyntax(modifiers: modifiers, signature: signature) {
+        InitializerDeclSyntax(
+            leadingTrivia: leadingTrivia,
+            modifiers: modifiers,
+            signature: signature,
+            body: body
+        )
+    }
+
+    var leadingTrivia: Trivia? {
+        Trivia(docComment: """
+        Creates a localized string key that represents a localized value in the ‘\(stringsTable.sourceFile.tableName)‘ strings table.
+        """)
+    }
+
+    @DeclModifierListBuilder
+    var modifiers: DeclModifierListSyntax {
+        DeclModifierSyntax(name: stringsTable.accessLevel.token)
+    }
+
+    var signature: FunctionSignatureSyntax {
+        FunctionSignatureSyntax(
+            parameterClause: FunctionParameterClauseSyntax(
+                leftParen: .leftParenToken(),
+                rightParen: .rightParenToken()
+            ) {
+                FunctionParameterSyntax(
+                    firstName: variableToken,
+                    type: typeSyntax(from: stringsTable.fullyQualifiedType)
+                )
+            }
+        )
+    }
+
+    var body: CodeBlockSyntax {
+        CodeBlockSyntax {
             // let text = Text(localizable: localizable)
             VariableDeclSyntax(
                 .let,
@@ -65,25 +99,6 @@ extension LocalizedStringKeyInitializerSnippet: Snippet {
                 }
             )
         }
-    }
-
-    @DeclModifierListBuilder
-    var modifiers: DeclModifierListSyntax {
-        DeclModifierSyntax(name: stringsTable.accessLevel.token)
-    }
-
-    var signature: FunctionSignatureSyntax {
-        FunctionSignatureSyntax(
-            parameterClause: FunctionParameterClauseSyntax(
-                leftParen: .leftParenToken(),
-                rightParen: .rightParenToken()
-            ) {
-                FunctionParameterSyntax(
-                    firstName: variableToken,
-                    type: typeSyntax(from: stringsTable.fullyQualifiedType)
-                )
-            }
-        )
     }
 
     var ifAvailableUseLocalizedStringResource: some ExprSyntaxProtocol {

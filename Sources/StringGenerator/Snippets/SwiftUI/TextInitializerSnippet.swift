@@ -11,7 +11,41 @@ struct TextInitializerSnippet {
 
 extension TextInitializerSnippet: Snippet {
     var syntax: some DeclSyntaxProtocol {
-        InitializerDeclSyntax(signature: signature) {
+        InitializerDeclSyntax(
+            leadingTrivia: leadingTrivia,
+            modifiers: modifiers,
+            signature: signature,
+            body: body
+        )
+    }
+
+    var leadingTrivia: Trivia? {
+        Trivia(docComment: """
+        Creates a text view that displays a localized string defined in the ‘\(stringsTable.sourceFile.tableName)‘ strings table.
+        """)
+    }
+
+    @DeclModifierListBuilder
+    var modifiers: DeclModifierListSyntax {
+        DeclModifierSyntax(name: stringsTable.accessLevel.token)
+    }
+
+    var signature: FunctionSignatureSyntax {
+        FunctionSignatureSyntax(
+            parameterClause: FunctionParameterClauseSyntax(
+                leftParen: .leftParenToken(),
+                rightParen: .rightParenToken()
+            ) {
+                FunctionParameterSyntax(
+                    firstName: variableToken,
+                    type: typeSyntax(from: stringsTable.fullyQualifiedType)
+                )
+            }
+        )
+    }
+
+    var body: CodeBlockSyntax {
+        CodeBlockSyntax {
             // if #available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) { ... }
             ifAvailableUseLocalizedStringResource
                 .with(\.trailingTrivia, .newlines(2))
@@ -65,20 +99,6 @@ extension TextInitializerSnippet: Snippet {
             // self.init(key, tableName: localizable.table, bundle: .from(description: localizable.bundle)
             initWithKeyTableAndBundle
         }
-    }
-
-    var signature: FunctionSignatureSyntax {
-        FunctionSignatureSyntax(
-            parameterClause: FunctionParameterClauseSyntax(
-                leftParen: .leftParenToken(),
-                rightParen: .rightParenToken()
-            ) {
-                FunctionParameterSyntax(
-                    firstName: variableToken,
-                    type: typeSyntax(from: stringsTable.fullyQualifiedType)
-                )
-            }
-        )
     }
 
     var ifAvailableUseLocalizedStringResource: some ExprSyntaxProtocol {

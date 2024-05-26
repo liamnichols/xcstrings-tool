@@ -9,11 +9,18 @@ struct StringsTableConversionStaticMethodSnippet {
 extension StringsTableConversionStaticMethodSnippet: Snippet {
     var syntax: some DeclSyntaxProtocol {
         FunctionDeclSyntax(
+            leadingTrivia: leadingTrivia,
             modifiers: modifiers,
             name: name,
             signature: signature,
             body: body
         )
+    }
+
+    var leadingTrivia: Trivia? {
+        Trivia(docComment: """
+        Creates a `\(returnType.text)` that represents a localized value in the ‘\(stringsTable.sourceFile.tableName)‘ strings table.
+        """)
     }
 
     @DeclModifierListBuilder
