@@ -102,35 +102,27 @@ extension TextInitializerSnippet: Snippet {
     }
 
     var ifAvailableUseLocalizedStringResource: some ExprSyntaxProtocol {
-        IfExprSyntax(
-            conditions: ConditionElementListSyntax {
-                AvailabilityConditionSyntax(
-                    availabilityKeyword: .poundAvailableToken(),
-                    availabilityArguments: .wwdc2022
+        IfExprSyntax(availability: .wwdc2022) {
+            // self.init(LocalizedStringResource(localizable: localizable))
+            FunctionCallExprSyntax(
+                callee: MemberAccessExprSyntax("self", "init")
+            ) {
+                // LocalizedStringResource(localizable: localizable)
+                LabeledExprSyntax(
+                    expression: FunctionCallExprSyntax(
+                        callee: DeclReferenceExprSyntax(baseName: .type(.LocalizedStringResource))
+                    ) {
+                        LabeledExprSyntax(
+                            label: variableToken.text,
+                            expression: DeclReferenceExprSyntax(baseName: variableToken)
+                        )
+                    }
                 )
-            },
-            body: CodeBlockSyntax(statements: CodeBlockItemListSyntax {
-                // self.init(LocalizedStringResource(localizable: localizable))
-                FunctionCallExprSyntax(
-                    callee: MemberAccessExprSyntax("self", "init")
-                ) {
-                    // LocalizedStringResource(localizable: localizable)
-                    LabeledExprSyntax(
-                        expression: FunctionCallExprSyntax(
-                            callee: DeclReferenceExprSyntax(baseName: .type(.LocalizedStringResource))
-                        ) {
-                            LabeledExprSyntax(
-                                label: variableToken.text,
-                                expression: DeclReferenceExprSyntax(baseName: variableToken)
-                            )
-                        }
-                    )
-                }
+            }
 
-                // return
-                ReturnStmtSyntax()
-            })
-        )
+            // return
+            ReturnStmtSyntax()
+        }
     }
 
     var initWithKeyTableAndBundle: some ExprSyntaxProtocol {

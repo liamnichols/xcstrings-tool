@@ -277,10 +277,13 @@ extension Text {
 extension LocalizedStringKey {
     /// Creates a localized string key that represents a localized value in the ‘Multiline‘ strings table.
     internal init(multiline: String.Multiline) {
-        let text = Text(multiline: multiline)
-
         var stringInterpolation = LocalizedStringKey.StringInterpolation(literalCapacity: 0, interpolationCount: 1)
-        stringInterpolation.appendInterpolation(text)
+
+        if #available (macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
+            stringInterpolation.appendInterpolation(LocalizedStringResource(multiline: multiline))
+        } else {
+            stringInterpolation.appendInterpolation(Text(multiline: multiline))
+        }
 
         let makeKey = LocalizedStringKey.init(stringInterpolation:)
         self = makeKey(stringInterpolation)

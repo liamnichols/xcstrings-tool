@@ -328,10 +328,13 @@ extension Text {
 extension LocalizedStringKey {
     /// Creates a localized string key that represents a localized value in the ‘Positional‘ strings table.
     internal init(positional: String.Positional) {
-        let text = Text(positional: positional)
-
         var stringInterpolation = LocalizedStringKey.StringInterpolation(literalCapacity: 0, interpolationCount: 1)
-        stringInterpolation.appendInterpolation(text)
+
+        if #available (macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
+            stringInterpolation.appendInterpolation(LocalizedStringResource(positional: positional))
+        } else {
+            stringInterpolation.appendInterpolation(Text(positional: positional))
+        }
 
         let makeKey = LocalizedStringKey.init(stringInterpolation:)
         self = makeKey(stringInterpolation)

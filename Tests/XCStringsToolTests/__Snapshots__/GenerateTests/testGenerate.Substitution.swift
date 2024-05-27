@@ -271,10 +271,13 @@ extension Text {
 extension LocalizedStringKey {
     /// Creates a localized string key that represents a localized value in the ‘Substitution‘ strings table.
     internal init(substitution: String.Substitution) {
-        let text = Text(substitution: substitution)
-
         var stringInterpolation = LocalizedStringKey.StringInterpolation(literalCapacity: 0, interpolationCount: 1)
-        stringInterpolation.appendInterpolation(text)
+
+        if #available (macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
+            stringInterpolation.appendInterpolation(LocalizedStringResource(substitution: substitution))
+        } else {
+            stringInterpolation.appendInterpolation(Text(substitution: substitution))
+        }
 
         let makeKey = LocalizedStringKey.init(stringInterpolation:)
         self = makeKey(stringInterpolation)
