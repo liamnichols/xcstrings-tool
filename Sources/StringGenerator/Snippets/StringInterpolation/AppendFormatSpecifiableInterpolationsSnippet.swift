@@ -1,17 +1,31 @@
 import StringResource
 import SwiftSyntax
 
-struct AppendFormatSpecifiableInterpolationsSnippet {
+struct AppendFormatSpecifiableInterpolationsSnippet<Sequence: ExprSyntaxProtocol> {
     let argumentsEnum: SourceFile.StringExtension.StringsTableStruct.ArgumentEnum
-    let sequenceName: TokenSyntax
+    let sequence: Sequence
     let variableName: TokenSyntax
+}
+
+extension AppendFormatSpecifiableInterpolationsSnippet where Sequence == DeclReferenceExprSyntax {
+    init(
+        argumentsEnum: SourceFile.StringExtension.StringsTableStruct.ArgumentEnum,
+        sequenceName: TokenSyntax,
+        variableName: TokenSyntax
+    ) {
+        self.init(
+            argumentsEnum: argumentsEnum,
+            sequence: DeclReferenceExprSyntax(baseName: sequenceName),
+            variableName: variableName
+        )
+    }
 }
 
 extension AppendFormatSpecifiableInterpolationsSnippet: Snippet {
     var syntax: some StmtSyntaxProtocol {
         ForStmtSyntax(
             pattern: IdentifierPatternSyntax(identifier: "argument"),
-            sequence: DeclReferenceExprSyntax(baseName: sequenceName),
+            sequence: sequence,
             body: CodeBlockSyntax {
                 // switch argument { ... }
                 SwitchExprSyntax(subject: DeclReferenceExprSyntax(baseName: "argument")) {

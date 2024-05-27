@@ -1,13 +1,52 @@
 import Foundation
 
 extension String {
-    /// Constant values for the FormatSpecifiers Strings Catalog
+    /// A type that represents localized strings from the ‘FormatSpecifiers‘
+    /// strings table.
+    ///
+    /// Do not initialize instances of this type yourself, instead use one of the static
+    /// methods or properties that have been generated automatically.
+    ///
+    /// ## Usage
+    ///
+    /// ### Foundation
+    ///
+    /// In Foundation, you can resolve the localized string using the system language
+    /// with the `String`.``Swift/String/init(formatSpecifiers:locale:)``
+    /// intializer:
     ///
     /// ```swift
     /// // Accessing the localized value directly
     /// let value = String(formatSpecifiers: .percentage)
     /// value // "Test %"
     /// ```
+    ///
+    /// Starting in iOS 16/macOS 13/tvOS 16/watchOS 9, `LocalizedStringResource` can also
+    /// be used:
+    ///
+    /// ```swift
+    /// var resource = LocalizedStringResource(formatSpecifiers: .percentage)
+    /// resource.locale = Locale(identifier: "fr") // customise language
+    /// let value = String(localized: resource)    // defer lookup
+    /// ```
+    ///
+    /// ### SwiftUI
+    ///
+    /// In SwiftUI, it is recommended to use `Text`.``SwiftUI/Text/init(formatSpecifiers:)``
+    /// or `LocalizedStringKey`.``SwiftUI/LocalizedStringKey/formatSpecifiers(_:)``
+    /// in order for localized values to be resolved within the SwiftUI environment:
+    ///
+    /// ```swift
+    /// var body: some View {
+    ///     List {
+    ///         Text(formatSpecifiers: .listContent)
+    ///     }
+    ///     .navigationTitle(.formatSpecifiers(.navigationTitle))
+    ///     .environment(\.locale, Locale(identifier: "fr"))
+    /// }
+    /// ```
+    ///
+    /// - SeeAlso: [XCStrings Tool Documentation - Using the generated source code](https://swiftpackageindex.com/liamnichols/xcstrings-tool/0.3.0/documentation/documentation/using-the-generated-source-code)
     internal struct FormatSpecifiers {
         enum BundleDescription {
             case main
@@ -515,7 +554,7 @@ extension LocalizedStringResource {
 
     internal static let formatSpecifiers = FormatSpecifiers()
 
-    init(formatSpecifiers: String.FormatSpecifiers) {
+    internal init(formatSpecifiers: String.FormatSpecifiers) {
         self.init(
             formatSpecifiers.key,
             defaultValue: formatSpecifiers.defaultValue,
@@ -523,4 +562,84 @@ extension LocalizedStringResource {
             bundle: .from(description: formatSpecifiers.bundle)
         )
     }
+
+    /// Creates a `LocalizedStringResource` that represents a localized value in the ‘FormatSpecifiers‘ strings table.
+    internal static func formatSpecifiers(_ formatSpecifiers: String.FormatSpecifiers) -> LocalizedStringResource {
+        LocalizedStringResource(formatSpecifiers: formatSpecifiers)
+    }
 }
+
+#if canImport (SwiftUI)
+import SwiftUI
+
+@available(macOS 10.5, iOS 13, tvOS 13, watchOS 6, *)
+extension Text {
+    /// Creates a text view that displays a localized string defined in the ‘FormatSpecifiers‘ strings table.
+    internal init(formatSpecifiers: String.FormatSpecifiers) {
+        if #available (macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
+            self.init(LocalizedStringResource(formatSpecifiers: formatSpecifiers))
+            return
+        }
+
+        var stringInterpolation = LocalizedStringKey.StringInterpolation(literalCapacity: 0, interpolationCount: formatSpecifiers.arguments.count)
+        for argument in formatSpecifiers.arguments {
+            switch argument {
+            case .int(let value):
+                stringInterpolation.appendInterpolation(value)
+            case .uint(let value):
+                stringInterpolation.appendInterpolation(value)
+            case .float(let value):
+                stringInterpolation.appendInterpolation(value)
+            case .double(let value):
+                stringInterpolation.appendInterpolation(value)
+            case .object(let value):
+                stringInterpolation.appendInterpolation(value)
+            }
+        }
+        let makeKey = LocalizedStringKey.init(stringInterpolation:)
+
+        var key = makeKey(stringInterpolation)
+        key.overrideKeyForLookup(using: formatSpecifiers.key)
+
+        self.init(key, tableName: formatSpecifiers.table, bundle: .from(description: formatSpecifiers.bundle))
+    }
+}
+
+@available(macOS 10.5, iOS 13, tvOS 13, watchOS 6, *)
+extension LocalizedStringKey {
+    /// Creates a localized string key that represents a localized value in the ‘FormatSpecifiers‘ strings table.
+    internal init(formatSpecifiers: String.FormatSpecifiers) {
+        var stringInterpolation = LocalizedStringKey.StringInterpolation(literalCapacity: 0, interpolationCount: 1)
+
+        if #available (macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
+            stringInterpolation.appendInterpolation(LocalizedStringResource(formatSpecifiers: formatSpecifiers))
+        } else {
+            stringInterpolation.appendInterpolation(Text(formatSpecifiers: formatSpecifiers))
+        }
+
+        let makeKey = LocalizedStringKey.init(stringInterpolation:)
+        self = makeKey(stringInterpolation)
+    }
+
+    /// Creates a `LocalizedStringKey` that represents a localized value in the ‘FormatSpecifiers‘ strings table.
+    internal static func formatSpecifiers(_ formatSpecifiers: String.FormatSpecifiers) -> LocalizedStringKey {
+        LocalizedStringKey(formatSpecifiers: formatSpecifiers)
+    }
+
+    /// Updates the underlying `key` used when performing localization lookups.
+    ///
+    /// By default, an instance of `LocalizedStringKey` can only be created
+    /// using string interpolation, so if arguments are included, the format
+    /// specifiers make up part of the key.
+    ///
+    /// This method allows you to change the key after initialization in order
+    /// to match the value that might be defined in the strings table.
+    fileprivate mutating func overrideKeyForLookup(using key: StaticString) {
+        withUnsafeMutablePointer(to: &self) { pointer in
+            let raw = UnsafeMutableRawPointer(pointer)
+            let bound = raw.assumingMemoryBound(to: String.self)
+            bound.pointee = String(describing: key)
+        }
+    }
+}
+#endif

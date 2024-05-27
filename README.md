@@ -23,10 +23,10 @@ struct ContentView: View {
                     ItemView(item)
                 }
             } footer: {
-                Text(.localizable.footerText(items.count))
+                Text(.localizable(.footerText(items.count)))
             }
         }
-        .navigationTitle(Text(.localizable.contentViewTitle))
+        .navigationTitle(.localizable(.contentViewTitle))
     }
 }
 ```
