@@ -252,6 +252,11 @@ extension LocalizedStringResource {
         /// ```
         /// Default Value
         /// ```
+        @available (iOS, deprecated: 100000, message: "Use `String.Localizable.key` instead. This property will be removed in the future.")
+        @available (macOS, deprecated: 100000, message: "Use `String.Localizable.key` instead. This property will be removed in the future.")
+        @available (tvOS, deprecated: 100000, message: "Use `String.Localizable.key` instead. This property will be removed in the future.")
+        @available (watchOS, deprecated: 100000, message: "Use `String.Localizable.key` instead. This property will be removed in the future.")
+        @available (visionOS, deprecated: 100000, message: "Use `String.Localizable.key` instead. This property will be removed in the future.")
         public var key: LocalizedStringResource {
             LocalizedStringResource(localizable: .key)
         }
@@ -261,6 +266,11 @@ extension LocalizedStringResource {
         /// ```
         /// Multiplatform Original
         /// ```
+        @available (iOS, deprecated: 100000, message: "Use `String.Localizable.myDeviceVariant` instead. This property will be removed in the future.")
+        @available (macOS, deprecated: 100000, message: "Use `String.Localizable.myDeviceVariant` instead. This property will be removed in the future.")
+        @available (tvOS, deprecated: 100000, message: "Use `String.Localizable.myDeviceVariant` instead. This property will be removed in the future.")
+        @available (watchOS, deprecated: 100000, message: "Use `String.Localizable.myDeviceVariant` instead. This property will be removed in the future.")
+        @available (visionOS, deprecated: 100000, message: "Use `String.Localizable.myDeviceVariant` instead. This property will be removed in the future.")
         public var myDeviceVariant: LocalizedStringResource {
             LocalizedStringResource(localizable: .myDeviceVariant)
         }
@@ -270,6 +280,11 @@ extension LocalizedStringResource {
         /// ```
         /// I have %lld plurals
         /// ```
+        @available (iOS, deprecated: 100000, message: "Use `String.Localizable.myPlural(_:)` instead. This method will be removed in the future.")
+        @available (macOS, deprecated: 100000, message: "Use `String.Localizable.myPlural(_:)` instead. This method will be removed in the future.")
+        @available (tvOS, deprecated: 100000, message: "Use `String.Localizable.myPlural(_:)` instead. This method will be removed in the future.")
+        @available (watchOS, deprecated: 100000, message: "Use `String.Localizable.myPlural(_:)` instead. This method will be removed in the future.")
+        @available (visionOS, deprecated: 100000, message: "Use `String.Localizable.myPlural(_:)` instead. This method will be removed in the future.")
         public func myPlural(_ arg1: Int) -> LocalizedStringResource {
             LocalizedStringResource(localizable: .myPlural(arg1))
         }
@@ -279,12 +294,21 @@ extension LocalizedStringResource {
         /// ```
         /// %lld: People liked %lld posts
         /// ```
+        @available (iOS, deprecated: 100000, message: "Use `String.Localizable.mySubstitute(_:count:)` instead. This method will be removed in the future.")
+        @available (macOS, deprecated: 100000, message: "Use `String.Localizable.mySubstitute(_:count:)` instead. This method will be removed in the future.")
+        @available (tvOS, deprecated: 100000, message: "Use `String.Localizable.mySubstitute(_:count:)` instead. This method will be removed in the future.")
+        @available (watchOS, deprecated: 100000, message: "Use `String.Localizable.mySubstitute(_:count:)` instead. This method will be removed in the future.")
+        @available (visionOS, deprecated: 100000, message: "Use `String.Localizable.mySubstitute(_:count:)` instead. This method will be removed in the future.")
         public func mySubstitute(_ arg1: Int, count arg2: Int) -> LocalizedStringResource {
             LocalizedStringResource(localizable: .mySubstitute(arg1, count: arg2))
         }
     }
 
-    public static let localizable = Localizable()
+    @available (iOS, deprecated: 100000, message: "Use the `localizable(_:)` static method instead. This property will be removed in the future.")
+    @available (macOS, deprecated: 100000, message: "Use the `localizable(_:)` static method instead. This property will be removed in the future.")
+    @available (tvOS, deprecated: 100000, message: "Use the `localizable(_:)` static method instead. This property will be removed in the future.")
+    @available (watchOS, deprecated: 100000, message: "Use the `localizable(_:)` static method instead. This property will be removed in the future.")
+    @available (visionOS, deprecated: 100000, message: "Use the `localizable(_:)` static method instead. This property will be removed in the future.") public static let localizable = Localizable()
 
     public init(localizable: String.Localizable) {
         self.init(

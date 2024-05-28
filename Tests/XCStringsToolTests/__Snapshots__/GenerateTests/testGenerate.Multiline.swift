@@ -215,12 +215,21 @@ extension LocalizedStringResource {
         /// - Two
         /// - Three
         /// ```
+        @available (iOS, deprecated: 100000, message: "Use `String.Multiline.multiline` instead. This property will be removed in the future.")
+        @available (macOS, deprecated: 100000, message: "Use `String.Multiline.multiline` instead. This property will be removed in the future.")
+        @available (tvOS, deprecated: 100000, message: "Use `String.Multiline.multiline` instead. This property will be removed in the future.")
+        @available (watchOS, deprecated: 100000, message: "Use `String.Multiline.multiline` instead. This property will be removed in the future.")
+        @available (visionOS, deprecated: 100000, message: "Use `String.Multiline.multiline` instead. This property will be removed in the future.")
         internal var multiline: LocalizedStringResource {
             LocalizedStringResource(multiline: .multiline)
         }
     }
 
-    internal static let multiline = Multiline()
+    @available (iOS, deprecated: 100000, message: "Use the `multiline(_:)` static method instead. This property will be removed in the future.")
+    @available (macOS, deprecated: 100000, message: "Use the `multiline(_:)` static method instead. This property will be removed in the future.")
+    @available (tvOS, deprecated: 100000, message: "Use the `multiline(_:)` static method instead. This property will be removed in the future.")
+    @available (watchOS, deprecated: 100000, message: "Use the `multiline(_:)` static method instead. This property will be removed in the future.")
+    @available (visionOS, deprecated: 100000, message: "Use the `multiline(_:)` static method instead. This property will be removed in the future.") internal static let multiline = Multiline()
 
     internal init(multiline: String.Multiline) {
         self.init(

@@ -244,6 +244,11 @@ extension LocalizedStringResource {
         /// ```
         /// Second: %2$@ - First: %1$lld
         /// ```
+        @available (iOS, deprecated: 100000, message: "Use `String.Positional.reorder(_:_:)` instead. This method will be removed in the future.")
+        @available (macOS, deprecated: 100000, message: "Use `String.Positional.reorder(_:_:)` instead. This method will be removed in the future.")
+        @available (tvOS, deprecated: 100000, message: "Use `String.Positional.reorder(_:_:)` instead. This method will be removed in the future.")
+        @available (watchOS, deprecated: 100000, message: "Use `String.Positional.reorder(_:_:)` instead. This method will be removed in the future.")
+        @available (visionOS, deprecated: 100000, message: "Use `String.Positional.reorder(_:_:)` instead. This method will be removed in the future.")
         internal func reorder(_ arg1: Int, _ arg2: String) -> LocalizedStringResource {
             LocalizedStringResource(positional: .reorder(arg1, arg2))
         }
@@ -255,6 +260,11 @@ extension LocalizedStringResource {
         /// ```
         /// %1$lld, I repeat: %1$lld
         /// ```
+        @available (iOS, deprecated: 100000, message: "Use `String.Positional.repeatExplicit(_:)` instead. This method will be removed in the future.")
+        @available (macOS, deprecated: 100000, message: "Use `String.Positional.repeatExplicit(_:)` instead. This method will be removed in the future.")
+        @available (tvOS, deprecated: 100000, message: "Use `String.Positional.repeatExplicit(_:)` instead. This method will be removed in the future.")
+        @available (watchOS, deprecated: 100000, message: "Use `String.Positional.repeatExplicit(_:)` instead. This method will be removed in the future.")
+        @available (visionOS, deprecated: 100000, message: "Use `String.Positional.repeatExplicit(_:)` instead. This method will be removed in the future.")
         internal func repeatExplicit(_ arg1: Int) -> LocalizedStringResource {
             LocalizedStringResource(positional: .repeatExplicit(arg1))
         }
@@ -266,12 +276,21 @@ extension LocalizedStringResource {
         /// ```
         /// %@, are you there? %1$@?
         /// ```
+        @available (iOS, deprecated: 100000, message: "Use `String.Positional.repeatImplicit(_:)` instead. This method will be removed in the future.")
+        @available (macOS, deprecated: 100000, message: "Use `String.Positional.repeatImplicit(_:)` instead. This method will be removed in the future.")
+        @available (tvOS, deprecated: 100000, message: "Use `String.Positional.repeatImplicit(_:)` instead. This method will be removed in the future.")
+        @available (watchOS, deprecated: 100000, message: "Use `String.Positional.repeatImplicit(_:)` instead. This method will be removed in the future.")
+        @available (visionOS, deprecated: 100000, message: "Use `String.Positional.repeatImplicit(_:)` instead. This method will be removed in the future.")
         internal func repeatImplicit(_ arg1: String) -> LocalizedStringResource {
             LocalizedStringResource(positional: .repeatImplicit(arg1))
         }
     }
 
-    internal static let positional = Positional()
+    @available (iOS, deprecated: 100000, message: "Use the `positional(_:)` static method instead. This property will be removed in the future.")
+    @available (macOS, deprecated: 100000, message: "Use the `positional(_:)` static method instead. This property will be removed in the future.")
+    @available (tvOS, deprecated: 100000, message: "Use the `positional(_:)` static method instead. This property will be removed in the future.")
+    @available (watchOS, deprecated: 100000, message: "Use the `positional(_:)` static method instead. This property will be removed in the future.")
+    @available (visionOS, deprecated: 100000, message: "Use the `positional(_:)` static method instead. This property will be removed in the future.") internal static let positional = Positional()
 
     internal init(positional: String.Positional) {
         self.init(

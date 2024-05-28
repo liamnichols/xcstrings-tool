@@ -18,6 +18,18 @@ extension SourceFile.LocalizedStringResourceExtension.StringsTableStruct {
             IdentifierTypeSyntax(name: .type(.LocalizedStringResource))
         }
 
+        var alternativeSignature: String {
+            let type = sourceFile.stringExtension.stringsTableStruct.fullyQualifiedType.map(\.text).joined(separator: ".")
+            let name = resource.identifier
+
+            if hasArguments {
+                let arguments = resource.arguments.map({ "\($0.label ?? "_"):" }).joined()
+                return "\(type).\(name)(\(arguments))"
+            } else {
+                return "\(type).\(name)"
+            }
+        }
+
         var headerDocumentation: String {
             var docComponents: [String] = []
 
