@@ -7,17 +7,22 @@ struct StringStringsTableStructSnippet: Snippet {
 
     var syntax: some DeclSyntaxProtocol {
         // /// headerdoc
-        // public struct Localizable { ... }
+        // public struct Localizable: Sendable { ... }
         StructDeclSyntax(
             leadingTrivia: leadingTrivia,
             modifiers: modifiers,
             name: stringsTable.type,
+            inheritanceClause: inheritanceClause,
             memberBlock: memberBlock
         )
     }
 
     var leadingTrivia: Trivia? {
         Trivia(docComment: stringsTable.headerDocumentation)
+    }
+
+    var inheritanceClause: InheritanceClauseSyntax? {
+        InheritanceClauseSyntax(.Sendable)
     }
 
     var memberBlock: MemberBlockSyntax {

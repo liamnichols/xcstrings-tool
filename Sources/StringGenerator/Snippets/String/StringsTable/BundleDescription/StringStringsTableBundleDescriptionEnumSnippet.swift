@@ -14,7 +14,7 @@ struct StringStringsTableBundleDescriptionEnumSnippet: Snippet {
     let bundleDescription: SourceFile.StringExtension.StringsTableStruct.BundleDescriptionEnum
 
     var syntax: some DeclSyntaxProtocol {
-        EnumDeclSyntax(name: bundleDescription.type) {
+        EnumDeclSyntax(name: bundleDescription.type, inheritanceClause: inheritanceClause) {
             MemberBlockItemListSyntax {
                 for enumCase in bundleDescription.cases {
                     Case(enumCase: enumCase)
@@ -33,6 +33,10 @@ struct StringStringsTableBundleDescriptionEnumSnippet: Snippet {
 
             StringStringsTableBundleDescriptionCurrentComputedPropertySnippet()
         }
+    }
+
+    var inheritanceClause: InheritanceClauseSyntax? {
+        InheritanceClauseSyntax(.Sendable)
     }
 }
 

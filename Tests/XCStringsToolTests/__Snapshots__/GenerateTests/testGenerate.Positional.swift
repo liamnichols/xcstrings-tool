@@ -47,8 +47,8 @@ extension String {
     /// ```
     ///
     /// - SeeAlso: [XCStrings Tool Documentation - Using the generated source code](https://swiftpackageindex.com/liamnichols/xcstrings-tool/0.3.0/documentation/documentation/using-the-generated-source-code)
-    internal struct Positional {
-        enum BundleDescription {
+    internal struct Positional: Sendable {
+        enum BundleDescription: Sendable {
             case main
             case atURL(URL)
             case forClass(AnyClass)
@@ -67,7 +67,7 @@ extension String {
             }
         }
 
-        enum Argument {
+        enum Argument: Sendable {
             case int(Int)
             case uint(UInt)
             case float(Float)

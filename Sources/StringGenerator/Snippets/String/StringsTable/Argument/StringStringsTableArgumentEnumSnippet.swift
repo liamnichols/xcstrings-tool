@@ -5,7 +5,7 @@ struct StringStringsTableArgumentEnumSnippet: Snippet {
     let argument: SourceFile.StringExtension.StringsTableStruct.ArgumentEnum
 
     var syntax: some DeclSyntaxProtocol {
-        EnumDeclSyntax(name: argument.type) {
+        EnumDeclSyntax(name: argument.type, inheritanceClause: inheritanceClause) {
             MemberBlockItemListSyntax {
                 for enumCase in argument.cases {
                     Case(enumCase: enumCase)
@@ -17,6 +17,10 @@ struct StringStringsTableArgumentEnumSnippet: Snippet {
                 argumentEnum: argument
             )
         }
+    }
+
+    var inheritanceClause: InheritanceClauseSyntax? {
+        InheritanceClauseSyntax(.Sendable)
     }
 }
 
