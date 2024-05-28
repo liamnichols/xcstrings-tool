@@ -1,6 +1,6 @@
 import StringResource
 import SwiftSyntax
-import Version
+import XCStringsToolConstants
 
 extension SourceFile.StringExtension {
     struct StringsTableStruct {

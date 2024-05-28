@@ -1,5 +1,5 @@
 import ArgumentParser
-import Version
+import XCStringsToolConstants
 
 @main
 struct XCStringsTool: ParsableCommand {
