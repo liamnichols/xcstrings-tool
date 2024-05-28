@@ -2,6 +2,7 @@ name: "Build"
 
 on:
   workflow_call: {}
+  workflow_dispatch: {}
   push:
     branches:
     - main
@@ -14,7 +15,7 @@ jobs:
       DEVELOPER_DIR: /Applications/Xcode_15.2.app/Contents/Developer
     steps:
     - name: Checkout Repo
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Build Package
       run: |-
@@ -69,7 +70,7 @@ jobs:
         checksum=$(shasum -a 256 "$zip_path" | awk '{ print $1 }')
         echo "checksum=$checksum" >> $GITHUB_ENV
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       name: Upload Artifact Bundle
       with:
         name: xcstrings-tool.artifactbundle.zip
