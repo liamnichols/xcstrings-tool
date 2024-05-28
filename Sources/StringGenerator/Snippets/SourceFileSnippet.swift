@@ -76,7 +76,8 @@ struct SourceFileSnippet: Snippet {
 
                     StringsTableConversionStaticMethodSnippet(
                         stringsTable: sourceFile.stringExtension.stringsTableStruct,
-                        returnType: .type(.LocalizedStringKey)
+                        returnType: .type(.LocalizedStringKey),
+                        availability: .wwdc2020
                     )
 
                     LocalizedStringKeyOverrideKeySnippet()
