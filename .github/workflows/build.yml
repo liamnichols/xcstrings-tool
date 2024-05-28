@@ -2,6 +2,7 @@ name: "Build"
 
 on:
   workflow_call: {}
+  workflow_dispatch: {}
   push:
     branches:
     - main
@@ -14,7 +15,7 @@ jobs:
       DEVELOPER_DIR: /Applications/Xcode_15.2.app/Contents/Developer
     steps:
     - name: Checkout Repo
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Build Package
       run: |-
