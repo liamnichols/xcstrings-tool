@@ -74,7 +74,7 @@ extension String {
             case double(Double)
             case object(String)
 
-            var value: CVarArg {
+            var value: any CVarArg {
                 switch self {
                 case .int(let value):
                     value

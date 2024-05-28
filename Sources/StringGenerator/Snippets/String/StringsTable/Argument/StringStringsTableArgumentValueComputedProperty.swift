@@ -6,12 +6,15 @@ struct StringStringsTableArgumentValueComputedProperty: Snippet {
     let argumentEnum: SourceFile.StringExtension.StringsTableStruct.ArgumentEnum
 
     var syntax: some DeclSyntaxProtocol {
-        // var value: CVarArg { ... }
+        // var value: any CVarArg { ... }
         VariableDeclSyntax(bindingSpecifier: .keyword(.var)) {
             PatternBindingSyntax(
                 pattern: IdentifierPatternSyntax(identifier: .identifier("value")),
                 typeAnnotation: TypeAnnotationSyntax(
-                    type: .identifier(.CVarArg)
+                    type: SomeOrAnyTypeSyntax(
+                        someOrAnySpecifier: .keyword(.any),
+                        constraint: .identifier(.CVarArg)
+                    )
                 ),
                 accessorBlock: AccessorBlockSyntax(
                     accessors: .getter(CodeBlockItemListSyntax {
