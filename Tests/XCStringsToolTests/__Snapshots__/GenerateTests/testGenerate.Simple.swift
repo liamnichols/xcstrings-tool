@@ -205,12 +205,21 @@ extension LocalizedStringResource {
         /// ```
         /// My Value
         /// ```
+        @available (iOS, deprecated: 100000, message: "Use `String.Simple.simpleKey` instead. This property will be removed in the future.")
+        @available (macOS, deprecated: 100000, message: "Use `String.Simple.simpleKey` instead. This property will be removed in the future.")
+        @available (tvOS, deprecated: 100000, message: "Use `String.Simple.simpleKey` instead. This property will be removed in the future.")
+        @available (watchOS, deprecated: 100000, message: "Use `String.Simple.simpleKey` instead. This property will be removed in the future.")
+        @available (visionOS, deprecated: 100000, message: "Use `String.Simple.simpleKey` instead. This property will be removed in the future.")
         internal var simpleKey: LocalizedStringResource {
             LocalizedStringResource(simple: .simpleKey)
         }
     }
 
-    internal static let simple = Simple()
+    @available (iOS, deprecated: 100000, message: "Use the `simple(_:)` static method instead. This property will be removed in the future.")
+    @available (macOS, deprecated: 100000, message: "Use the `simple(_:)` static method instead. This property will be removed in the future.")
+    @available (tvOS, deprecated: 100000, message: "Use the `simple(_:)` static method instead. This property will be removed in the future.")
+    @available (watchOS, deprecated: 100000, message: "Use the `simple(_:)` static method instead. This property will be removed in the future.")
+    @available (visionOS, deprecated: 100000, message: "Use the `simple(_:)` static method instead. This property will be removed in the future.") internal static let simple = Simple()
 
     internal init(simple: String.Simple) {
         self.init(

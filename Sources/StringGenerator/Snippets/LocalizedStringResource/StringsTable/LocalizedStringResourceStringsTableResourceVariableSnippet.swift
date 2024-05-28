@@ -7,6 +7,7 @@ struct LocalizedStringResourceStringsTableResourceVariableSnippet: Snippet {
     var syntax: some DeclSyntaxProtocol {
         VariableDeclSyntax(
             leadingTrivia: leadingTrivia,
+            attributes: attributes.map({ $0.with(\.trailingTrivia, .newline) }),
             modifiers: modifiers,
             bindingSpecifier: .keyword(.var),
             bindings: [
@@ -23,6 +24,22 @@ struct LocalizedStringResourceStringsTableResourceVariableSnippet: Snippet {
 
     var leadingTrivia: Trivia? {
         Trivia(docComment: accessor.headerDocumentation)
+    }
+
+    var deprecationMessage: String {
+        """
+        Use `\(accessor.alternativeSignature)` instead. \
+        This property will be removed in the future.
+        """
+    }
+
+    @AttributeListBuilder
+    var attributes: AttributeListSyntax {
+        AttributeSyntax(.identifier("iOS"), deprecated: 100000, message: deprecationMessage)
+        AttributeSyntax(.identifier("macOS"), deprecated: 100000, message: deprecationMessage)
+        AttributeSyntax(.identifier("tvOS"), deprecated: 100000, message: deprecationMessage)
+        AttributeSyntax(.identifier("watchOS"), deprecated: 100000, message: deprecationMessage)
+        AttributeSyntax(.identifier("visionOS"), deprecated: 100000, message: deprecationMessage)
     }
 
     @DeclModifierListBuilder
