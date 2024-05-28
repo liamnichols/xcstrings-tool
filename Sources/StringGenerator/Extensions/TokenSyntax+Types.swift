@@ -21,6 +21,7 @@ extension TokenSyntax {
         case CVarArg
         case LocalizedStringKey
         case Text
+        case Sendable
     }
 
     static func type(_ value: MetaType) -> TokenSyntax {
