@@ -69,7 +69,7 @@ jobs:
         checksum=$(shasum -a 256 "$zip_path" | awk '{ print $1 }')
         echo "checksum=$checksum" >> $GITHUB_ENV
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       name: Upload Artifact Bundle
       with:
         name: xcstrings-tool.artifactbundle.zip
