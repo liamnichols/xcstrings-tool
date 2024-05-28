@@ -39,7 +39,7 @@ let package = Package(
                 .target(name: "StringGenerator"),
                 .target(name: "StringResource"),
                 .target(name: "StringValidator"),
-                .target(name: "Version")
+                .target(name: "XCStringsToolConstants")
             ]
         ),
 
@@ -59,7 +59,7 @@ let package = Package(
                 .product(name: "SwiftBasicFormat", package: "swift-syntax"),
                 .product(name: "SwiftSyntax", package: "swift-syntax"),
                 .product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
-                .target(name: "Version")
+                .target(name: "XCStringsToolConstants")
             ]
         ),
 
@@ -76,7 +76,7 @@ let package = Package(
         ),
 
         .target(
-            name: "Version"
+            name: "XCStringsToolConstants"
         ),
 
         .target(
