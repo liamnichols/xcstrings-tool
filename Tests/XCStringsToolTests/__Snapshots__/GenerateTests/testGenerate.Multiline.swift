@@ -285,6 +285,7 @@ extension Text {
 @available(macOS 10.5, iOS 13, tvOS 13, watchOS 6, *)
 extension LocalizedStringKey {
     /// Creates a localized string key that represents a localized value in the ‘Multiline‘ strings table.
+    @available(macOS 11, iOS 14, tvOS 14, watchOS 7, *)
     internal init(multiline: String.Multiline) {
         var stringInterpolation = LocalizedStringKey.StringInterpolation(literalCapacity: 0, interpolationCount: 1)
 
@@ -299,6 +300,7 @@ extension LocalizedStringKey {
     }
 
     /// Creates a `LocalizedStringKey` that represents a localized value in the ‘Multiline‘ strings table.
+    @available(macOS 11, iOS 14, tvOS 14, watchOS 7, *)
     internal static func multiline(_ multiline: String.Multiline) -> LocalizedStringKey {
         LocalizedStringKey(multiline: multiline)
     }

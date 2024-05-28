@@ -4,12 +4,14 @@ import SwiftSyntaxBuilder
 struct StringsTableConversionStaticMethodSnippet {
     let stringsTable: SourceFile.StringExtension.StringsTableStruct
     let returnType: TokenSyntax
+    var availability: AvailabilityArgumentListSyntax?
 }
 
 extension StringsTableConversionStaticMethodSnippet: Snippet {
     var syntax: some DeclSyntaxProtocol {
         FunctionDeclSyntax(
             leadingTrivia: leadingTrivia,
+            attributes: attributes.map({ $0.with(\.trailingTrivia, .newline) }),
             modifiers: modifiers,
             name: name,
             signature: signature,
@@ -21,6 +23,13 @@ extension StringsTableConversionStaticMethodSnippet: Snippet {
         Trivia(docComment: """
         Creates a `\(returnType.text)` that represents a localized value in the ‘\(stringsTable.sourceFile.tableName)‘ strings table.
         """)
+    }
+
+    @AttributeListBuilder
+    var attributes: AttributeListSyntax {
+        if let availability {
+            AttributeSyntax(availability: availability)
+        }
     }
 
     @DeclModifierListBuilder

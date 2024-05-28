@@ -13,6 +13,7 @@ extension LocalizedStringKeyInitializerSnippet: Snippet {
     var syntax: some DeclSyntaxProtocol {
         InitializerDeclSyntax(
             leadingTrivia: leadingTrivia,
+            attributes: attributes.map({ $0.with(\.trailingTrivia, .newline) }),
             modifiers: modifiers,
             signature: signature,
             body: body
@@ -23,6 +24,11 @@ extension LocalizedStringKeyInitializerSnippet: Snippet {
         Trivia(docComment: """
         Creates a localized string key that represents a localized value in the ‘\(stringsTable.sourceFile.tableName)‘ strings table.
         """)
+    }
+
+    @AttributeListBuilder
+    var attributes: AttributeListSyntax {
+        AttributeSyntax(availability: .wwdc2020)
     }
 
     @DeclModifierListBuilder

@@ -305,6 +305,7 @@ extension Text {
 @available(macOS 10.5, iOS 13, tvOS 13, watchOS 6, *)
 extension LocalizedStringKey {
     /// Creates a localized string key that represents a localized value in the ‘Variations‘ strings table.
+    @available(macOS 11, iOS 14, tvOS 14, watchOS 7, *)
     internal init(variations: String.Variations) {
         var stringInterpolation = LocalizedStringKey.StringInterpolation(literalCapacity: 0, interpolationCount: 1)
 
@@ -319,6 +320,7 @@ extension LocalizedStringKey {
     }
 
     /// Creates a `LocalizedStringKey` that represents a localized value in the ‘Variations‘ strings table.
+    @available(macOS 11, iOS 14, tvOS 14, watchOS 7, *)
     internal static func variations(_ variations: String.Variations) -> LocalizedStringKey {
         LocalizedStringKey(variations: variations)
     }

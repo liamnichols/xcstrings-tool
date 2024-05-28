@@ -74,6 +74,24 @@ extension AvailabilityArgumentListSyntax {
         ]
     }
 
+    static var wwdc2020: AvailabilityArgumentListSyntax {
+        [
+            AvailabilityArgumentSyntax(argument: .platformVersionRestriction("macOS", versionMajor: 11))
+                .with(\.trailingComma, .commaToken()),
+
+            AvailabilityArgumentSyntax(argument: .platformVersionRestriction("iOS", versionMajor: 14))
+                .with(\.trailingComma, .commaToken()),
+
+            AvailabilityArgumentSyntax(argument: .platformVersionRestriction("tvOS", versionMajor: 14))
+                .with(\.trailingComma, .commaToken()),
+
+            AvailabilityArgumentSyntax(argument: .platformVersionRestriction("watchOS", versionMajor: 7))
+                .with(\.trailingComma, .commaToken()),
+
+            AvailabilityArgumentSyntax(argument: .token(.binaryOperator("*")))
+        ]
+    }
+
     static var wwdc2019: AvailabilityArgumentListSyntax {
         [
             AvailabilityArgumentSyntax(argument: .platformVersionRestriction("macOS", versionMajor: 10, versionMinor: 5))
