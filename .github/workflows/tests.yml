@@ -20,6 +20,16 @@ jobs:
       uses: actions/checkout@v4
     - name: Validate SPI Manifest
       run: swift package plugin validate-spi-manifest
+  compile-snapshots:
+    name: Compile Snapshots
+    runs-on: macos-14
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_15.4.app/Contents/Developer
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v4
+    - name: Compile Snapshots
+      run: .github/scripts/compile-snapshots.sh
   unit-test:
     name: Unit Tests (Xcode ${{ matrix.xcode }})
     strategy:
