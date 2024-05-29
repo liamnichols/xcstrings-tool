@@ -10,7 +10,11 @@ extension SourceFile.LocalizedStringResourceExtension.StringsTableStruct {
             !resource.arguments.isEmpty
         }
 
-        var name: TokenSyntax {
+        var variableName: TokenSyntax {
+            .identifier(resource.identifier.backtickedVariableNameIfNeeded)
+        }
+
+        var nameForMemberAccess: TokenSyntax {
             .identifier(resource.identifier)
         }
 

@@ -10,8 +10,8 @@ extension SourceFile.StringExtension.StringsTableStruct {
             !resource.arguments.isEmpty
         }
 
-        var name: TokenSyntax {
-            .identifier(resource.identifier)
+        var variableName: TokenSyntax {
+            .identifier(resource.identifier.backtickedVariableNameIfNeeded)
         }
 
         var type: TokenSyntax {

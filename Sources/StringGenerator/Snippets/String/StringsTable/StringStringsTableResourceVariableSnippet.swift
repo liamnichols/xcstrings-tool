@@ -11,7 +11,7 @@ struct StringStringsTableResourceVariableSnippet: Snippet {
             bindingSpecifier: .keyword(.var),
             bindings: [
                 PatternBindingSyntax(
-                    pattern: IdentifierPatternSyntax(identifier: accessor.name),
+                    pattern: IdentifierPatternSyntax(identifier: accessor.variableName),
                     typeAnnotation: TypeAnnotationSyntax(type: IdentifierTypeSyntax(name: accessor.type)),
                     accessorBlock: AccessorBlockSyntax(
                         accessors: .getter(getter)
