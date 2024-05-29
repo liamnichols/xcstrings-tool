@@ -1,6 +1,18 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "continue" : {
+      "comment" : "A key that conflicts with a keyword in swift that isn't suitable for a variable/method and should be backticked.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        }
+      }
+    },
     "Empty" : {
       "extractionState" : "manual"
     },
