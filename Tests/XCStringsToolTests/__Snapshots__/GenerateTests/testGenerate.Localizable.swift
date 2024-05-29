@@ -17,15 +17,15 @@ extension String {
     ///
     /// ```swift
     /// // Accessing the localized value directly
-    /// let value = String(localizable: .key)
-    /// value // "Default Value"
+    /// let value = String(localizable: .continue)
+    /// value // "Continue"
     /// ```
     ///
     /// Starting in iOS 16/macOS 13/tvOS 16/watchOS 9, `LocalizedStringResource` can also
     /// be used:
     ///
     /// ```swift
-    /// var resource = LocalizedStringResource(localizable: .key)
+    /// var resource = LocalizedStringResource(localizable: .continue)
     /// resource.locale = Locale(identifier: "fr") // customise language
     /// let value = String(localized: resource)    // defer lookup
     /// ```
@@ -105,6 +105,22 @@ extension String {
             self.arguments = arguments
             self.table = table
             self.bundle = bundle
+        }
+
+        /// A key that conflicts with a keyword in swift that isn't suitable for a variable/method and should be backticked.
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Continue
+        /// ```
+        internal static var `continue`: Localizable {
+            Localizable(
+                key: "continue",
+                arguments: [],
+                table: "Localizable",
+                bundle: .current
+            )
         }
 
         /// This is a comment
@@ -236,15 +252,31 @@ extension LocalizedStringResource {
     ///
     /// ```swift
     /// // Accessing the localized value directly
-    /// let value = String(localized: .localizable.key)
-    /// value // "Default Value"
+    /// let value = String(localized: .localizable.continue)
+    /// value // "Continue"
     ///
     /// // Working with SwiftUI
-    /// Text(.localizable.key)
+    /// Text(.localizable.continue)
     /// ```
     ///
     /// - Note: Using ``LocalizedStringResource.Localizable`` requires iOS 16/macOS 13 or later. See ``String.Localizable`` for a backwards compatible API.
     internal struct Localizable {
+        /// A key that conflicts with a keyword in swift that isn't suitable for a variable/method and should be backticked.
+        ///
+        /// ### Source Localization
+        ///
+        /// ```
+        /// Continue
+        /// ```
+        @available (iOS, deprecated: 100000, message: "Use `String.Localizable.continue` instead. This property will be removed in the future.")
+        @available (macOS, deprecated: 100000, message: "Use `String.Localizable.continue` instead. This property will be removed in the future.")
+        @available (tvOS, deprecated: 100000, message: "Use `String.Localizable.continue` instead. This property will be removed in the future.")
+        @available (watchOS, deprecated: 100000, message: "Use `String.Localizable.continue` instead. This property will be removed in the future.")
+        @available (visionOS, deprecated: 100000, message: "Use `String.Localizable.continue` instead. This property will be removed in the future.")
+        internal var `continue`: LocalizedStringResource {
+            LocalizedStringResource(localizable: .continue)
+        }
+
         /// This is a comment
         ///
         /// ### Source Localization

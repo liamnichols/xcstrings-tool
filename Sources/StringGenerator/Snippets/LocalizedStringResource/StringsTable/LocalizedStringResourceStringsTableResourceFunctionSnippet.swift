@@ -9,7 +9,7 @@ struct LocalizedStringResourceStringsTableResourceFunctionSnippet: Snippet {
             leadingTrivia: leadingTrivia,
             attributes: attributes.map({ $0.with(\.trailingTrivia, .newline) }),
             modifiers: modifiers,
-            name: accessor.name,
+            name: accessor.variableName,
             signature: FunctionSignatureSyntax(
                 parameterClause: FunctionParameterClauseSyntax {
                     for argument in accessor.resource.arguments {
@@ -57,7 +57,7 @@ struct LocalizedStringResourceStringsTableResourceFunctionSnippet: Snippet {
             LabeledExprSyntax(
                 label: accessor.sourceFile.tableVariableIdentifier,
                 expression: FunctionCallExprSyntax(
-                    callee: MemberAccessExprSyntax(name: accessor.name)
+                    callee: MemberAccessExprSyntax(name: accessor.nameForMemberAccess)
                 ) {
                     for argument in accessor.resource.arguments {
                         LabeledExprSyntax(

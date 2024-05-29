@@ -12,7 +12,7 @@ struct LocalizedStringResourceStringsTableResourceVariableSnippet: Snippet {
             bindingSpecifier: .keyword(.var),
             bindings: [
                 PatternBindingSyntax(
-                    pattern: IdentifierPatternSyntax(identifier: accessor.name),
+                    pattern: IdentifierPatternSyntax(identifier: accessor.variableName),
                     typeAnnotation: TypeAnnotationSyntax(type: accessor.type),
                     accessorBlock: AccessorBlockSyntax(
                         accessors: .getter(getter)
@@ -56,7 +56,7 @@ struct LocalizedStringResourceStringsTableResourceVariableSnippet: Snippet {
         ) {
             LabeledExprSyntax(
                 label: accessor.sourceFile.tableVariableIdentifier,
-                expression: MemberAccessExprSyntax(name: accessor.name)
+                expression: MemberAccessExprSyntax(name: accessor.nameForMemberAccess)
             )
         }
     }

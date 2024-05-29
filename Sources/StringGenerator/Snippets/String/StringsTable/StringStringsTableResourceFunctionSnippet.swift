@@ -8,7 +8,7 @@ struct StringStringsTableResourceFunctionSnippet: Snippet {
         FunctionDeclSyntax(
             leadingTrivia: leadingTrivia,
             modifiers: modifiers,
-            name: accessor.name,
+            name: accessor.variableName,
             signature: FunctionSignatureSyntax(
                 parameterClause: FunctionParameterClauseSyntax {
                     for argument in accessor.resource.arguments {
