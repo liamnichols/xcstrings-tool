@@ -9,5 +9,7 @@ for snapshot in Tests/XCStringsToolTests/__Snapshots__/**/*.swift; do
 
   if xcrun swiftc "$snapshot" -package-name "MyPackage" -o /dev/null ; then
     echo "  Success"
+  else
+    exit $?
   fi
 done
