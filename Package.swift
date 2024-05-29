@@ -159,7 +159,7 @@ let experimentalFeatureSwiftSettings: [SwiftSetting] = [
 
 package.targets.forEach { target in
     guard target.name != "XCStringsToolPlugin" else {
-        return /// Plugins don't support setting `swiftSettings`
+        return // Plugins don't support setting `swiftSettings`
     }
 
     let swiftSettings = target.swiftSettings ?? []

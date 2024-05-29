@@ -106,7 +106,7 @@ private extension GenerateTests {
 
         // Cleanup any temporary output
         addTeardownBlock {
-            let fileManager = FileManager.default /// Needed because `FileManager` is not `Sendable`
+            let fileManager = FileManager.default // Needed because `FileManager` is not `Sendable`
             if fileManager.fileExists(atPath: outputURL.path()) {
                 try? fileManager.removeItem(at: outputURL)
             }
