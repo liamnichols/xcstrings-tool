@@ -139,5 +139,7 @@ extension URL {
 
 extension Snapshotting where Value == String, Format == String {
     /// A snapshot strategy for comparing Swift Source Code based on equality.
-    public static let sourceCode = Snapshotting(pathExtension: "swift", diffing: .lines)
+    public static var sourceCode: Snapshotting<String, String> {
+        Snapshotting(pathExtension: "swift", diffing: .lines)
+    }
 }
