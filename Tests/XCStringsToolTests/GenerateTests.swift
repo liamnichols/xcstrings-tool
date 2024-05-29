@@ -4,7 +4,7 @@ import SnapshotTesting
 import XCTest
 
 final class GenerateTests: FixtureTestCase {
-    func testGenerate() throws {
+  @MainActor func testGenerate() throws {
         try eachFixture { inputURL in
             if !inputURL.lastPathComponent.hasPrefix("!") {
                 try snapshot(for: inputURL)
@@ -79,7 +79,7 @@ private extension GenerateTests {
     func assertError(
         for inputURL: URL,
         localizedDescription expected: String,
-        file: StaticString = #file,
+        file: StaticString = #filePath,
         line: UInt = #line
     ) {
         XCTAssertThrowsError(try run(for: inputURL), file: file, line: line) { error in
@@ -106,6 +106,7 @@ private extension GenerateTests {
 
         // Cleanup any temporary output
         addTeardownBlock {
+            let fileManager = FileManager.default /// Needed because `FileManager` is not `Sendable`
             if fileManager.fileExists(atPath: outputURL.path()) {
                 try? fileManager.removeItem(at: outputURL)
             }
