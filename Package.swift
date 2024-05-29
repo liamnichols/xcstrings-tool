@@ -135,6 +135,37 @@ let package = Package(
     ]
 )
 
+// Use https://www.swift.org/swift-evolution/ to see details of the upcoming/experimental features
+let upcomingFeatureSwiftSettings: [SwiftSetting] = [
+    "ConciseMagicFile", // SE-0274
+    "ForwardTrailingClosures", // SE-0286
+    "ExistentialAny", // SE-0335
+    "BareSlashRegexLiterals", // SE-0354
+    "ImportObjcForwardDeclarations", // SE-0384
+    "DeprecateApplicationMain", // SE-0383
+    "DisableOutwardActorInference", // SE-0401
+    "IsolatedDefaultValues", // SE-0411
+    "GlobalConcurrency" // SE-0412
+].map {
+    .enableUpcomingFeature($0)
+}
+
+let experimentalFeatureSwiftSettings: [SwiftSetting] = [
+    "AccessLevelOnImport",  // SE-0409
+    "StrictConcurrency" // SE-0412
+].map {
+    .enableExperimentalFeature($0)
+}
+
+package.targets.forEach { target in
+    guard target.name != "XCStringsToolPlugin" else {
+        return /// Plugins don't support setting `swiftSettings`
+    }
+
+    let swiftSettings = target.swiftSettings ?? []
+    target.swiftSettings = swiftSettings + upcomingFeatureSwiftSettings + experimentalFeatureSwiftSettings
+}
+
 // https://swiftpackageindex.com/swiftpackageindex/spimanifest/0.19.0/documentation/spimanifest/validation
 // On CI, we want to validate the manifest, but nobody else needs that.
 if ProcessInfo.processInfo.environment.keys.contains("VALIDATE_SPI_MANIFEST") {
