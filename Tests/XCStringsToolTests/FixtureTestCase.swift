@@ -1,7 +1,6 @@
 import Foundation
 import XCTest
 
-@MainActor
 class FixtureTestCase: XCTestCase {
     var fixtures: [URL]!
 
@@ -12,7 +11,7 @@ class FixtureTestCase: XCTestCase {
         fixtures = try XCTUnwrap(bundle.urls(forResourcesWithExtension: "xcstrings", subdirectory: "__Fixtures__"))
     }
 
-    func eachFixture(_ test: (URL) throws -> Void) throws {
+    @MainActor func eachFixture(_ test: (URL) throws -> Void) throws {
         for fileURL in fixtures {
             try XCTContext.runActivity(named: fileURL.lastPathComponent) { activity in
                 do {

@@ -3,9 +3,8 @@ import SnapshotTesting
 @testable import xcstrings_tool
 import XCTest
 
-@MainActor
 final class GenerateTests: FixtureTestCase {
-    func testGenerate() throws {
+    @MainActor func testGenerate() throws {
         try eachFixture { inputURL in
             if !inputURL.lastPathComponent.hasPrefix("!") {
                 try snapshot(for: inputURL)
