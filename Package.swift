@@ -7,12 +7,7 @@ import PackageDescription
 let package = Package(
     name: "XCStringsTool",
     platforms: [
-        .macOS(.v13),
-        .iOS(.v16),
-        .tvOS(.v16),
-        .watchOS(.v9),
-        .macCatalyst(.v16),
-        .visionOS(.v1)
+        .macOS(.v13)
     ],
     products: [
         .executable(name: "xcstrings-tool", targets: ["xcstrings-tool"]),
