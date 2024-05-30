@@ -1,6 +1,6 @@
 import Foundation
 
-public struct StringUnitState: Codable, Hashable, RawRepresentable, ExpressibleByStringLiteral {
+public struct StringUnitState: Codable, Hashable, RawRepresentable, ExpressibleByStringLiteral, Sendable {
     public let rawValue: String
 
     public init(rawValue: String) {

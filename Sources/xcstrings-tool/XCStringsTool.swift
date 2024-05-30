@@ -3,7 +3,7 @@ import XCStringsToolConstants
 
 @main
 struct XCStringsTool: ParsableCommand {
-    static var configuration = CommandConfiguration(
+    static let configuration = CommandConfiguration(
         commandName: "xcstrings-tool",
         abstract: "Generates Swift code from String Catalogs (.xcstrings files)",
         version: version,

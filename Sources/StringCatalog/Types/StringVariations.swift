@@ -11,7 +11,7 @@ public struct StringVariations: Codable {
 }
 
 extension StringVariations {
-    public struct DeviceKey: Codable, Hashable, RawRepresentable, ExpressibleByStringLiteral, CodingKeyRepresentable {
+    public struct DeviceKey: Codable, Hashable, RawRepresentable, ExpressibleByStringLiteral, CodingKeyRepresentable, Sendable {
         public let rawValue: String
 
         public init(rawValue: String) {
@@ -32,7 +32,7 @@ extension StringVariations {
         public static let other = Self(rawValue: "other")
     }
 
-    public struct PluralKey: Codable, Hashable, RawRepresentable, ExpressibleByStringLiteral, CodingKeyRepresentable {
+    public struct PluralKey: Codable, Hashable, RawRepresentable, ExpressibleByStringLiteral, CodingKeyRepresentable, Sendable {
         public let rawValue: String
 
         public init(rawValue: String) {
