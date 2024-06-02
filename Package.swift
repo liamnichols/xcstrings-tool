@@ -120,7 +120,9 @@ let package = Package(
             ],
             resources: [
                 .process("FeatureOne.xcstrings"),
-                .process("Localizable.xcstrings")
+                .process("Localizable.xcstrings"),
+                .process("Legacy.strings"),
+                .process("Legacy.stringsdict")
             ],
             swiftSettings: [
                 .define("XCSTRINGS_TOOL_ACCESS_LEVEL_PUBLIC")

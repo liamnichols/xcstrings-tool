@@ -57,4 +57,16 @@ final class PluginTests: XCTestCase {
 
         XCTAssertEqual(resolved, "3 strings remaining")
     }
+
+    func testLegacyStrings() {
+        XCTAssertEqual(
+            String(legacy: .simpleString("foo")),
+            "This simple string: foo"
+        )
+
+        XCTAssertEqual(
+            String(legacy: .plural("John", 1)),
+            "Hello John, I have 1 plural"
+        )
+    }
 }

@@ -12,8 +12,10 @@ struct XCStringsToolPlugin: BuildToolPlugin {
             return []
         }
 
-        return try sourceModule
-            .sourceFiles(withSuffix: "xcstrings")
-            .map { try .xcstringstool(for: $0, using: context) }
+        return try InputFile
+            .groupings(for: sourceModule.sourceFiles)
+            .map { tableName, files in
+                try .xcstringstool(forTableName: tableName, files: files, using: context)
+            }
     }
 }

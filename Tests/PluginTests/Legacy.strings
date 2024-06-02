@@ -1,0 +1,9 @@
+/* 
+  Localizable.strings
+  
+
+  Created by Liam Nichols on 02/06/2024.
+  
+*/
+
+"SimpleString" = "This simple string: %@";

@@ -7,9 +7,11 @@ extension XCStringsToolPlugin: XcodeBuildToolPlugin {
         context: XcodePluginContext,
         target: XcodeTarget
     ) throws -> [Command] {
-        try target.inputFiles
-            .filter { $0.path.extension == "xcstrings" }
-            .map { try .xcstringstool(for: $0, using: context) }
+        try InputFile
+            .groupings(for: target.inputFiles)
+            .map { tableName, files in
+                try .xcstringstool(forTableName: tableName, files: files, using: context)
+            }
     }
 }
 #endif
