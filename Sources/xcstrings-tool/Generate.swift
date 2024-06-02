@@ -9,13 +9,21 @@ import StringValidator
 
 struct Generate: ParsableCommand {
     @Argument(
-        help: "Path to xcstrings String Catalog file",
-        completion: .file(extensions: ["xcstrings", "strings"]),
+        help: ArgumentHelp(
+            "Path to xcstrings String Catalog file",
+            discussion: """
+            You can also pass multiple file paths to the same Strings Table. \
+            For example, a path to Localizable.strings as well as Localizable.stringsdict. \
+            An error will be thrown if you pass inputs to multiple different Strings Tables.
+            """
+        ),
+        completion: .file(extensions: ["xcstrings", "strings", "stringsdict"]),
         transform: { URL(filePath: $0, directoryHint: .notDirectory) }
     )
-    var input: URL
+    var inputs: [URL]
 
-    @Argument(
+    @Option(
+        name: .shortAndLong,
         help: "Path to write generated Swift output",
         completion: .file(extensions: ["swift"]),
         transform: { URL(filePath: $0, directoryHint: .notDirectory) }
@@ -31,23 +39,35 @@ struct Generate: ParsableCommand {
     // MARK: - Program
     
     func run() throws {
-        // Load the source ensuring that errors are thrown in a diagnostic format for the input
-        let source = try withThrownErrorsAsDiagnostics(at: input) {
-            // Load the source content and extract the resources
-            let source = try StringSource(contentsOf: input)
-            let result = try StringExtractor.extractResources(from: source)
-
-            // Validate the extraction result
-            result.issues.forEach { warning($0.description, sourceFile: input) }
-            try ResourceValidator.validateResources(result.resources, in: input)
-
-            // Generate the associated Swift source
-            return StringGenerator.generateSource(
-                for: result.resources,
-                tableName: tableName,
-                accessLevel: resolvedAccessLevel
-            )
+        let tableName = try withThrownErrorsAsDiagnostics {
+            try self.tableName
         }
+
+        // Collect the results for each input file
+        let results = try inputs.map { input in
+            try withThrownErrorsAsDiagnostics(at: input) {
+                // Load the source content and extract the resources
+                let source = try StringSource(contentsOf: input)
+                let result = try StringExtractor.extractResources(from: source)
+
+                // Validate the extraction result
+                result.issues.forEach { warning($0.description, sourceFile: input) }
+                try ResourceValidator.validateResources(result.resources, in: input)
+
+                // Return the resources
+                return result
+            }
+        }
+
+        // Merge the resources together, ensure that they are uniquely keyed and sorted
+        let resources = try mergeAndEnsureUnique(results)
+
+        // Generate the associated Swift source
+        let source = StringGenerator.generateSource(
+            for: resources,
+            tableName: tableName,
+            accessLevel: resolvedAccessLevel
+        )
 
         // Write the output and catch errors in a diagnostic format
         try withThrownErrorsAsDiagnostics {
@@ -61,10 +81,49 @@ struct Generate: ParsableCommand {
     }
 
     var tableName: String {
-        input.lastPathComponent.replacingOccurrences(of: ".\(input.pathExtension)", with: "")
+        get throws {
+            let tableNames = Set(inputs.map({ url in
+                url.lastPathComponent.replacingOccurrences(of: ".\(url.pathExtension)", with: "")
+            }))
+
+            if tableNames.count == 1, let tableName = tableNames.first {
+                return tableName
+            } else {
+                throw Diagnostic(
+                    severity: .error,
+                    message: """
+                    Attempting to generate for inputs that represent multiple different \
+                    strings tables (\(tableNames.sorted().formatted())). \
+                    This is not supported.
+                    """
+                )
+            }
+        }
     }
 
     var resolvedAccessLevel: AccessLevel {
         .resolveFromEnvironment(or: accessLevel) ?? .internal
+    }
+
+    func mergeAndEnsureUnique(_ results: [StringExtractor.Result]) throws -> [Resource] {
+        if results.isEmpty { return [] }
+        if results.count == 1 { return results[0].resources }
+
+        let resources = results.flatMap { $0.resources }
+
+        let keyed = Dictionary(grouping: resources, by: \.key)
+        let conflicts = keyed.filter { $0.value.count > 1 }
+
+        guard conflicts.isEmpty else {
+            let conflicts = Array(conflicts.map(\.key)).formatted()
+            throw Diagnostic(
+                severity: .error,
+                message: """
+                Conflicting keys were found within the inputs: \(conflicts)
+                """
+            )
+        }
+
+        return resources.sorted()
     }
 }

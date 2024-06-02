@@ -124,7 +124,7 @@ private extension GenerateTests {
         }
 
         // Form the arguments
-        var arguments = [inputURL.absoluteURL.path(), outputURL.absoluteURL.path()]
+        var arguments = [inputURL.absoluteURL.path(), "--output", outputURL.absoluteURL.path()]
         if let accessLevel {
             arguments += ["--access-level", accessLevel]
         }

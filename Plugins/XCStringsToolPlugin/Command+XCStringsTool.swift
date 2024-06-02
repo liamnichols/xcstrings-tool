@@ -20,7 +20,7 @@ extension Command {
             executable: try context.tool(named: "xcstrings-tool").path,
             arguments: [
                 file.path,
-                context.outputPath(for: file)
+                "--output", context.outputPath(for: file)
             ],
             inputFiles: [
                 file.path
