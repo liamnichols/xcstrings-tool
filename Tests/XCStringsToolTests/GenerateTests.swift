@@ -65,12 +65,18 @@ final class GenerateTests: FixtureTestCase {
             for: try fixture(named: "Legacy", extension: "stringsdict")
         )
     }
+
+    func testGenerateWithLegacyFilesCombined() throws {
+        try snapshot(
+            for: try fixture(named: "Legacy", extension: "strings"), try fixture(named: "Legacy", extension: "stringsdict")
+        )
+    }
 }
 
 // MARK: - Helpers
 private extension GenerateTests {
     func snapshot(
-        for inputURL: URL,
+        for inputURLs: URL...,
         accessLevel: String? = nil,
         record: Bool = false,
         file: StaticString = #file,
@@ -78,9 +84,9 @@ private extension GenerateTests {
         line: UInt = #line
     ) throws {
         assertSnapshot(
-            of: try run(for: inputURL, accessLevel: accessLevel),
+            of: try run(for: inputURLs, accessLevel: accessLevel),
             as: .sourceCode,
-            named: inputURL.stem,
+            named: inputURLs.first!.stem,
             record: record,
             file: file,
             testName: testName,
@@ -89,12 +95,12 @@ private extension GenerateTests {
     }
 
     func assertError(
-        for inputURL: URL,
+        for inputURLs: URL...,
         localizedDescription expected: String,
         file: StaticString = #file,
         line: UInt = #line
     ) {
-        XCTAssertThrowsError(try run(for: inputURL), file: file, line: line) { error in
+        XCTAssertThrowsError(try run(for: inputURLs), file: file, line: line) { error in
             let actual = if let error = error as? Diagnostic {
                 error.message
             } else {
@@ -107,7 +113,7 @@ private extension GenerateTests {
 
     // Helper for running the generate command
     func run(
-        for inputURL: URL,
+        for inputURLs: [URL],
         accessLevel: String? = nil
     ) throws -> String {
         // Create a temporary output file
@@ -124,7 +130,8 @@ private extension GenerateTests {
         }
 
         // Form the arguments
-        var arguments = [inputURL.absoluteURL.path(), "--output", outputURL.absoluteURL.path()]
+        var arguments = inputURLs.map { $0.absoluteURL.path() }
+        arguments.append(contentsOf: ["--output", outputURL.absoluteURL.path()])
         if let accessLevel {
             arguments += ["--access-level", accessLevel]
         }
