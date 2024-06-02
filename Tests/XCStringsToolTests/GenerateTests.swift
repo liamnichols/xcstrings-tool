@@ -59,6 +59,12 @@ final class GenerateTests: FixtureTestCase {
             for: try fixture(named: "Legacy", extension: "strings")
         )
     }
+
+    func testGenerateWithLegacyStringsdict() throws {
+        try snapshot(
+            for: try fixture(named: "Legacy", extension: "stringsdict")
+        )
+    }
 }
 
 // MARK: - Helpers
