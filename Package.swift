@@ -6,6 +6,7 @@ import PackageDescription
 
 let package = Package(
     name: "XCStringsTool",
+    defaultLocalization: "en",
     platforms: [
         .macOS(.v13)
     ],
@@ -33,6 +34,7 @@ let package = Package(
                 .target(name: "StringExtractor"),
                 .target(name: "StringGenerator"),
                 .target(name: "StringResource"),
+                .target(name: "StringSource"),
                 .target(name: "StringValidator"),
                 .target(name: "XCStringsToolConstants")
             ]
@@ -63,6 +65,13 @@ let package = Package(
         ),
 
         .target(
+            name: "StringSource",
+            dependencies: [
+                .target(name: "StringCatalog"),
+            ]
+        ),
+
+        .target(
             name: "StringCatalog"
         ),
 
@@ -79,6 +88,7 @@ let package = Package(
             dependencies: [
                 .target(name: "StringCatalog"),
                 .target(name: "StringResource"),
+                .target(name: "StringSource"),
                 .target(name: "SwiftIdentifier")
             ]
         ),
@@ -110,8 +120,7 @@ let package = Package(
                 .target(name: "XCStringsToolPlugin")
             ],
             resources: [
-                .process("FeatureOne.xcstrings"),
-                .process("Localizable.xcstrings")
+                .process("Resources")
             ],
             swiftSettings: [
                 .define("XCSTRINGS_TOOL_ACCESS_LEVEL_PUBLIC")

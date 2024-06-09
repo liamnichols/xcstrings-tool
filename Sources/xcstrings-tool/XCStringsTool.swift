@@ -10,4 +10,10 @@ struct XCStringsTool: ParsableCommand {
         subcommands: [Generate.self],
         defaultSubcommand: Generate.self
     )
+
+    @Flag var verbose = false
+
+    func run() throws {
+        isVerboseLoggingEnabled = verbose
+    }
 }

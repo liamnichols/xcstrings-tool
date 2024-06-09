@@ -14,19 +14,20 @@ extension XcodePluginContext: PluginContextProtocol {}
 #endif
 
 extension Command {
-    static func xcstringstool(for file: File, using context: PluginContextProtocol) throws -> Command {
+    static func xcstringstool(
+        forTableName tableName: String,
+        files: [File],
+        using context: PluginContextProtocol
+    ) throws -> Command {
         .buildCommand(
-            displayName: "XCStringsTool: Generate Swift code for ‘\(file.path.lastComponent)‘",
+            displayName: "XCStringsTool: Generate Swift code for ‘\(tableName)‘",
             executable: try context.tool(named: "xcstrings-tool").path,
-            arguments: [
-                file.path,
-                context.outputPath(for: file)
+            arguments: files.map(\.path.string) + [
+                "--output", context.outputPath(for: tableName)
             ],
-            inputFiles: [
-                file.path
-            ],
+            inputFiles: files.map(\.path),
             outputFiles: [
-                context.outputPath(for: file)
+                context.outputPath(for: tableName)
             ]
         )
     }
@@ -37,8 +38,8 @@ private extension PluginContextProtocol {
         pluginWorkDirectory.appending(subpath: "XCStringsTool")
     }
 
-    func outputPath(for file: File) -> Path {
-        outputDirectory.appending("\(file.path.stem).swift")
+    func outputPath(for tableName: String) -> Path {
+        outputDirectory.appending("\(tableName).swift")
     }
 }
 
