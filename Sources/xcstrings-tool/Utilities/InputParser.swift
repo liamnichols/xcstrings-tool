@@ -4,12 +4,15 @@ struct InputParser {
     typealias Parsed = (tableName: String, files: [URL])
 
     enum Error: Swift.Error {
+        case noInputs
         case multipleTablesInInputs([String])
         case duplicateFiles([String: [URL]])
         case notALocalizedResource(URL)
     }
 
     static func parse(from inputs: [URL], developmentLanguage: String?) throws -> Parsed {
+        if inputs.isEmpty { throw Error.noInputs }
+
         debug("raw inputs:")
         debug("  developmentLanguage: \(developmentLanguage ?? "nil")")
         debug("  files:")
@@ -73,6 +76,8 @@ struct InputParser {
 extension InputParser.Error: LocalizedError {
     var errorDescription: String? {
         switch self {
+        case .noInputs:
+            return "You must provide at least one input file."
         case .multipleTablesInInputs(let tableNames):
             return """
             Attempting to generate for inputs that represent multiple different \
