@@ -1,2 +1,2 @@
 /// The version of XCStrings Tool
-public let version = "0.4.2"
+public let version = "0.5.0"
