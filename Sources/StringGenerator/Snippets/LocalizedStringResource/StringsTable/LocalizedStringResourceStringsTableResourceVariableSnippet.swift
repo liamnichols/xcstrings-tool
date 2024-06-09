@@ -35,11 +35,7 @@ struct LocalizedStringResourceStringsTableResourceVariableSnippet: Snippet {
 
     @AttributeListBuilder
     var attributes: AttributeListSyntax {
-        AttributeSyntax(.identifier("iOS"), deprecated: 100000, message: deprecationMessage)
-        AttributeSyntax(.identifier("macOS"), deprecated: 100000, message: deprecationMessage)
-        AttributeSyntax(.identifier("tvOS"), deprecated: 100000, message: deprecationMessage)
-        AttributeSyntax(.identifier("watchOS"), deprecated: 100000, message: deprecationMessage)
-        AttributeSyntax(.identifier("visionOS"), deprecated: 100000, message: deprecationMessage)
+        AttributeSyntax(.binaryOperator("*"), deprecated: nil, message: deprecationMessage)
     }
 
     @DeclModifierListBuilder

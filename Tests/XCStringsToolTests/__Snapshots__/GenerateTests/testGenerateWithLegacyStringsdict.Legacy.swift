@@ -204,21 +204,13 @@ extension LocalizedStringResource {
         /// ```
         /// Hello %@, I have %lld plurals
         /// ```
-        @available (iOS, deprecated: 100000, message: "Use `String.Legacy.key6(_:_:)` instead. This method will be removed in the future.")
-        @available (macOS, deprecated: 100000, message: "Use `String.Legacy.key6(_:_:)` instead. This method will be removed in the future.")
-        @available (tvOS, deprecated: 100000, message: "Use `String.Legacy.key6(_:_:)` instead. This method will be removed in the future.")
-        @available (watchOS, deprecated: 100000, message: "Use `String.Legacy.key6(_:_:)` instead. This method will be removed in the future.")
-        @available (visionOS, deprecated: 100000, message: "Use `String.Legacy.key6(_:_:)` instead. This method will be removed in the future.")
+        @available (*, deprecated, message: "Use `String.Legacy.key6(_:_:)` instead. This method will be removed in the future.")
         internal func key6(_ arg1: String, _ arg2: Int) -> LocalizedStringResource {
             LocalizedStringResource(legacy: .key6(arg1, arg2))
         }
     }
 
-    @available (iOS, deprecated: 100000, message: "Use the `legacy(_:)` static method instead. This property will be removed in the future.")
-    @available (macOS, deprecated: 100000, message: "Use the `legacy(_:)` static method instead. This property will be removed in the future.")
-    @available (tvOS, deprecated: 100000, message: "Use the `legacy(_:)` static method instead. This property will be removed in the future.")
-    @available (watchOS, deprecated: 100000, message: "Use the `legacy(_:)` static method instead. This property will be removed in the future.")
-    @available (visionOS, deprecated: 100000, message: "Use the `legacy(_:)` static method instead. This property will be removed in the future.") internal static let legacy = Legacy()
+    @available (*, deprecated, message: "Use the `legacy(_:)` static method instead. This property will be removed in the future.") internal static let legacy = Legacy()
 
     internal init(legacy: String.Legacy) {
         self.init(

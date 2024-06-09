@@ -415,11 +415,7 @@ extension LocalizedStringResource {
         /// ```
         /// Test %@
         /// ```
-        @available (iOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.at(_:)` instead. This method will be removed in the future.")
-        @available (macOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.at(_:)` instead. This method will be removed in the future.")
-        @available (tvOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.at(_:)` instead. This method will be removed in the future.")
-        @available (watchOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.at(_:)` instead. This method will be removed in the future.")
-        @available (visionOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.at(_:)` instead. This method will be removed in the future.")
+        @available (*, deprecated, message: "Use `String.FormatSpecifiers.at(_:)` instead. This method will be removed in the future.")
         internal func at(_ arg1: String) -> LocalizedStringResource {
             LocalizedStringResource(formatSpecifiers: .at(arg1))
         }
@@ -431,11 +427,7 @@ extension LocalizedStringResource {
         /// ```
         /// Test %d
         /// ```
-        @available (iOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.d(_:)` instead. This method will be removed in the future.")
-        @available (macOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.d(_:)` instead. This method will be removed in the future.")
-        @available (tvOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.d(_:)` instead. This method will be removed in the future.")
-        @available (watchOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.d(_:)` instead. This method will be removed in the future.")
-        @available (visionOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.d(_:)` instead. This method will be removed in the future.")
+        @available (*, deprecated, message: "Use `String.FormatSpecifiers.d(_:)` instead. This method will be removed in the future.")
         internal func d(_ arg1: Int) -> LocalizedStringResource {
             LocalizedStringResource(formatSpecifiers: .d(arg1))
         }
@@ -447,11 +439,7 @@ extension LocalizedStringResource {
         /// ```
         /// Test %lld
         /// ```
-        @available (iOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.d_length(_:)` instead. This method will be removed in the future.")
-        @available (macOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.d_length(_:)` instead. This method will be removed in the future.")
-        @available (tvOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.d_length(_:)` instead. This method will be removed in the future.")
-        @available (watchOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.d_length(_:)` instead. This method will be removed in the future.")
-        @available (visionOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.d_length(_:)` instead. This method will be removed in the future.")
+        @available (*, deprecated, message: "Use `String.FormatSpecifiers.d_length(_:)` instead. This method will be removed in the future.")
         internal func d_length(_ arg1: Int) -> LocalizedStringResource {
             LocalizedStringResource(formatSpecifiers: .d_length(arg1))
         }
@@ -463,11 +451,7 @@ extension LocalizedStringResource {
         /// ```
         /// Test %f
         /// ```
-        @available (iOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.f(_:)` instead. This method will be removed in the future.")
-        @available (macOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.f(_:)` instead. This method will be removed in the future.")
-        @available (tvOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.f(_:)` instead. This method will be removed in the future.")
-        @available (watchOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.f(_:)` instead. This method will be removed in the future.")
-        @available (visionOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.f(_:)` instead. This method will be removed in the future.")
+        @available (*, deprecated, message: "Use `String.FormatSpecifiers.f(_:)` instead. This method will be removed in the future.")
         internal func f(_ arg1: Double) -> LocalizedStringResource {
             LocalizedStringResource(formatSpecifiers: .f(arg1))
         }
@@ -479,11 +463,7 @@ extension LocalizedStringResource {
         /// ```
         /// Test %.2f
         /// ```
-        @available (iOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.f_precision(_:)` instead. This method will be removed in the future.")
-        @available (macOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.f_precision(_:)` instead. This method will be removed in the future.")
-        @available (tvOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.f_precision(_:)` instead. This method will be removed in the future.")
-        @available (watchOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.f_precision(_:)` instead. This method will be removed in the future.")
-        @available (visionOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.f_precision(_:)` instead. This method will be removed in the future.")
+        @available (*, deprecated, message: "Use `String.FormatSpecifiers.f_precision(_:)` instead. This method will be removed in the future.")
         internal func f_precision(_ arg1: Double) -> LocalizedStringResource {
             LocalizedStringResource(formatSpecifiers: .f_precision(arg1))
         }
@@ -495,11 +475,7 @@ extension LocalizedStringResource {
         /// ```
         /// Test %i
         /// ```
-        @available (iOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.i(_:)` instead. This method will be removed in the future.")
-        @available (macOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.i(_:)` instead. This method will be removed in the future.")
-        @available (tvOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.i(_:)` instead. This method will be removed in the future.")
-        @available (watchOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.i(_:)` instead. This method will be removed in the future.")
-        @available (visionOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.i(_:)` instead. This method will be removed in the future.")
+        @available (*, deprecated, message: "Use `String.FormatSpecifiers.i(_:)` instead. This method will be removed in the future.")
         internal func i(_ arg1: Int) -> LocalizedStringResource {
             LocalizedStringResource(formatSpecifiers: .i(arg1))
         }
@@ -511,11 +487,7 @@ extension LocalizedStringResource {
         /// ```
         /// Test %o
         /// ```
-        @available (iOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.o(_:)` instead. This method will be removed in the future.")
-        @available (macOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.o(_:)` instead. This method will be removed in the future.")
-        @available (tvOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.o(_:)` instead. This method will be removed in the future.")
-        @available (watchOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.o(_:)` instead. This method will be removed in the future.")
-        @available (visionOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.o(_:)` instead. This method will be removed in the future.")
+        @available (*, deprecated, message: "Use `String.FormatSpecifiers.o(_:)` instead. This method will be removed in the future.")
         internal func o(_ arg1: UInt) -> LocalizedStringResource {
             LocalizedStringResource(formatSpecifiers: .o(arg1))
         }
@@ -527,11 +499,7 @@ extension LocalizedStringResource {
         /// ```
         /// Test %
         /// ```
-        @available (iOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.percentage` instead. This property will be removed in the future.")
-        @available (macOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.percentage` instead. This property will be removed in the future.")
-        @available (tvOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.percentage` instead. This property will be removed in the future.")
-        @available (watchOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.percentage` instead. This property will be removed in the future.")
-        @available (visionOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.percentage` instead. This property will be removed in the future.")
+        @available (*, deprecated, message: "Use `String.FormatSpecifiers.percentage` instead. This property will be removed in the future.")
         internal var percentage: LocalizedStringResource {
             LocalizedStringResource(formatSpecifiers: .percentage)
         }
@@ -543,11 +511,7 @@ extension LocalizedStringResource {
         /// ```
         /// Test %%
         /// ```
-        @available (iOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.percentage_escaped` instead. This property will be removed in the future.")
-        @available (macOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.percentage_escaped` instead. This property will be removed in the future.")
-        @available (tvOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.percentage_escaped` instead. This property will be removed in the future.")
-        @available (watchOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.percentage_escaped` instead. This property will be removed in the future.")
-        @available (visionOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.percentage_escaped` instead. This property will be removed in the future.")
+        @available (*, deprecated, message: "Use `String.FormatSpecifiers.percentage_escaped` instead. This property will be removed in the future.")
         internal var percentage_escaped: LocalizedStringResource {
             LocalizedStringResource(formatSpecifiers: .percentage_escaped)
         }
@@ -559,11 +523,7 @@ extension LocalizedStringResource {
         /// ```
         /// Test 50%% off
         /// ```
-        @available (iOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.percentage_escaped_space_o` instead. This property will be removed in the future.")
-        @available (macOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.percentage_escaped_space_o` instead. This property will be removed in the future.")
-        @available (tvOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.percentage_escaped_space_o` instead. This property will be removed in the future.")
-        @available (watchOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.percentage_escaped_space_o` instead. This property will be removed in the future.")
-        @available (visionOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.percentage_escaped_space_o` instead. This property will be removed in the future.")
+        @available (*, deprecated, message: "Use `String.FormatSpecifiers.percentage_escaped_space_o` instead. This property will be removed in the future.")
         internal var percentage_escaped_space_o: LocalizedStringResource {
             LocalizedStringResource(formatSpecifiers: .percentage_escaped_space_o)
         }
@@ -575,11 +535,7 @@ extension LocalizedStringResource {
         /// ```
         /// Test 50% off
         /// ```
-        @available (iOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.percentage_space_o` instead. This property will be removed in the future.")
-        @available (macOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.percentage_space_o` instead. This property will be removed in the future.")
-        @available (tvOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.percentage_space_o` instead. This property will be removed in the future.")
-        @available (watchOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.percentage_space_o` instead. This property will be removed in the future.")
-        @available (visionOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.percentage_space_o` instead. This property will be removed in the future.")
+        @available (*, deprecated, message: "Use `String.FormatSpecifiers.percentage_space_o` instead. This property will be removed in the future.")
         internal var percentage_space_o: LocalizedStringResource {
             LocalizedStringResource(formatSpecifiers: .percentage_space_o)
         }
@@ -591,11 +547,7 @@ extension LocalizedStringResource {
         /// ```
         /// Test %u
         /// ```
-        @available (iOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.u(_:)` instead. This method will be removed in the future.")
-        @available (macOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.u(_:)` instead. This method will be removed in the future.")
-        @available (tvOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.u(_:)` instead. This method will be removed in the future.")
-        @available (watchOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.u(_:)` instead. This method will be removed in the future.")
-        @available (visionOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.u(_:)` instead. This method will be removed in the future.")
+        @available (*, deprecated, message: "Use `String.FormatSpecifiers.u(_:)` instead. This method will be removed in the future.")
         internal func u(_ arg1: UInt) -> LocalizedStringResource {
             LocalizedStringResource(formatSpecifiers: .u(arg1))
         }
@@ -607,21 +559,13 @@ extension LocalizedStringResource {
         /// ```
         /// Test %x
         /// ```
-        @available (iOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.x(_:)` instead. This method will be removed in the future.")
-        @available (macOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.x(_:)` instead. This method will be removed in the future.")
-        @available (tvOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.x(_:)` instead. This method will be removed in the future.")
-        @available (watchOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.x(_:)` instead. This method will be removed in the future.")
-        @available (visionOS, deprecated: 100000, message: "Use `String.FormatSpecifiers.x(_:)` instead. This method will be removed in the future.")
+        @available (*, deprecated, message: "Use `String.FormatSpecifiers.x(_:)` instead. This method will be removed in the future.")
         internal func x(_ arg1: UInt) -> LocalizedStringResource {
             LocalizedStringResource(formatSpecifiers: .x(arg1))
         }
     }
 
-    @available (iOS, deprecated: 100000, message: "Use the `formatSpecifiers(_:)` static method instead. This property will be removed in the future.")
-    @available (macOS, deprecated: 100000, message: "Use the `formatSpecifiers(_:)` static method instead. This property will be removed in the future.")
-    @available (tvOS, deprecated: 100000, message: "Use the `formatSpecifiers(_:)` static method instead. This property will be removed in the future.")
-    @available (watchOS, deprecated: 100000, message: "Use the `formatSpecifiers(_:)` static method instead. This property will be removed in the future.")
-    @available (visionOS, deprecated: 100000, message: "Use the `formatSpecifiers(_:)` static method instead. This property will be removed in the future.") internal static let formatSpecifiers = FormatSpecifiers()
+    @available (*, deprecated, message: "Use the `formatSpecifiers(_:)` static method instead. This property will be removed in the future.") internal static let formatSpecifiers = FormatSpecifiers()
 
     internal init(formatSpecifiers: String.FormatSpecifiers) {
         self.init(
