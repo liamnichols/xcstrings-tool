@@ -46,4 +46,12 @@ This will prevent the generated Swift files from being removed after the tests a
 > [!NOTE]
 > By commenting out this line you will be generating potentially unwanted Swift files every time you run the snapshot tests.
 
+### Benchmarking
+
+Benchmarks are setup using the [package-benchmark](https://github.com/ordo-one/package-benchmark) package but they are excluded by default. To run benchmarks locally, you must ensure that `BENCHMARK_PACKAGE=true` and `BENCHMARK_DISABLE_JEMALLOC=true` are set in the environment. 
+
+```bash
+$ BENCHMARK_PACKAGE=true BENCHMARK_DISABLE_JEMALLOC=true swift package benchmark
+```
+
 Thanks for your contributions!

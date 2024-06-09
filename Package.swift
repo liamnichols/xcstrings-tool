@@ -146,3 +146,24 @@ if ProcessInfo.processInfo.environment.keys.contains("VALIDATE_SPI_MANIFEST") {
        .package(url: "https://github.com/SwiftPackageIndex/SPIManifest.git", from: "0.12.0")
     )
 }
+
+// Support for benchmarking locally or on CI
+if ProcessInfo.processInfo.environment.keys.contains("BENCHMARK_PACKAGE") {
+    package.dependencies.append(
+        .package(url: "https://github.com/ordo-one/package-benchmark", from: "1.0.0")
+    )
+    package.targets.append(
+        .executableTarget(
+            name: "XCStringsToolBenchmarks",
+            dependencies: [
+                .product(name: "Benchmark", package: "package-benchmark"),
+                .target(name: "StringGenerator"),
+                .target(name: "StringResource")
+            ],
+            path: "Benchmarks/XCStringsToolBenchmarks",
+            plugins: [
+                .plugin(name: "BenchmarkPlugin", package: "package-benchmark")
+            ]
+        )
+    )
+}
