@@ -4,7 +4,7 @@
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fliamnichols%2Fxcstrings-tool%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/liamnichols/xcstrings-tool)
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fliamnichols%2Fxcstrings-tool%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/liamnichols/xcstrings-tool)
 
-A plugin to generate Swift constants for your String Catalogs.
+A plugin to generate Swift constants for your String Catalogs and other localized string resources.
 
 ## Motivation
 
@@ -32,6 +32,11 @@ struct ContentView: View {
 ```
 
 XCStrings Tool aims to extend your localization experience so that you don't have to compromise anything. It does this by using your Strings Catalog as a source for generating elegant Swift code that you can reference directly within the rest of your project.
+
+## Requirements
+
+- An Xcode or Swift Package project using Xcode 15 or later.
+- Localizations using the new Strings Catalogs (.xcstrings) or legacy .strings and .stringsdict formats.  
 
 ## Getting Started
 

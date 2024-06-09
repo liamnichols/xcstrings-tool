@@ -1,6 +1,6 @@
 # ``Documentation``
 
-Produce Swift code for your Strings Catalogs
+Produce Swift code for your Strings Catalogs and other localized string resources
 
 @Metadata {
     @DisplayName("XCStrings Tool")
@@ -39,6 +39,8 @@ To this:
 ```swift
 Text(.localizable.contentSummary(dogs.count, totalRating, dogs.count * 10))
 ```
+
+In addition to the new Strings Catalog format, XCStrings Tool will also generate the same Swift source code for projects using the legacy .strings and .stringsdict file formats.
 
 ## Topics
 
