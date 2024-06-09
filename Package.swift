@@ -6,6 +6,7 @@ import PackageDescription
 
 let package = Package(
     name: "XCStringsTool",
+    defaultLocalization: "en",
     platforms: [
         .macOS(.v13)
     ],
@@ -119,10 +120,7 @@ let package = Package(
                 .target(name: "XCStringsToolPlugin")
             ],
             resources: [
-                .process("FeatureOne.xcstrings"),
-                .process("Localizable.xcstrings"),
-                .process("Legacy.strings"),
-                .process("Legacy.stringsdict")
+                .process("Resources")
             ],
             swiftSettings: [
                 .define("XCSTRINGS_TOOL_ACCESS_LEVEL_PUBLIC")
