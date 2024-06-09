@@ -3,12 +3,11 @@ import Foundation
 import StringGenerator
 import StringResource
 
-let benchmarks = {
-    Benchmark("StringGenerator.generateSource(for:tableName:accessLevel:)") { benchmark in
-        let resources: [Resource] = (1...1000)
-            .map { .mock(id: $0, includeArguments: $0 % 5 == 0) }
+let resources: [Resource] = (1...1000)
+    .map { .mock(id: $0, includeArguments: $0 % 5 == 0) }
 
-        benchmark.startMeasurement()
+let benchmarks = {
+    Benchmark("StringGenerator.generateSource(for:tableName:accessLevel:)", configuration: .custom) { benchmark in
         for _ in benchmark.scaledIterations {
             blackHole(
                 StringGenerator.generateSource(for: resources, tableName: "Localizable", accessLevel: .internal)
@@ -25,6 +24,17 @@ extension Resource {
             identifier: "string\(id)",
             arguments: id % 5 == 0 ? [.init(label: nil, name: "arg1", placeholderType: .object)] : [],
             sourceLocalization: "String \(id): %@"
+        )
+    }
+}
+
+extension Benchmark.Configuration {
+    static var custom: Benchmark.Configuration {
+        Benchmark.Configuration(
+            metrics: [.cpuTotal],
+            thresholds: [
+                .cpuTotal: .relaxed
+            ]
         )
     }
 }

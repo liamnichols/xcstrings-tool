@@ -48,11 +48,11 @@ jobs:
       run: |
         if [[ $exitStatus -eq 0 ]]; then
           echo 'comment<<EOF' >> $GITHUB_ENV
-          echo "[Pull request benchmark comparison [${{ matrix.os }}] with 'main' run at $(date -Iseconds)](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_ENV
+          echo "[Pull request benchmark comparison with 'main' run at $(date -Iseconds)](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
         else
           echo 'comment<<EOF' >> $GITHUB_ENV
-          echo "[Pull request benchmark comparison [${{ matrix.os }}] with 'main' run at $(date -Iseconds)](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_ENV
+          echo "[Pull request benchmark comparison with 'main' run at $(date -Iseconds)](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_ENV
           echo "_Pull request had performance regressions_" >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
         fi
