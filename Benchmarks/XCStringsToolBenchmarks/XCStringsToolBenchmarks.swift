@@ -3,16 +3,17 @@ import Foundation
 import StringGenerator
 import StringResource
 
-let resources: [Resource] = (1...1000)
-    .map { .mock(id: $0, includeArguments: $0 % 5 == 0) }
-
 let benchmarks = {
-    Benchmark("StringGenerator.generateSource(for:tableName:accessLevel:)", configuration: .custom) { benchmark in
-        for _ in benchmark.scaledIterations {
-            blackHole(
-                StringGenerator.generateSource(for: resources, tableName: "Localizable", accessLevel: .internal)
+    Benchmark("StringGenerator.generateSource(for:tableName:accessLevel:)", configuration: .custom) { _, resources in
+        blackHole(
+            StringGenerator.generateSource(
+                for: resources,
+                tableName: "Localizable",
+                accessLevel: .internal
             )
-        }
+        )
+    } setup: {
+        (1...1000).map({ Resource.mock(id: $0, includeArguments: $0 % 5 == 0) })
     }
 }
 
