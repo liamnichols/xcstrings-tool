@@ -6,8 +6,8 @@ on:
     - main
 
 jobs:
-  benchmark-pull-request:
-    name: Benchmark Pull Request
+  benchmark:
+    name: Benchmark
     runs-on: macos-14
     continue-on-error: true
     permissions:
@@ -22,13 +22,12 @@ jobs:
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
+    - name: Setup Benchmarks
+      run: swift package plugin benchmark list
     - name: Benchmark Pull Request
       run: swift package --allow-writing-to-directory .benchmarkBaselines/ benchmark baseline update pull_request
     - name: Switch Branches
-      run: |
-        git stash
-        git checkout main
-        git stash pop
+      run: git checkout main
     - name: Benchmark Main
       run: swift package --allow-writing-to-directory .benchmarkBaselines/ benchmark baseline update main
     - name: Compare Benchmarks
