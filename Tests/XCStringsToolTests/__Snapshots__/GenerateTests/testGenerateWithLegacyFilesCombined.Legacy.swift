@@ -284,11 +284,7 @@ extension LocalizedStringResource {
         /// ```
         /// This is a simple string
         /// ```
-        @available (iOS, deprecated: 100000, message: "Use `String.Legacy.key1` instead. This property will be removed in the future.")
-        @available (macOS, deprecated: 100000, message: "Use `String.Legacy.key1` instead. This property will be removed in the future.")
-        @available (tvOS, deprecated: 100000, message: "Use `String.Legacy.key1` instead. This property will be removed in the future.")
-        @available (watchOS, deprecated: 100000, message: "Use `String.Legacy.key1` instead. This property will be removed in the future.")
-        @available (visionOS, deprecated: 100000, message: "Use `String.Legacy.key1` instead. This property will be removed in the future.")
+        @available (*, deprecated, message: "Use `String.Legacy.key1` instead. This property will be removed in the future.")
         internal var key1: LocalizedStringResource {
             LocalizedStringResource(legacy: .key1)
         }
@@ -298,11 +294,7 @@ extension LocalizedStringResource {
         /// ```
         /// This string contains %lld integer
         /// ```
-        @available (iOS, deprecated: 100000, message: "Use `String.Legacy.key2(_:)` instead. This method will be removed in the future.")
-        @available (macOS, deprecated: 100000, message: "Use `String.Legacy.key2(_:)` instead. This method will be removed in the future.")
-        @available (tvOS, deprecated: 100000, message: "Use `String.Legacy.key2(_:)` instead. This method will be removed in the future.")
-        @available (watchOS, deprecated: 100000, message: "Use `String.Legacy.key2(_:)` instead. This method will be removed in the future.")
-        @available (visionOS, deprecated: 100000, message: "Use `String.Legacy.key2(_:)` instead. This method will be removed in the future.")
+        @available (*, deprecated, message: "Use `String.Legacy.key2(_:)` instead. This method will be removed in the future.")
         internal func key2(_ arg1: Int) -> LocalizedStringResource {
             LocalizedStringResource(legacy: .key2(arg1))
         }
@@ -312,11 +304,7 @@ extension LocalizedStringResource {
         /// ```
         /// Hello %@! This string %lld arguments
         /// ```
-        @available (iOS, deprecated: 100000, message: "Use `String.Legacy.key3(_:_:)` instead. This method will be removed in the future.")
-        @available (macOS, deprecated: 100000, message: "Use `String.Legacy.key3(_:_:)` instead. This method will be removed in the future.")
-        @available (tvOS, deprecated: 100000, message: "Use `String.Legacy.key3(_:_:)` instead. This method will be removed in the future.")
-        @available (watchOS, deprecated: 100000, message: "Use `String.Legacy.key3(_:_:)` instead. This method will be removed in the future.")
-        @available (visionOS, deprecated: 100000, message: "Use `String.Legacy.key3(_:_:)` instead. This method will be removed in the future.")
+        @available (*, deprecated, message: "Use `String.Legacy.key3(_:_:)` instead. This method will be removed in the future.")
         internal func key3(_ arg1: String, _ arg2: Int) -> LocalizedStringResource {
             LocalizedStringResource(legacy: .key3(arg1, arg2))
         }
@@ -326,11 +314,7 @@ extension LocalizedStringResource {
         /// ```
         /// Second: %2$@, First: %1$@, First: %@
         /// ```
-        @available (iOS, deprecated: 100000, message: "Use `String.Legacy.key4(_:_:)` instead. This method will be removed in the future.")
-        @available (macOS, deprecated: 100000, message: "Use `String.Legacy.key4(_:_:)` instead. This method will be removed in the future.")
-        @available (tvOS, deprecated: 100000, message: "Use `String.Legacy.key4(_:_:)` instead. This method will be removed in the future.")
-        @available (watchOS, deprecated: 100000, message: "Use `String.Legacy.key4(_:_:)` instead. This method will be removed in the future.")
-        @available (visionOS, deprecated: 100000, message: "Use `String.Legacy.key4(_:_:)` instead. This method will be removed in the future.")
+        @available (*, deprecated, message: "Use `String.Legacy.key4(_:_:)` instead. This method will be removed in the future.")
         internal func key4(_ arg1: String, _ arg2: String) -> LocalizedStringResource {
             LocalizedStringResource(legacy: .key4(arg1, arg2))
         }
@@ -340,11 +324,7 @@ extension LocalizedStringResource {
         /// ```
         /// First: %@, First: %1$@
         /// ```
-        @available (iOS, deprecated: 100000, message: "Use `String.Legacy.key5(_:)` instead. This method will be removed in the future.")
-        @available (macOS, deprecated: 100000, message: "Use `String.Legacy.key5(_:)` instead. This method will be removed in the future.")
-        @available (tvOS, deprecated: 100000, message: "Use `String.Legacy.key5(_:)` instead. This method will be removed in the future.")
-        @available (watchOS, deprecated: 100000, message: "Use `String.Legacy.key5(_:)` instead. This method will be removed in the future.")
-        @available (visionOS, deprecated: 100000, message: "Use `String.Legacy.key5(_:)` instead. This method will be removed in the future.")
+        @available (*, deprecated, message: "Use `String.Legacy.key5(_:)` instead. This method will be removed in the future.")
         internal func key5(_ arg1: String) -> LocalizedStringResource {
             LocalizedStringResource(legacy: .key5(arg1))
         }
@@ -354,21 +334,13 @@ extension LocalizedStringResource {
         /// ```
         /// Hello %@, I have %lld plurals
         /// ```
-        @available (iOS, deprecated: 100000, message: "Use `String.Legacy.key6(_:_:)` instead. This method will be removed in the future.")
-        @available (macOS, deprecated: 100000, message: "Use `String.Legacy.key6(_:_:)` instead. This method will be removed in the future.")
-        @available (tvOS, deprecated: 100000, message: "Use `String.Legacy.key6(_:_:)` instead. This method will be removed in the future.")
-        @available (watchOS, deprecated: 100000, message: "Use `String.Legacy.key6(_:_:)` instead. This method will be removed in the future.")
-        @available (visionOS, deprecated: 100000, message: "Use `String.Legacy.key6(_:_:)` instead. This method will be removed in the future.")
+        @available (*, deprecated, message: "Use `String.Legacy.key6(_:_:)` instead. This method will be removed in the future.")
         internal func key6(_ arg1: String, _ arg2: Int) -> LocalizedStringResource {
             LocalizedStringResource(legacy: .key6(arg1, arg2))
         }
     }
 
-    @available (iOS, deprecated: 100000, message: "Use the `legacy(_:)` static method instead. This property will be removed in the future.")
-    @available (macOS, deprecated: 100000, message: "Use the `legacy(_:)` static method instead. This property will be removed in the future.")
-    @available (tvOS, deprecated: 100000, message: "Use the `legacy(_:)` static method instead. This property will be removed in the future.")
-    @available (watchOS, deprecated: 100000, message: "Use the `legacy(_:)` static method instead. This property will be removed in the future.")
-    @available (visionOS, deprecated: 100000, message: "Use the `legacy(_:)` static method instead. This property will be removed in the future.") internal static let legacy = Legacy()
+    @available (*, deprecated, message: "Use the `legacy(_:)` static method instead. This property will be removed in the future.") internal static let legacy = Legacy()
 
     internal init(legacy: String.Legacy) {
         self.init(
