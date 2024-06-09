@@ -36,15 +36,22 @@ struct Generate: ParsableCommand {
     )
     var accessLevel: AccessLevel?
 
+    @Option(
+        name: .shortAndLong,
+        help: "The development language (defaultLocalization in Package.swift) used when filtering legacy .strings and .stringsdict files from the input paths"
+    )
+    var developmentLanguage: String?
+
     // MARK: - Program
     
     func run() throws {
-        let tableName = try withThrownErrorsAsDiagnostics {
-            try self.tableName
+        // Parse the input from the invocation arguments
+        let input = try withThrownErrorsAsDiagnostics {
+            try InputParser.parse(from: inputs, developmentLanguage: resolvedDevelopmentLanguage)
         }
 
         // Collect the results for each input file
-        let results = try inputs.map { input in
+        let results = try input.files.map { input in
             try withThrownErrorsAsDiagnostics(at: input) {
                 // Load the source content and extract the resources
                 let source = try StringSource(contentsOf: input)
@@ -65,7 +72,7 @@ struct Generate: ParsableCommand {
         // Generate the associated Swift source
         let source = StringGenerator.generateSource(
             for: resources,
-            tableName: tableName,
+            tableName: input.tableName,
             accessLevel: resolvedAccessLevel
         )
 
@@ -80,28 +87,11 @@ struct Generate: ParsableCommand {
         }
     }
 
-    var tableName: String {
-        get throws {
-            let tableNames = Set(inputs.map({ url in
-                url.lastPathComponent.replacingOccurrences(of: ".\(url.pathExtension)", with: "")
-            }))
-
-            if tableNames.count == 1, let tableName = tableNames.first {
-                return tableName
-            } else {
-                throw Diagnostic(
-                    severity: .error,
-                    message: """
-                    Attempting to generate for inputs that represent multiple different \
-                    strings tables (\(tableNames.sorted().formatted())). \
-                    This is not supported.
-                    """
-                )
-            }
-        }
-    }
-
     var resolvedAccessLevel: AccessLevel {
         .resolveFromEnvironment(or: accessLevel) ?? .internal
+    }
+
+    var resolvedDevelopmentLanguage: String? {
+        developmentLanguage ?? ProcessInfo.processInfo.environment["DEVELOPMENT_LANGUAGE"]
     }
 }
