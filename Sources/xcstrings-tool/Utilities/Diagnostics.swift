@@ -1,5 +1,7 @@
 import Foundation
 
+var isVerboseLoggingEnabled = false
+
 struct Diagnostic: CustomStringConvertible {
     enum Severity {
         case error, warning, note
@@ -63,6 +65,12 @@ func withThrownErrorsAsDiagnostics<T>(
             message: error.localizedDescription
         )
     }
+}
+
+/// Log a diagnostic with the note severity only when in verbose mode
+func debug(_ message: @autoclosure () -> String, sourceFile: URL? = nil) {
+    guard isVerboseLoggingEnabled else { return }
+    note(message(), sourceFile: sourceFile)
 }
 
 /// Log a diagnostic with the note severity

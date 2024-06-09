@@ -10,8 +10,22 @@ struct InputParser {
     }
 
     static func parse(from inputs: [URL], developmentLanguage: String?) throws -> Parsed {
+        debug("raw inputs:")
+        debug("  developmentLanguage: \(developmentLanguage ?? "nil")")
+        debug("  files:")
+        for input in inputs {
+            debug("  - \(input.absoluteURL.path())")
+        }
+
         let tableName = try tableName(from: inputs)
         let files = try filteredFiles(from: inputs, developmentLanguage: developmentLanguage)
+
+        debug("parsed inputs:")
+        debug("  tableName: \(tableName)")
+        debug("  files:")
+        for file in files {
+            debug("  - \(file.absoluteURL.path())")
+        }
 
         let grouped = Dictionary(grouping: files, by: \.lastPathComponent)
         let duplicates = grouped.filter { $0.value.count > 1 }

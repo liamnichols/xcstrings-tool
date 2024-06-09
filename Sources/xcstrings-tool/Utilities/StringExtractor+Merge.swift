@@ -6,6 +6,8 @@ extension StringExtractor {
         if results.isEmpty { return [] }
         if results.count == 1 { return results[0].resources }
 
+        debug("merging extracted resources")
+        
         let resources = results.flatMap { $0.resources }
 
         let keyed = Dictionary(grouping: resources, by: \.key)

@@ -42,9 +42,14 @@ struct Generate: ParsableCommand {
     )
     var developmentLanguage: String?
 
+    @Flag(name: .shortAndLong)
+    var verbose: Bool = false
+
     // MARK: - Program
     
     func run() throws {
+        isVerboseLoggingEnabled = verbose
+
         // Parse the input from the invocation arguments
         let input = try withThrownErrorsAsDiagnostics {
             try InputParser.parse(from: inputs, developmentLanguage: resolvedDevelopmentLanguage)
@@ -53,11 +58,18 @@ struct Generate: ParsableCommand {
         // Collect the results for each input file
         let results = try input.files.map { input in
             try withThrownErrorsAsDiagnostics(at: input) {
-                // Load the source content and extract the resources
+                debug("collecting results for ‘\(input.absoluteURL.path())‘")
+
+                // Load the source content
+                debug("  loading source file")
                 let source = try StringSource(contentsOf: input)
+
+                // Extract any resources from this input
+                debug("  extracting resources")
                 let result = try StringExtractor.extractResources(from: source)
 
                 // Validate the extraction result
+                debug("  validating contents")
                 result.issues.forEach { warning($0.description, sourceFile: input) }
                 try ResourceValidator.validateResources(result.resources, in: input)
 
@@ -70,6 +82,7 @@ struct Generate: ParsableCommand {
         let resources = try StringExtractor.mergeAndEnsureUnique(results)
 
         // Generate the associated Swift source
+        debug("generating Swift source code")
         let source = StringGenerator.generateSource(
             for: resources,
             tableName: input.tableName,
@@ -77,6 +90,7 @@ struct Generate: ParsableCommand {
         )
 
         // Write the output and catch errors in a diagnostic format
+        debug("writing output")
         try withThrownErrorsAsDiagnostics {
             // Create the directory if it doesn't exist
             try createDirectoryIfNeeded(for: output)
