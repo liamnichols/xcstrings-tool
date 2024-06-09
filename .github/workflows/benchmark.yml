@@ -1,0 +1,68 @@
+name: "Benchmarks"
+
+on:
+  pull_request:
+    branches:
+    - main
+
+jobs:
+  benchmark-pull-request:
+    name: Benchmark Pull Request
+    runs-on: macos-14
+    continue-on-error: true
+    permissions:
+        issues: write
+        pull-requests: write
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_15.4.app/Contents/Developer
+      BENCHMARK_PACKAGE: true
+      BENCHMARK_DISABLE_JEMALLOC: true
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Benchmark Pull Request
+      run: swift package --allow-writing-to-directory .benchmarkBaselines/ benchmark baseline update pull_request
+    - name: Switch Branches
+      run: |
+        git stash
+        git checkout main
+        git stash pop
+    - name: Benchmark Main
+      run: swift package --allow-writing-to-directory .benchmarkBaselines/ benchmark baseline update main
+    - name: Compare Benchmarks
+      run: |
+        set +e
+
+        echo '## Summary' >> $GITHUB_STEP_SUMMARY
+        echo $(date) >> $GITHUB_STEP_SUMMARY
+
+        swift package benchmark baseline check main pull_request --format markdown >> $GITHUB_STEP_SUMMARY
+        echo "exitStatus=$?" >> $GITHUB_ENV
+
+        echo '---' >> $GITHUB_STEP_SUMMARY
+
+        swift package benchmark baseline compare main pull_request --no-progress --quiet --format markdown >> $GITHUB_STEP_SUMMARY
+    - name: Make Comment
+      run: |
+        if [[ $exitStatus -eq 0 ]]; then
+          echo 'comment<<EOF' >> $GITHUB_ENV
+          echo "[Pull request benchmark comparison [${{ matrix.os }}] with 'main' run at $(date -Iseconds)](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+        else
+          echo 'comment<<EOF' >> $GITHUB_ENV
+          echo "[Pull request benchmark comparison [${{ matrix.os }}] with 'main' run at $(date -Iseconds)](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_ENV
+          echo "_Pull request had performance regressions_" >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+        fi
+    - name: Comment
+      uses: thollander/actions-comment-pull-request@v2
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        message: ${{ env.comment }}
+        comment_tag: benchmark
+    - name: Exit with correct status
+      run: |
+        exit ${{ env.exitStatus }}
+
