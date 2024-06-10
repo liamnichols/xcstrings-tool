@@ -32,36 +32,39 @@ jobs:
       run: swift package --allow-writing-to-directory .benchmarkBaselines/ benchmark baseline update main
     - name: Compare Benchmarks
       run: |
-        set +e
+        benchmarkDate="$(date)"
+        benchmarkCheckOutput="$(swift package benchmark baseline check main pull_request --format markdown)"
+        benchmarkExitStatus="$?"
+        benchmarkCompareOutput="$(swift package benchmark baseline compare main pull_request --no-progress --quiet --format markdown)"
 
-        echo '## Summary' >> $GITHUB_STEP_SUMMARY
-        echo $(date) >> $GITHUB_STEP_SUMMARY
+        echo "benchmarkDate=$benchmarkDate" >> $GITHUB_ENV
+        { echo "benchmarkCheckOutput<<EOF"; echo "$benchmarkCheckOutput"; echo EOF; } >> "$GITHUB_ENV"
+        echo "benchmarkExitStatus=$benchmarkExitStatus" >> $GITHUB_ENV
+        { echo "benchmarkCompareOutput<<EOF"; echo "$benchmarkCompareOutput"; echo EOF; } >> "$GITHUB_ENV"
 
-        swift package benchmark baseline check main pull_request --format markdown >> $GITHUB_STEP_SUMMARY
-        echo "exitStatus=$?" >> $GITHUB_ENV
-
-        echo '---' >> $GITHUB_STEP_SUMMARY
-
-        swift package benchmark baseline compare main pull_request --no-progress --quiet --format markdown >> $GITHUB_STEP_SUMMARY
-    - name: Make Comment
-      run: |
         if [[ $exitStatus -eq 0 ]]; then
-          echo 'comment<<EOF' >> $GITHUB_ENV
-          echo "[Pull request benchmark comparison with 'main' run at $(date -Iseconds)](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV
+          echo "benchmarkStatusMessage=✅ Pull Request passed benchmark checks" >> $GITHUB_ENV
         else
-          echo 'comment<<EOF' >> $GITHUB_ENV
-          echo "[Pull request benchmark comparison with 'main' run at $(date -Iseconds)](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_ENV
-          echo "_Pull request had performance regressions_" >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV
+          echo "benchmarkStatusMessage=⚠️ Pull Request may have performance regressions" >> $GITHUB_ENV
         fi
     - name: Comment
       uses: thollander/actions-comment-pull-request@v2
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        message: ${{ env.comment }}
         comment_tag: benchmark
+        message: |
+          ${{ env.benchmarkStatusMessage }}
+
+          ## Summary
+
+          ${{ env.benchmarkDate }}
+
+          ${{ env.benchmarkCheckOutput }}
+
+          ---
+
+          ${{ env.benchmarkCompareOutput }}
     - name: Exit with correct status
       run: |
-        exit ${{ env.exitStatus }}
+        exit ${{ env.benchmarkCompareOutput }}
 
