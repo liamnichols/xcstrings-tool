@@ -32,6 +32,8 @@ jobs:
       run: swift package --allow-writing-to-directory .benchmarkBaselines/ benchmark baseline update main
     - name: Compare Benchmarks
       run: |
+        set +e
+
         benchmarkDate="$(date)"
         benchmarkCheckOutput="$(swift package benchmark baseline check main pull_request --format markdown)"
         benchmarkExitStatus="$?"
