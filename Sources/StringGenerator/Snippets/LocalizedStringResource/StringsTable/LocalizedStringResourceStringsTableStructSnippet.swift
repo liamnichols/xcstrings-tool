@@ -12,15 +12,17 @@ extension LocalizedStringResourceStringsTableStructSnippet: Snippet {
             modifiers: modifiers,
             name: stringsTable.type
         ) {
-            for accessor in stringsTable.accessors {
-                if accessor.hasArguments {
-                    LocalizedStringResourceStringsTableResourceFunctionSnippet(accessor: accessor)
-                } else {
-                    LocalizedStringResourceStringsTableResourceVariableSnippet(accessor: accessor)
+            for (position, accessor) in stringsTable.accessors.withPosition {
+                MemberBlockItemListSyntax {
+                    if accessor.hasArguments {
+                        LocalizedStringResourceStringsTableResourceFunctionSnippet(accessor: accessor)
+                    } else {
+                        LocalizedStringResourceStringsTableResourceVariableSnippet(accessor: accessor)
+                    }
                 }
+                .with(\.trailingTrivia, .newlines(2), if: !position.isLast)
             }
         }
-        .spacingMembers()
     }
 
     var leadingTrivia: Trivia? {
