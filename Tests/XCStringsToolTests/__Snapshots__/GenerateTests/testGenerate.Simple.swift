@@ -205,13 +205,13 @@ extension LocalizedStringResource {
         /// ```
         /// My Value
         /// ```
-        @available (*, deprecated, message: "Use `String.Simple.simpleKey` instead. This property will be removed in the future.")
+        @available(*, deprecated, message: "Use `String.Simple.simpleKey` instead. This property will be removed in the future.")
         internal var simpleKey: LocalizedStringResource {
             LocalizedStringResource(simple: .simpleKey)
         }
     }
 
-    @available (*, deprecated, message: "Use the `simple(_:)` static method instead. This property will be removed in the future.") internal static let simple = Simple()
+    @available(*, deprecated, message: "Use the `simple(_:)` static method instead. This property will be removed in the future.") internal static let simple = Simple()
 
     internal init(simple: String.Simple) {
         self.init(

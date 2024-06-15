@@ -204,13 +204,13 @@ extension LocalizedStringResource {
         /// ```
         /// Hello %@, I have %lld plurals
         /// ```
-        @available (*, deprecated, message: "Use `String.Legacy.key6(_:_:)` instead. This method will be removed in the future.")
+        @available(*, deprecated, message: "Use `String.Legacy.key6(_:_:)` instead. This method will be removed in the future.")
         internal func key6(_ arg1: String, _ arg2: Int) -> LocalizedStringResource {
             LocalizedStringResource(legacy: .key6(arg1, arg2))
         }
     }
 
-    @available (*, deprecated, message: "Use the `legacy(_:)` static method instead. This property will be removed in the future.") internal static let legacy = Legacy()
+    @available(*, deprecated, message: "Use the `legacy(_:)` static method instead. This property will be removed in the future.") internal static let legacy = Legacy()
 
     internal init(legacy: String.Legacy) {
         self.init(

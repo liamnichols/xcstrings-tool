@@ -23,5 +23,17 @@ public struct StringGenerator {
             .syntax
             .formatted()
             .description
+            .patchingSwift6CompatibilityIssuesIfNeeded()
+    }
+}
+
+private extension String {
+    // https://github.com/liamnichols/xcstrings-tool/issues/97
+    func patchingSwift6CompatibilityIssuesIfNeeded() -> String {
+        #if !canImport(SwiftSyntax600)
+        replacingOccurrences(of: "@available (", with: "@available(")
+        #else
+        self
+        #endif
     }
 }

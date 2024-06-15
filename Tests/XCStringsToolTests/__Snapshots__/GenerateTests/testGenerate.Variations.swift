@@ -221,7 +221,7 @@ extension LocalizedStringResource {
         /// ```
         /// Tap to open
         /// ```
-        @available (*, deprecated, message: "Use `String.Variations.stringDevice` instead. This property will be removed in the future.")
+        @available(*, deprecated, message: "Use `String.Variations.stringDevice` instead. This property will be removed in the future.")
         internal var stringDevice: LocalizedStringResource {
             LocalizedStringResource(variations: .stringDevice)
         }
@@ -231,13 +231,13 @@ extension LocalizedStringResource {
         /// ```
         /// I have %lld strings
         /// ```
-        @available (*, deprecated, message: "Use `String.Variations.stringPlural(_:)` instead. This method will be removed in the future.")
+        @available(*, deprecated, message: "Use `String.Variations.stringPlural(_:)` instead. This method will be removed in the future.")
         internal func stringPlural(_ arg1: Int) -> LocalizedStringResource {
             LocalizedStringResource(variations: .stringPlural(arg1))
         }
     }
 
-    @available (*, deprecated, message: "Use the `variations(_:)` static method instead. This property will be removed in the future.") internal static let variations = Variations()
+    @available(*, deprecated, message: "Use the `variations(_:)` static method instead. This property will be removed in the future.") internal static let variations = Variations()
 
     internal init(variations: String.Variations) {
         self.init(

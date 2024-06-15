@@ -209,13 +209,13 @@ extension LocalizedStringResource {
         /// ```
         /// %@! There are %lld strings and you have %lld remaining
         /// ```
-        @available (*, deprecated, message: "Use `String.Substitution.substitutions_exampleString(_:totalStrings:remainingStrings:)` instead. This method will be removed in the future.")
+        @available(*, deprecated, message: "Use `String.Substitution.substitutions_exampleString(_:totalStrings:remainingStrings:)` instead. This method will be removed in the future.")
         internal func substitutions_exampleString(_ arg1: String, totalStrings arg2: Int, remainingStrings arg3: Int) -> LocalizedStringResource {
             LocalizedStringResource(substitution: .substitutions_exampleString(arg1, totalStrings: arg2, remainingStrings: arg3))
         }
     }
 
-    @available (*, deprecated, message: "Use the `substitution(_:)` static method instead. This property will be removed in the future.") internal static let substitution = Substitution()
+    @available(*, deprecated, message: "Use the `substitution(_:)` static method instead. This property will be removed in the future.") internal static let substitution = Substitution()
 
     internal init(substitution: String.Substitution) {
         self.init(

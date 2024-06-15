@@ -268,7 +268,7 @@ extension LocalizedStringResource {
         /// ```
         /// Continue
         /// ```
-        @available (*, deprecated, message: "Use `String.Localizable.continue` instead. This property will be removed in the future.")
+        @available(*, deprecated, message: "Use `String.Localizable.continue` instead. This property will be removed in the future.")
         internal var `continue`: LocalizedStringResource {
             LocalizedStringResource(localizable: .continue)
         }
@@ -280,7 +280,7 @@ extension LocalizedStringResource {
         /// ```
         /// Default Value
         /// ```
-        @available (*, deprecated, message: "Use `String.Localizable.key` instead. This property will be removed in the future.")
+        @available(*, deprecated, message: "Use `String.Localizable.key` instead. This property will be removed in the future.")
         internal var key: LocalizedStringResource {
             LocalizedStringResource(localizable: .key)
         }
@@ -290,7 +290,7 @@ extension LocalizedStringResource {
         /// ```
         /// Multiplatform Original
         /// ```
-        @available (*, deprecated, message: "Use `String.Localizable.myDeviceVariant` instead. This property will be removed in the future.")
+        @available(*, deprecated, message: "Use `String.Localizable.myDeviceVariant` instead. This property will be removed in the future.")
         internal var myDeviceVariant: LocalizedStringResource {
             LocalizedStringResource(localizable: .myDeviceVariant)
         }
@@ -300,7 +300,7 @@ extension LocalizedStringResource {
         /// ```
         /// I have %lld plurals
         /// ```
-        @available (*, deprecated, message: "Use `String.Localizable.myPlural(_:)` instead. This method will be removed in the future.")
+        @available(*, deprecated, message: "Use `String.Localizable.myPlural(_:)` instead. This method will be removed in the future.")
         internal func myPlural(_ arg1: Int) -> LocalizedStringResource {
             LocalizedStringResource(localizable: .myPlural(arg1))
         }
@@ -310,13 +310,13 @@ extension LocalizedStringResource {
         /// ```
         /// %lld: People liked %lld posts
         /// ```
-        @available (*, deprecated, message: "Use `String.Localizable.mySubstitute(_:count:)` instead. This method will be removed in the future.")
+        @available(*, deprecated, message: "Use `String.Localizable.mySubstitute(_:count:)` instead. This method will be removed in the future.")
         internal func mySubstitute(_ arg1: Int, count arg2: Int) -> LocalizedStringResource {
             LocalizedStringResource(localizable: .mySubstitute(arg1, count: arg2))
         }
     }
 
-    @available (*, deprecated, message: "Use the `localizable(_:)` static method instead. This property will be removed in the future.") internal static let localizable = Localizable()
+    @available(*, deprecated, message: "Use the `localizable(_:)` static method instead. This property will be removed in the future.") internal static let localizable = Localizable()
 
     internal init(localizable: String.Localizable) {
         self.init(

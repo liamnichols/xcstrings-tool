@@ -215,13 +215,13 @@ extension LocalizedStringResource {
         /// - Two
         /// - Three
         /// ```
-        @available (*, deprecated, message: "Use `String.Multiline.multiline` instead. This property will be removed in the future.")
+        @available(*, deprecated, message: "Use `String.Multiline.multiline` instead. This property will be removed in the future.")
         internal var multiline: LocalizedStringResource {
             LocalizedStringResource(multiline: .multiline)
         }
     }
 
-    @available (*, deprecated, message: "Use the `multiline(_:)` static method instead. This property will be removed in the future.") internal static let multiline = Multiline()
+    @available(*, deprecated, message: "Use the `multiline(_:)` static method instead. This property will be removed in the future.") internal static let multiline = Multiline()
 
     internal init(multiline: String.Multiline) {
         self.init(
