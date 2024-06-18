@@ -245,7 +245,7 @@ import SwiftUI
 extension Text {
     /// Creates a text view that displays a localized string defined in the ‘Multiline‘ strings table.
     internal init(multiline: String.Multiline) {
-        if #available (macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
+        if #available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
             self.init(LocalizedStringResource(multiline: multiline))
             return
         }
@@ -281,7 +281,7 @@ extension LocalizedStringKey {
     internal init(multiline: String.Multiline) {
         var stringInterpolation = LocalizedStringKey.StringInterpolation(literalCapacity: 0, interpolationCount: 1)
 
-        if #available (macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
+        if #available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
             stringInterpolation.appendInterpolation(LocalizedStringResource(multiline: multiline))
         } else {
             stringInterpolation.appendInterpolation(Text(multiline: multiline))

@@ -337,7 +337,7 @@ import SwiftUI
 extension Text {
     /// Creates a text view that displays a localized string defined in the ‘Legacy‘ strings table.
     internal init(legacy: String.Legacy) {
-        if #available (macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
+        if #available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
             self.init(LocalizedStringResource(legacy: legacy))
             return
         }
@@ -373,7 +373,7 @@ extension LocalizedStringKey {
     internal init(legacy: String.Legacy) {
         var stringInterpolation = LocalizedStringKey.StringInterpolation(literalCapacity: 0, interpolationCount: 1)
 
-        if #available (macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
+        if #available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
             stringInterpolation.appendInterpolation(LocalizedStringResource(legacy: legacy))
         } else {
             stringInterpolation.appendInterpolation(Text(legacy: legacy))

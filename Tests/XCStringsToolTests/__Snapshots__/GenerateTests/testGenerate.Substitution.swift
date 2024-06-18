@@ -239,7 +239,7 @@ import SwiftUI
 extension Text {
     /// Creates a text view that displays a localized string defined in the ‘Substitution‘ strings table.
     internal init(substitution: String.Substitution) {
-        if #available (macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
+        if #available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
             self.init(LocalizedStringResource(substitution: substitution))
             return
         }
@@ -275,7 +275,7 @@ extension LocalizedStringKey {
     internal init(substitution: String.Substitution) {
         var stringInterpolation = LocalizedStringKey.StringInterpolation(literalCapacity: 0, interpolationCount: 1)
 
-        if #available (macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
+        if #available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
             stringInterpolation.appendInterpolation(LocalizedStringResource(substitution: substitution))
         } else {
             stringInterpolation.appendInterpolation(Text(substitution: substitution))

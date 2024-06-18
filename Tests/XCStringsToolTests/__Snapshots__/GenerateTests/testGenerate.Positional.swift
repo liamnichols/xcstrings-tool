@@ -298,7 +298,7 @@ import SwiftUI
 extension Text {
     /// Creates a text view that displays a localized string defined in the ‘Positional‘ strings table.
     internal init(positional: String.Positional) {
-        if #available (macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
+        if #available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
             self.init(LocalizedStringResource(positional: positional))
             return
         }
@@ -334,7 +334,7 @@ extension LocalizedStringKey {
     internal init(positional: String.Positional) {
         var stringInterpolation = LocalizedStringKey.StringInterpolation(literalCapacity: 0, interpolationCount: 1)
 
-        if #available (macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
+        if #available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
             stringInterpolation.appendInterpolation(LocalizedStringResource(positional: positional))
         } else {
             stringInterpolation.appendInterpolation(Text(positional: positional))

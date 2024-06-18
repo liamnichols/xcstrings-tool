@@ -31,7 +31,10 @@ private extension String {
     // https://github.com/liamnichols/xcstrings-tool/issues/97
     func patchingSwift6CompatibilityIssuesIfNeeded() -> String {
         #if !canImport(SwiftSyntax600)
-        replacingOccurrences(of: "@available (", with: "@available(")
+//        replacingOccurrences(of: "@available (", with: "@available(")
+        replacing(#/[#@]available\s\(/#, with: { match in
+            match.output.filter { !$0.isWhitespace }
+        })
         #else
         self
         #endif

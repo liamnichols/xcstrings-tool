@@ -235,7 +235,7 @@ import SwiftUI
 extension Text {
     /// Creates a text view that displays a localized string defined in the ‘Simple‘ strings table.
     internal init(simple: String.Simple) {
-        if #available (macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
+        if #available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
             self.init(LocalizedStringResource(simple: simple))
             return
         }
@@ -271,7 +271,7 @@ extension LocalizedStringKey {
     internal init(simple: String.Simple) {
         var stringInterpolation = LocalizedStringKey.StringInterpolation(literalCapacity: 0, interpolationCount: 1)
 
-        if #available (macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
+        if #available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
             stringInterpolation.appendInterpolation(LocalizedStringResource(simple: simple))
         } else {
             stringInterpolation.appendInterpolation(Text(simple: simple))

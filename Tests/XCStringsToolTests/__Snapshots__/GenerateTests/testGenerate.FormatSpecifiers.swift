@@ -589,7 +589,7 @@ import SwiftUI
 extension Text {
     /// Creates a text view that displays a localized string defined in the ‘FormatSpecifiers‘ strings table.
     internal init(formatSpecifiers: String.FormatSpecifiers) {
-        if #available (macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
+        if #available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
             self.init(LocalizedStringResource(formatSpecifiers: formatSpecifiers))
             return
         }
@@ -625,7 +625,7 @@ extension LocalizedStringKey {
     internal init(formatSpecifiers: String.FormatSpecifiers) {
         var stringInterpolation = LocalizedStringKey.StringInterpolation(literalCapacity: 0, interpolationCount: 1)
 
-        if #available (macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
+        if #available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
             stringInterpolation.appendInterpolation(LocalizedStringResource(formatSpecifiers: formatSpecifiers))
         } else {
             stringInterpolation.appendInterpolation(Text(formatSpecifiers: formatSpecifiers))
