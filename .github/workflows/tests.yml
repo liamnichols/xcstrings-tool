@@ -13,7 +13,7 @@ jobs:
     name: Validate SPI Manifest
     runs-on: macos-14
     env:
-      DEVELOPER_DIR: /Applications/Xcode_15.3.app/Contents/Developer
+      DEVELOPER_DIR: /Applications/Xcode_15.4.app/Contents/Developer
       VALIDATE_SPI_MANIFEST: YES
     steps:
     - name: Checkout Repo
@@ -30,7 +30,7 @@ jobs:
       uses: actions/checkout@v4
     - name: Compile Snapshots
       run: .github/scripts/compile-snapshots.sh
-  unit-test:
+  unit-test-xcode:
     name: Unit Tests (Xcode ${{ matrix.xcode }})
     strategy:
       fail-fast: false
@@ -48,6 +48,25 @@ jobs:
     runs-on: ${{ matrix.macos }}
     env:
       DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode }}.app/Contents/Developer
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v4
+    - name: Run Tests
+      run: xcodebuild clean test -scheme XCStringsTool-Package -destination platform=macOS
+  unit-test-swift-syntax:
+    name: Unit Tests (Swift Syntax ${{ matrix.swift-syntax }})
+    strategy:
+      fail-fast: false
+      matrix:
+        swift-syntax:
+        - "509.0.2"
+        - "509.1.1"
+        - "510.0.2"
+        - "600.0.0-prerelease-2024-06-04"
+    runs-on: macOS-14
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_15.4.app/Contents/Developer
+      SWIFT_SYNTAX_VERSION: ${{ matrix.swift-syntax }}
     steps:
     - name: Checkout Repo
       uses: actions/checkout@v4

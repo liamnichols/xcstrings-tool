@@ -4,6 +4,13 @@
 import Foundation
 import PackageDescription
 
+let swiftSyntaxVersion = ProcessInfo.processInfo.environment["SWIFT_SYNTAX_VERSION"].flatMap(Version.init(_:))
+let swiftSyntax: Package.Dependency = if let version = swiftSyntaxVersion {
+    .package(url: "https://github.com/apple/swift-syntax.git", exact: version)
+} else {
+    .package(url: "https://github.com/apple/swift-syntax.git", "509.0.0" ..< "601.0.0")
+}
+
 let package = Package(
     name: "XCStringsTool",
     defaultLocalization: "en",
@@ -17,7 +24,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.2.3"),
-        .package(url: "https://github.com/apple/swift-syntax.git", "509.0.0" ..< "601.0.0"),
+        swiftSyntax,
         .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.13.0"),
         .package(url: "https://github.com/apple/swift-docc-plugin.git", from: "1.0.0"),
     ],
