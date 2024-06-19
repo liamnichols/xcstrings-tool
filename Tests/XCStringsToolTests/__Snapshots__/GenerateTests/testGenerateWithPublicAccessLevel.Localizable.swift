@@ -260,7 +260,7 @@ extension LocalizedStringResource {
     /// ```
     ///
     /// - Note: Using ``LocalizedStringResource.Localizable`` requires iOS 16/macOS 13 or later. See ``String.Localizable`` for a backwards compatible API.
-    public struct Localizable {
+    public struct Localizable: Sendable {
         /// A key that conflicts with a keyword in swift that isn't suitable for a variable/method and should be backticked.
         ///
         /// ### Source Localization

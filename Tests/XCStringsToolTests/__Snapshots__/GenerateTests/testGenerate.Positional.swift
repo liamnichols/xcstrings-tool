@@ -236,7 +236,7 @@ extension LocalizedStringResource {
     /// ```
     ///
     /// - Note: Using ``LocalizedStringResource.Positional`` requires iOS 16/macOS 13 or later. See ``String.Positional`` for a backwards compatible API.
-    internal struct Positional {
+    internal struct Positional: Sendable {
         /// A string where the second argument is at the front of the string and the first argument is at the end
         ///
         /// ### Source Localization

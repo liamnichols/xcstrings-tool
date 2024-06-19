@@ -407,7 +407,7 @@ extension LocalizedStringResource {
     /// ```
     ///
     /// - Note: Using ``LocalizedStringResource.FormatSpecifiers`` requires iOS 16/macOS 13 or later. See ``String.FormatSpecifiers`` for a backwards compatible API.
-    internal struct FormatSpecifiers {
+    internal struct FormatSpecifiers: Sendable {
         /// %@ should convert to a String argument
         ///
         /// ### Source Localization

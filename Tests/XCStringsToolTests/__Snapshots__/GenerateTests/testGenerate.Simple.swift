@@ -197,7 +197,7 @@ extension LocalizedStringResource {
     /// ```
     ///
     /// - Note: Using ``LocalizedStringResource.Simple`` requires iOS 16/macOS 13 or later. See ``String.Simple`` for a backwards compatible API.
-    internal struct Simple {
+    internal struct Simple: Sendable {
         /// This is a simple key and value
         ///
         /// ### Source Localization

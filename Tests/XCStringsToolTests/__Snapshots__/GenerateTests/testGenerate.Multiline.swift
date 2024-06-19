@@ -202,7 +202,7 @@ extension LocalizedStringResource {
     /// ```
     ///
     /// - Note: Using ``LocalizedStringResource.Multiline`` requires iOS 16/macOS 13 or later. See ``String.Multiline`` for a backwards compatible API.
-    internal struct Multiline {
+    internal struct Multiline: Sendable {
         /// This example tests the following:
         /// 1. That line breaks in the defaultValue are supported
         /// 2. That line breaks in the comment are supported
