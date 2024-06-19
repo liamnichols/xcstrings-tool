@@ -10,7 +10,8 @@ extension LocalizedStringResourceStringsTableStructSnippet: Snippet {
         StructDeclSyntax(
             leadingTrivia: leadingTrivia,
             modifiers: modifiers,
-            name: stringsTable.type
+            name: stringsTable.type,
+            inheritanceClause: inheritanceClause
         ) {
             for (position, accessor) in stringsTable.accessors.withPosition {
                 MemberBlockItemListSyntax {
@@ -27,6 +28,10 @@ extension LocalizedStringResourceStringsTableStructSnippet: Snippet {
 
     var leadingTrivia: Trivia? {
         Trivia(docComment: stringsTable.headerDocumentation)
+    }
+
+    var inheritanceClause: InheritanceClauseSyntax? {
+        InheritanceClauseSyntax(.Sendable)
     }
 
     @DeclModifierListBuilder

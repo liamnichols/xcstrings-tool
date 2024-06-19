@@ -213,7 +213,7 @@ extension LocalizedStringResource {
     /// ```
     ///
     /// - Note: Using ``LocalizedStringResource.Variations`` requires iOS 16/macOS 13 or later. See ``String.Variations`` for a backwards compatible API.
-    internal struct Variations {
+    internal struct Variations: Sendable {
         /// A string that should have a macOS variation to replace 'Tap' with 'Click'
         ///
         /// ### Source Localization

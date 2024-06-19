@@ -261,7 +261,7 @@ extension LocalizedStringResource {
     /// ```
     ///
     /// - Note: Using ``LocalizedStringResource.Legacy`` requires iOS 16/macOS 13 or later. See ``String.Legacy`` for a backwards compatible API.
-    internal struct Legacy {
+    internal struct Legacy: Sendable {
         /// ### Source Localization
         ///
         /// ```

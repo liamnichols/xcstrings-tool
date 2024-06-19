@@ -201,7 +201,7 @@ extension LocalizedStringResource {
     /// ```
     ///
     /// - Note: Using ``LocalizedStringResource.Substitution`` requires iOS 16/macOS 13 or later. See ``String.Substitution`` for a backwards compatible API.
-    internal struct Substitution {
+    internal struct Substitution: Sendable {
         /// A string that uses substitutions as well as arguments
         ///
         /// ### Source Localization
