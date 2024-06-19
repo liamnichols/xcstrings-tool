@@ -29,32 +29,11 @@ public struct StringGenerator {
 }
 
 private extension String {
-    #if !canImport(SwiftSyntax600)
-    static let prefix = Reference<Substring>()
-    static let suffix = Reference<Substring>()
-
-    static let regex = Regex {
-        Capture(as: prefix) {
-            ChoiceOf {
-                Regex {
-                    One(.anyOf("#@"))
-                    "available"
-                }
-                "#if canImport"
-            }
-        }
-        One(.whitespace)
-        Capture(as: suffix) {
-            "("
-        }
-    }
-    #endif
-
     // https://github.com/liamnichols/xcstrings-tool/issues/97
     func patchingSwift6CompatibilityIssuesIfNeeded() -> String {
         #if !canImport(SwiftSyntax600)
-        replacing(Self.regex, with: { match in
-            match[Self.prefix] + match[Self.suffix]
+        replacing(/[#@]available\s\(/, with: { match in
+            match.output.filter { !$0.isWhitespace }
         })
         #else
         self
