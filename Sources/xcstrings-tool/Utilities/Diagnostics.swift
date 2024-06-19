@@ -99,8 +99,18 @@ func log(_ severity: Diagnostic.Severity, _ message: String, sourceFile: URL? = 
 }
 
 // MARK: - Better Errors
+#if compiler(>=6.0)
+extension DecodingError: @retroactive CustomDebugStringConvertible {
+    public var debugDescription: String { _debugDescription }
+}
+#else
 extension DecodingError: CustomDebugStringConvertible {
-    public var debugDescription: String {
+    public var debugDescription: String { _debugDescription }
+}
+#endif
+
+private extension DecodingError {
+    var _debugDescription: String {
         guard let context else { return localizedDescription }
 
         if context.codingPath.isEmpty {
