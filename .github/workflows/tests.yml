@@ -45,6 +45,8 @@ jobs:
           macos: macOS-14
         - xcode: "15.4"
           macos: macOS-14
+        - xcode: "16.0"
+          macos: macOS-14
     runs-on: ${{ matrix.macos }}
     env:
       DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode }}.app/Contents/Developer
