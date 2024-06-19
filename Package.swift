@@ -4,9 +4,8 @@
 import Foundation
 import PackageDescription
 
-let swiftSyntaxVersion = ProcessInfo.processInfo.environment["SWIFT_SYNTAX_VERSION"].flatMap(Version.init(_:))
-let swiftSyntax: Package.Dependency = if let version = swiftSyntaxVersion {
-    .package(url: "https://github.com/apple/swift-syntax.git", exact: version)
+let swiftSyntax: Package.Dependency = if let revision = ProcessInfo.processInfo.environment["SWIFT_SYNTAX_REVISION"] {
+    .package(url: "https://github.com/apple/swift-syntax.git", revision: revision)
 } else {
     .package(url: "https://github.com/apple/swift-syntax.git", "509.0.0" ..< "601.0.0")
 }
@@ -23,8 +22,8 @@ let package = Package(
         .library(name: "StringCatalog", targets: ["StringCatalog"])
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.2.3"),
         swiftSyntax,
+        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.2.3"),
         .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.13.0"),
         .package(url: "https://github.com/apple/swift-docc-plugin.git", from: "1.0.0"),
     ],
