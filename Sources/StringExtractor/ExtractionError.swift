@@ -1,7 +1,7 @@
 import Foundation
 
-public enum ExtractionError: Error {
-    public struct Context {
+public enum ExtractionError: Sendable, Error {
+    public struct Context: Sendable {
         /// The key of the localization being parsed
         public let key: String
 
