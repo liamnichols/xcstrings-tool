@@ -205,13 +205,13 @@ extension LocalizedStringResource {
         /// ```
         /// My Value
         /// ```
-        @available (*, deprecated, message: "Use `String.Simple.simpleKey` instead. This property will be removed in the future.")
+        @available(*, deprecated, message: "Use `String.Simple.simpleKey` instead. This property will be removed in the future.")
         internal var simpleKey: LocalizedStringResource {
             LocalizedStringResource(simple: .simpleKey)
         }
     }
 
-    @available (*, deprecated, message: "Use the `simple(_:)` static method instead. This property will be removed in the future.") internal static let simple = Simple()
+    @available(*, deprecated, message: "Use the `simple(_:)` static method instead. This property will be removed in the future.") internal static let simple = Simple()
 
     internal init(simple: String.Simple) {
         self.init(
@@ -228,14 +228,14 @@ extension LocalizedStringResource {
     }
 }
 
-#if canImport (SwiftUI)
+#if canImport(SwiftUI)
 import SwiftUI
 
 @available(macOS 10.5, iOS 13, tvOS 13, watchOS 6, *)
 extension Text {
     /// Creates a text view that displays a localized string defined in the ‘Simple‘ strings table.
     internal init(simple: String.Simple) {
-        if #available (macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
+        if #available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
             self.init(LocalizedStringResource(simple: simple))
             return
         }
@@ -271,7 +271,7 @@ extension LocalizedStringKey {
     internal init(simple: String.Simple) {
         var stringInterpolation = LocalizedStringKey.StringInterpolation(literalCapacity: 0, interpolationCount: 1)
 
-        if #available (macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
+        if #available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
             stringInterpolation.appendInterpolation(LocalizedStringResource(simple: simple))
         } else {
             stringInterpolation.appendInterpolation(Text(simple: simple))

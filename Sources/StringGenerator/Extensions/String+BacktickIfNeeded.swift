@@ -10,6 +10,9 @@ extension String {
     }
 
     private var _isValidVariableName: Bool {
+#if canImport(SwiftSyntax600)
+        isValidSwiftIdentifier(for: .variableName)
+#else
         let name = self
 
         var parser = Parser("var \(name)")
@@ -41,5 +44,6 @@ extension String {
         }
 
         return true
+#endif
     }
 }

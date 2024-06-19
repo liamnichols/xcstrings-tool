@@ -268,7 +268,7 @@ extension LocalizedStringResource {
         /// ```
         /// Continue
         /// ```
-        @available (*, deprecated, message: "Use `String.Localizable.continue` instead. This property will be removed in the future.")
+        @available(*, deprecated, message: "Use `String.Localizable.continue` instead. This property will be removed in the future.")
         internal var `continue`: LocalizedStringResource {
             LocalizedStringResource(localizable: .continue)
         }
@@ -280,7 +280,7 @@ extension LocalizedStringResource {
         /// ```
         /// Default Value
         /// ```
-        @available (*, deprecated, message: "Use `String.Localizable.key` instead. This property will be removed in the future.")
+        @available(*, deprecated, message: "Use `String.Localizable.key` instead. This property will be removed in the future.")
         internal var key: LocalizedStringResource {
             LocalizedStringResource(localizable: .key)
         }
@@ -290,7 +290,7 @@ extension LocalizedStringResource {
         /// ```
         /// Multiplatform Original
         /// ```
-        @available (*, deprecated, message: "Use `String.Localizable.myDeviceVariant` instead. This property will be removed in the future.")
+        @available(*, deprecated, message: "Use `String.Localizable.myDeviceVariant` instead. This property will be removed in the future.")
         internal var myDeviceVariant: LocalizedStringResource {
             LocalizedStringResource(localizable: .myDeviceVariant)
         }
@@ -300,7 +300,7 @@ extension LocalizedStringResource {
         /// ```
         /// I have %lld plurals
         /// ```
-        @available (*, deprecated, message: "Use `String.Localizable.myPlural(_:)` instead. This method will be removed in the future.")
+        @available(*, deprecated, message: "Use `String.Localizable.myPlural(_:)` instead. This method will be removed in the future.")
         internal func myPlural(_ arg1: Int) -> LocalizedStringResource {
             LocalizedStringResource(localizable: .myPlural(arg1))
         }
@@ -310,13 +310,13 @@ extension LocalizedStringResource {
         /// ```
         /// %lld: People liked %lld posts
         /// ```
-        @available (*, deprecated, message: "Use `String.Localizable.mySubstitute(_:count:)` instead. This method will be removed in the future.")
+        @available(*, deprecated, message: "Use `String.Localizable.mySubstitute(_:count:)` instead. This method will be removed in the future.")
         internal func mySubstitute(_ arg1: Int, count arg2: Int) -> LocalizedStringResource {
             LocalizedStringResource(localizable: .mySubstitute(arg1, count: arg2))
         }
     }
 
-    @available (*, deprecated, message: "Use the `localizable(_:)` static method instead. This property will be removed in the future.") internal static let localizable = Localizable()
+    @available(*, deprecated, message: "Use the `localizable(_:)` static method instead. This property will be removed in the future.") internal static let localizable = Localizable()
 
     internal init(localizable: String.Localizable) {
         self.init(
@@ -333,14 +333,14 @@ extension LocalizedStringResource {
     }
 }
 
-#if canImport (SwiftUI)
+#if canImport(SwiftUI)
 import SwiftUI
 
 @available(macOS 10.5, iOS 13, tvOS 13, watchOS 6, *)
 extension Text {
     /// Creates a text view that displays a localized string defined in the ‘Localizable‘ strings table.
     internal init(localizable: String.Localizable) {
-        if #available (macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
+        if #available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
             self.init(LocalizedStringResource(localizable: localizable))
             return
         }
@@ -376,7 +376,7 @@ extension LocalizedStringKey {
     internal init(localizable: String.Localizable) {
         var stringInterpolation = LocalizedStringKey.StringInterpolation(literalCapacity: 0, interpolationCount: 1)
 
-        if #available (macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
+        if #available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
             stringInterpolation.appendInterpolation(LocalizedStringResource(localizable: localizable))
         } else {
             stringInterpolation.appendInterpolation(Text(localizable: localizable))

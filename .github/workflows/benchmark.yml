@@ -27,7 +27,10 @@ jobs:
     - name: Benchmark Pull Request
       run: swift package --allow-writing-to-directory .benchmarkBaselines/ benchmark baseline update pull_request
     - name: Switch Branches
-      run: git checkout main
+      run: |
+        git stash
+        git checkout main
+        git stash pop
     - name: Benchmark Main
       run: swift package --allow-writing-to-directory .benchmarkBaselines/ benchmark baseline update main
     - name: Compare Benchmarks

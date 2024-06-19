@@ -21,10 +21,16 @@ extension IfCanImportSnippet: Snippet {
             clauses: IfConfigClauseListSyntax {
                 IfConfigClauseSyntax(
                     poundKeyword: .poundIfToken(),
-                    condition: CanImportExprSyntax(importPath: .module(module)),
+                    condition: condition,
                     elements: .statements(items)
                 )
             }
         )
+    }
+
+    var condition: some ExprSyntaxProtocol {
+        FunctionCallExprSyntax(callee: DeclReferenceExprSyntax(baseName: "canImport")) {
+            LabeledExprSyntax(expression: DeclReferenceExprSyntax(baseName: .module(.SwiftUI)))
+        }
     }
 }

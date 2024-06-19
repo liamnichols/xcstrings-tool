@@ -215,13 +215,13 @@ extension LocalizedStringResource {
         /// - Two
         /// - Three
         /// ```
-        @available (*, deprecated, message: "Use `String.Multiline.multiline` instead. This property will be removed in the future.")
+        @available(*, deprecated, message: "Use `String.Multiline.multiline` instead. This property will be removed in the future.")
         internal var multiline: LocalizedStringResource {
             LocalizedStringResource(multiline: .multiline)
         }
     }
 
-    @available (*, deprecated, message: "Use the `multiline(_:)` static method instead. This property will be removed in the future.") internal static let multiline = Multiline()
+    @available(*, deprecated, message: "Use the `multiline(_:)` static method instead. This property will be removed in the future.") internal static let multiline = Multiline()
 
     internal init(multiline: String.Multiline) {
         self.init(
@@ -238,14 +238,14 @@ extension LocalizedStringResource {
     }
 }
 
-#if canImport (SwiftUI)
+#if canImport(SwiftUI)
 import SwiftUI
 
 @available(macOS 10.5, iOS 13, tvOS 13, watchOS 6, *)
 extension Text {
     /// Creates a text view that displays a localized string defined in the ‘Multiline‘ strings table.
     internal init(multiline: String.Multiline) {
-        if #available (macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
+        if #available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
             self.init(LocalizedStringResource(multiline: multiline))
             return
         }
@@ -281,7 +281,7 @@ extension LocalizedStringKey {
     internal init(multiline: String.Multiline) {
         var stringInterpolation = LocalizedStringKey.StringInterpolation(literalCapacity: 0, interpolationCount: 1)
 
-        if #available (macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
+        if #available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
             stringInterpolation.appendInterpolation(LocalizedStringResource(multiline: multiline))
         } else {
             stringInterpolation.appendInterpolation(Text(multiline: multiline))

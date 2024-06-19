@@ -221,7 +221,7 @@ extension LocalizedStringResource {
         /// ```
         /// Tap to open
         /// ```
-        @available (*, deprecated, message: "Use `String.Variations.stringDevice` instead. This property will be removed in the future.")
+        @available(*, deprecated, message: "Use `String.Variations.stringDevice` instead. This property will be removed in the future.")
         internal var stringDevice: LocalizedStringResource {
             LocalizedStringResource(variations: .stringDevice)
         }
@@ -231,13 +231,13 @@ extension LocalizedStringResource {
         /// ```
         /// I have %lld strings
         /// ```
-        @available (*, deprecated, message: "Use `String.Variations.stringPlural(_:)` instead. This method will be removed in the future.")
+        @available(*, deprecated, message: "Use `String.Variations.stringPlural(_:)` instead. This method will be removed in the future.")
         internal func stringPlural(_ arg1: Int) -> LocalizedStringResource {
             LocalizedStringResource(variations: .stringPlural(arg1))
         }
     }
 
-    @available (*, deprecated, message: "Use the `variations(_:)` static method instead. This property will be removed in the future.") internal static let variations = Variations()
+    @available(*, deprecated, message: "Use the `variations(_:)` static method instead. This property will be removed in the future.") internal static let variations = Variations()
 
     internal init(variations: String.Variations) {
         self.init(
@@ -254,14 +254,14 @@ extension LocalizedStringResource {
     }
 }
 
-#if canImport (SwiftUI)
+#if canImport(SwiftUI)
 import SwiftUI
 
 @available(macOS 10.5, iOS 13, tvOS 13, watchOS 6, *)
 extension Text {
     /// Creates a text view that displays a localized string defined in the ‘Variations‘ strings table.
     internal init(variations: String.Variations) {
-        if #available (macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
+        if #available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
             self.init(LocalizedStringResource(variations: variations))
             return
         }
@@ -297,7 +297,7 @@ extension LocalizedStringKey {
     internal init(variations: String.Variations) {
         var stringInterpolation = LocalizedStringKey.StringInterpolation(literalCapacity: 0, interpolationCount: 1)
 
-        if #available (macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
+        if #available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
             stringInterpolation.appendInterpolation(LocalizedStringResource(variations: variations))
         } else {
             stringInterpolation.appendInterpolation(Text(variations: variations))

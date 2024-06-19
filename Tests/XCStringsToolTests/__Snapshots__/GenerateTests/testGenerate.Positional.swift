@@ -244,7 +244,7 @@ extension LocalizedStringResource {
         /// ```
         /// Second: %2$@ - First: %1$lld
         /// ```
-        @available (*, deprecated, message: "Use `String.Positional.reorder(_:_:)` instead. This method will be removed in the future.")
+        @available(*, deprecated, message: "Use `String.Positional.reorder(_:_:)` instead. This method will be removed in the future.")
         internal func reorder(_ arg1: Int, _ arg2: String) -> LocalizedStringResource {
             LocalizedStringResource(positional: .reorder(arg1, arg2))
         }
@@ -256,7 +256,7 @@ extension LocalizedStringResource {
         /// ```
         /// %1$lld, I repeat: %1$lld
         /// ```
-        @available (*, deprecated, message: "Use `String.Positional.repeatExplicit(_:)` instead. This method will be removed in the future.")
+        @available(*, deprecated, message: "Use `String.Positional.repeatExplicit(_:)` instead. This method will be removed in the future.")
         internal func repeatExplicit(_ arg1: Int) -> LocalizedStringResource {
             LocalizedStringResource(positional: .repeatExplicit(arg1))
         }
@@ -268,13 +268,13 @@ extension LocalizedStringResource {
         /// ```
         /// %@, are you there? %1$@?
         /// ```
-        @available (*, deprecated, message: "Use `String.Positional.repeatImplicit(_:)` instead. This method will be removed in the future.")
+        @available(*, deprecated, message: "Use `String.Positional.repeatImplicit(_:)` instead. This method will be removed in the future.")
         internal func repeatImplicit(_ arg1: String) -> LocalizedStringResource {
             LocalizedStringResource(positional: .repeatImplicit(arg1))
         }
     }
 
-    @available (*, deprecated, message: "Use the `positional(_:)` static method instead. This property will be removed in the future.") internal static let positional = Positional()
+    @available(*, deprecated, message: "Use the `positional(_:)` static method instead. This property will be removed in the future.") internal static let positional = Positional()
 
     internal init(positional: String.Positional) {
         self.init(
@@ -291,14 +291,14 @@ extension LocalizedStringResource {
     }
 }
 
-#if canImport (SwiftUI)
+#if canImport(SwiftUI)
 import SwiftUI
 
 @available(macOS 10.5, iOS 13, tvOS 13, watchOS 6, *)
 extension Text {
     /// Creates a text view that displays a localized string defined in the ‘Positional‘ strings table.
     internal init(positional: String.Positional) {
-        if #available (macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
+        if #available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
             self.init(LocalizedStringResource(positional: positional))
             return
         }
@@ -334,7 +334,7 @@ extension LocalizedStringKey {
     internal init(positional: String.Positional) {
         var stringInterpolation = LocalizedStringKey.StringInterpolation(literalCapacity: 0, interpolationCount: 1)
 
-        if #available (macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
+        if #available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
             stringInterpolation.appendInterpolation(LocalizedStringResource(positional: positional))
         } else {
             stringInterpolation.appendInterpolation(Text(positional: positional))

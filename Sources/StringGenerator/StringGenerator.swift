@@ -4,6 +4,7 @@ import SwiftBasicFormat
 import SwiftIdentifier
 import SwiftSyntax
 import SwiftSyntaxBuilder
+import RegexBuilder
 
 public struct StringGenerator {
     public static func generateSource(
@@ -23,5 +24,19 @@ public struct StringGenerator {
             .syntax
             .formatted()
             .description
+            .patchingSwift6CompatibilityIssuesIfNeeded()
+    }
+}
+
+private extension String {
+    // https://github.com/liamnichols/xcstrings-tool/issues/97
+    func patchingSwift6CompatibilityIssuesIfNeeded() -> String {
+        #if !canImport(SwiftSyntax600)
+        replacing(/[#@]available\s\(/, with: { match in
+            match.output.filter { !$0.isWhitespace }
+        })
+        #else
+        self
+        #endif
     }
 }
