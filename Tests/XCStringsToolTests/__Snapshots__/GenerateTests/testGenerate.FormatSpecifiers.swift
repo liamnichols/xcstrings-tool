@@ -46,7 +46,7 @@ extension String {
     /// }
     /// ```
     ///
-    /// - SeeAlso: [XCStrings Tool Documentation - Using the generated source code](https://swiftpackageindex.com/liamnichols/xcstrings-tool/0.5.0/documentation/documentation/using-the-generated-source-code)
+    /// - SeeAlso: [XCStrings Tool Documentation - Using the generated source code](https://swiftpackageindex.com/liamnichols/xcstrings-tool/0.5.1/documentation/documentation/using-the-generated-source-code)
     internal struct FormatSpecifiers: Sendable {
         enum BundleDescription: Sendable {
             case main
