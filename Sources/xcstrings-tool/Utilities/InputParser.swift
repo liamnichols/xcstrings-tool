@@ -10,24 +10,24 @@ struct InputParser {
         case notALocalizedResource(URL)
     }
 
-    static func parse(from inputs: [URL], developmentLanguage: String?) throws -> Parsed {
+    static func parse(from inputs: [URL], developmentLanguage: String?, logger: Logger) throws -> Parsed {
         if inputs.isEmpty { throw Error.noInputs }
 
-        debug("raw inputs:")
-        debug("  developmentLanguage: \(developmentLanguage ?? "nil")")
-        debug("  files:")
+        logger.debug("raw inputs:")
+        logger.debug("  developmentLanguage: \(developmentLanguage ?? "nil")")
+        logger.debug("  files:")
         for input in inputs {
-            debug("  - \(input.absoluteURL.path())")
+            logger.debug("  - \(input.absoluteURL.path())")
         }
 
         let tableName = try tableName(from: inputs)
         let files = try filteredFiles(from: inputs, developmentLanguage: developmentLanguage)
 
-        debug("parsed inputs:")
-        debug("  tableName: \(tableName)")
-        debug("  files:")
+        logger.debug("parsed inputs:")
+        logger.debug("  tableName: \(tableName)")
+        logger.debug("  files:")
         for file in files {
-            debug("  - \(file.absoluteURL.path())")
+            logger.debug("  - \(file.absoluteURL.path())")
         }
 
         let grouped = Dictionary(grouping: files, by: \.lastPathComponent)
