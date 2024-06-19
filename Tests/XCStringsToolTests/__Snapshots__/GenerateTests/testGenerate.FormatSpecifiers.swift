@@ -582,7 +582,7 @@ extension LocalizedStringResource {
     }
 }
 
-#if canImport (SwiftUI)
+#if canImport(SwiftUI)
 import SwiftUI
 
 @available(macOS 10.5, iOS 13, tvOS 13, watchOS 6, *)
