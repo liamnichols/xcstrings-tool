@@ -29,6 +29,56 @@ struct StringParser {
         var segments: [ParsedSegment] = []
         var lastIndex = input.startIndex
 
+        let regex = Regex {
+            // The start of the specifier
+            "%"
+
+            // Optional, positional information
+            Optionally {
+                TryCapture {
+                    OneOrMore(.digit)
+                } transform: { rawValue in
+                    Int(rawValue)
+                }
+                "$"
+            }
+
+            // Optional, precision information
+            Optionally(.anyOf("-+"))
+            Optionally(.digit)
+            Optionally {
+                "."
+                One(.digit)
+            }
+
+            // Required, the type (inc lengths)
+            TryCapture {
+                ChoiceOf {
+                    "%"
+                    "@"
+                    Regex {
+                        Optionally {
+                            ChoiceOf {
+                                "h"
+                                "hh"
+                                "l"
+                                "ll"
+                                "q"
+                                "z"
+                                "t"
+                                "j"
+                            }
+                        }
+                        One(.anyOf("dioux"))
+                    }
+                    One(.anyOf("aefg"))
+                    One(.anyOf("csp"))
+                }
+            } transform: { rawValue in
+                String(rawValue)
+            }
+        }
+
         for match in input.matches(of: regex) {
             // Create a segment from the previous bound to here
             if match.range.lowerBound != lastIndex {
@@ -55,58 +105,6 @@ struct StringParser {
         }
 
         return segments
-    }
-}
-
-extension StringParser {
-    static let regex = Regex {
-        // The start of the specifier
-        "%"
-
-        // Optional, positional information
-        Optionally {
-            TryCapture {
-                OneOrMore(.digit)
-            } transform: { rawValue in
-                Int(rawValue)
-            }
-            "$"
-        }
-
-        // Optional, precision information
-        Optionally(.anyOf("-+"))
-        Optionally(.digit)
-        Optionally {
-            "."
-            One(.digit)
-        }
-
-        // Required, the type (inc lengths)
-        TryCapture {
-            ChoiceOf {
-                "%"
-                "@"
-                Regex {
-                    Optionally {
-                        ChoiceOf {
-                            "h"
-                            "hh"
-                            "l"
-                            "ll"
-                            "q"
-                            "z"
-                            "t"
-                            "j"
-                        }
-                    }
-                    One(.anyOf("dioux"))
-                }
-                One(.anyOf("aefg"))
-                One(.anyOf("csp"))
-            }
-        } transform: { rawValue in
-            String(rawValue)
-        }
     }
 }
 
