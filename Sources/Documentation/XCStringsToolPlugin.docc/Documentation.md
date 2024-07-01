@@ -56,5 +56,6 @@ In addition to the new Strings Catalog format, XCStrings Tool will also generate
 
 ### Advanced
 
+- <doc:Using-the-Command-Line-Interface>
 - <doc:Changing-the-Access-Level>
 - <doc:Moving-away-from-XCStrings-Tool>
