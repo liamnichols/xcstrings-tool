@@ -170,12 +170,3 @@ if ProcessInfo.processInfo.environment.keys.contains("BENCHMARK_PACKAGE") {
         )
     )
 }
-
-// Support testing different versions of Swift Syntax
-if let revision = ProcessInfo.processInfo.environment["SWIFT_SYNTAX_REVISION"] {
-    // TODO: The `kind` symbol isn't available in Xcode 15.2? Check newer versions.
-    package.dependencies.removeAll(where: { $0.url == "https://github.com/swiftlang/swift-syntax" })
-    package.dependencies.append(
-        .package(url: "https://github.com/swiftlang/swift-syntax", revision: revision)
-    )
-}

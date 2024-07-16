@@ -95,9 +95,12 @@ jobs:
     runs-on: macOS-14
     env:
       DEVELOPER_DIR: /Applications/Xcode_15.4.app/Contents/Developer
-      SWIFT_SYNTAX_REVISION: ${{ matrix.revision }}
     steps:
     - name: Checkout Repo
       uses: actions/checkout@v4
+    - name: Update Package Pins
+      run: |
+        jq '(.pins[] | select(.identity == "swift-syntax") | .state.revision) = "${{ matrix.revision }}" | (.pins[] | select(.identity == "swift-syntax") | .state.version) = "${{ matrix.swift-syntax }}"' Package.resolved | sed 's/": /" : /g' > Package.resolved.tmp && mv Package.resolved.tmp Package.resolved
+        git diff Package.resolved
     - name: Run Tests
       run: xcodebuild clean test -scheme XCStringsTool-Package -destination platform=macOS
