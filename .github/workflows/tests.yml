@@ -63,6 +63,14 @@ jobs:
     steps:
     - name: Checkout Repo
       uses: actions/checkout@v4
+    - name: Downgrade swift-snapshot-testing
+      if: matrix.xcode == '16.0'
+      run: |
+        # Use 1.17.0 until macOS-14 runner is updated to Xcode 16 Beta 3
+        # https://github.com/pointfreeco/swift-snapshot-testing/pull/869
+        if xcodebuild -version | grep 16A5171r; then
+          jq '(.pins[] | select(.identity == "swift-snapshot-testing") | .state.revision) = "f6c51fa7609b1057ca5420127440413c54971ff6" | (.pins[] | select(.identity == "swift-snapshot-testing") | .state.version) = "1.17.0"' Package.resolved | sed 's/": /" : /g' > Package.resolved.tmp && mv Package.resolved.tmp Package.resolved
+        fi
     - name: Run Tests
       run: xcodebuild clean test -scheme XCStringsTool-Package -destination platform=macOS
   unit-test-swift-syntax:
