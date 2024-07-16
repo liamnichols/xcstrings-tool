@@ -17,7 +17,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.2.3"),
-        .package(url: "https://github.com/swiftlang/swift-syntax", "509.0.0" ..< "601.0.0"),
+        .package(url: "https://github.com/swiftlang/swift-syntax", "509.0.0" ..< "601.0.0-prerelease"),
         .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.13.0"),
         .package(url: "https://github.com/swiftlang/swift-docc-plugin", from: "1.0.0"),
     ],
@@ -168,14 +168,5 @@ if ProcessInfo.processInfo.environment.keys.contains("BENCHMARK_PACKAGE") {
                 .plugin(name: "BenchmarkPlugin", package: "package-benchmark")
             ]
         )
-    )
-}
-
-// Support testing different versions of Swift Syntax
-if let revision = ProcessInfo.processInfo.environment["SWIFT_SYNTAX_REVISION"] {
-    // TODO: The `kind` symbol isn't available in Xcode 15.2? Check newer versions.
-    package.dependencies.removeAll(where: { $0.url == "https://github.com/swiftlang/swift-syntax" })
-    package.dependencies.append(
-        .package(url: "https://github.com/swiftlang/swift-syntax", revision: revision)
     )
 }
