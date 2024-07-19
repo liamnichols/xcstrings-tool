@@ -32,14 +32,6 @@ struct SourceFileSnippet: Snippet {
                 availability: .wwdc2022,
                 extending: .type(.LocalizedStringResource)
             ) {
-                LocalizedStringResourceStringsTableStructSnippet(
-                    stringsTable: sourceFile.localizedStringResourceExtension.stringsTableStruct
-                )
-
-                LocalizedStringResourceStringsTableComputedPropertySnippet(
-                    sourceFile: sourceFile
-                )
-
                 LocalizedStringResourceInitializerSnippet(
                     stringsTable: sourceFile.stringExtension.stringsTableStruct
                 )
