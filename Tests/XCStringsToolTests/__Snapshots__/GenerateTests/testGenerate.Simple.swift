@@ -185,34 +185,6 @@ private extension LocalizedStringResource.BundleDescription {
 
 @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)
 extension LocalizedStringResource {
-    /// Constant values for the Simple Strings Catalog
-    ///
-    /// ```swift
-    /// // Accessing the localized value directly
-    /// let value = String(localized: .simple.simpleKey)
-    /// value // "My Value"
-    ///
-    /// // Working with SwiftUI
-    /// Text(.simple.simpleKey)
-    /// ```
-    ///
-    /// - Note: Using ``LocalizedStringResource.Simple`` requires iOS 16/macOS 13 or later. See ``String.Simple`` for a backwards compatible API.
-    internal struct Simple: Sendable {
-        /// This is a simple key and value
-        ///
-        /// ### Source Localization
-        ///
-        /// ```
-        /// My Value
-        /// ```
-        @available(*, deprecated, message: "Use `String.Simple.simpleKey` instead. This property will be removed in the future.")
-        internal var simpleKey: LocalizedStringResource {
-            LocalizedStringResource(simple: .simpleKey)
-        }
-    }
-
-    @available(*, deprecated, message: "Use the `simple(_:)` static method instead. This property will be removed in the future.") internal static let simple = Simple()
-
     internal init(simple: String.Simple) {
         self.init(
             simple.key,

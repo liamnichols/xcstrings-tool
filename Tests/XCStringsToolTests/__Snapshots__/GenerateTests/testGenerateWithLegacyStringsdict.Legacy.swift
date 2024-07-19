@@ -186,32 +186,6 @@ private extension LocalizedStringResource.BundleDescription {
 
 @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)
 extension LocalizedStringResource {
-    /// Constant values for the Legacy Strings Catalog
-    ///
-    /// ```swift
-    /// // Accessing the localized value directly
-    /// let value = String(localized: .legacy.foo)
-    /// value // "bar"
-    ///
-    /// // Working with SwiftUI
-    /// Text(.legacy.foo)
-    /// ```
-    ///
-    /// - Note: Using ``LocalizedStringResource.Legacy`` requires iOS 16/macOS 13 or later. See ``String.Legacy`` for a backwards compatible API.
-    internal struct Legacy: Sendable {
-        /// ### Source Localization
-        ///
-        /// ```
-        /// Hello %@, I have %lld plurals
-        /// ```
-        @available(*, deprecated, message: "Use `String.Legacy.key6(_:_:)` instead. This method will be removed in the future.")
-        internal func key6(_ arg1: String, _ arg2: Int) -> LocalizedStringResource {
-            LocalizedStringResource(legacy: .key6(arg1, arg2))
-        }
-    }
-
-    @available(*, deprecated, message: "Use the `legacy(_:)` static method instead. This property will be removed in the future.") internal static let legacy = Legacy()
-
     internal init(legacy: String.Legacy) {
         self.init(
             legacy.key,

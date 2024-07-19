@@ -201,44 +201,6 @@ private extension LocalizedStringResource.BundleDescription {
 
 @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)
 extension LocalizedStringResource {
-    /// Constant values for the Variations Strings Catalog
-    ///
-    /// ```swift
-    /// // Accessing the localized value directly
-    /// let value = String(localized: .variations.stringDevice)
-    /// value // "Tap to open"
-    ///
-    /// // Working with SwiftUI
-    /// Text(.variations.stringDevice)
-    /// ```
-    ///
-    /// - Note: Using ``LocalizedStringResource.Variations`` requires iOS 16/macOS 13 or later. See ``String.Variations`` for a backwards compatible API.
-    internal struct Variations: Sendable {
-        /// A string that should have a macOS variation to replace 'Tap' with 'Click'
-        ///
-        /// ### Source Localization
-        ///
-        /// ```
-        /// Tap to open
-        /// ```
-        @available(*, deprecated, message: "Use `String.Variations.stringDevice` instead. This property will be removed in the future.")
-        internal var stringDevice: LocalizedStringResource {
-            LocalizedStringResource(variations: .stringDevice)
-        }
-
-        /// ### Source Localization
-        ///
-        /// ```
-        /// I have %lld strings
-        /// ```
-        @available(*, deprecated, message: "Use `String.Variations.stringPlural(_:)` instead. This method will be removed in the future.")
-        internal func stringPlural(_ arg1: Int) -> LocalizedStringResource {
-            LocalizedStringResource(variations: .stringPlural(arg1))
-        }
-    }
-
-    @available(*, deprecated, message: "Use the `variations(_:)` static method instead. This property will be removed in the future.") internal static let variations = Variations()
-
     internal init(variations: String.Variations) {
         self.init(
             variations.key,

@@ -190,39 +190,6 @@ private extension LocalizedStringResource.BundleDescription {
 
 @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)
 extension LocalizedStringResource {
-    /// Constant values for the Multiline Strings Catalog
-    ///
-    /// ```swift
-    /// // Accessing the localized value directly
-    /// let value = String(localized: .multiline.multiline)
-    /// value // "Options:\n- One\n- Two\n- Three"
-    ///
-    /// // Working with SwiftUI
-    /// Text(.multiline.multiline)
-    /// ```
-    ///
-    /// - Note: Using ``LocalizedStringResource.Multiline`` requires iOS 16/macOS 13 or later. See ``String.Multiline`` for a backwards compatible API.
-    internal struct Multiline: Sendable {
-        /// This example tests the following:
-        /// 1. That line breaks in the defaultValue are supported
-        /// 2. That line breaks in the comment are supported
-        ///
-        /// ### Source Localization
-        ///
-        /// ```
-        /// Options:
-        /// - One
-        /// - Two
-        /// - Three
-        /// ```
-        @available(*, deprecated, message: "Use `String.Multiline.multiline` instead. This property will be removed in the future.")
-        internal var multiline: LocalizedStringResource {
-            LocalizedStringResource(multiline: .multiline)
-        }
-    }
-
-    @available(*, deprecated, message: "Use the `multiline(_:)` static method instead. This property will be removed in the future.") internal static let multiline = Multiline()
-
     internal init(multiline: String.Multiline) {
         self.init(
             multiline.key,

@@ -189,34 +189,6 @@ private extension LocalizedStringResource.BundleDescription {
 
 @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)
 extension LocalizedStringResource {
-    /// Constant values for the Substitution Strings Catalog
-    ///
-    /// ```swift
-    /// // Accessing the localized value directly
-    /// let value = String(localized: .substitution.foo)
-    /// value // "bar"
-    ///
-    /// // Working with SwiftUI
-    /// Text(.substitution.foo)
-    /// ```
-    ///
-    /// - Note: Using ``LocalizedStringResource.Substitution`` requires iOS 16/macOS 13 or later. See ``String.Substitution`` for a backwards compatible API.
-    internal struct Substitution: Sendable {
-        /// A string that uses substitutions as well as arguments
-        ///
-        /// ### Source Localization
-        ///
-        /// ```
-        /// %@! There are %lld strings and you have %lld remaining
-        /// ```
-        @available(*, deprecated, message: "Use `String.Substitution.substitutions_exampleString(_:totalStrings:remainingStrings:)` instead. This method will be removed in the future.")
-        internal func substitutions_exampleString(_ arg1: String, totalStrings arg2: Int, remainingStrings arg3: Int) -> LocalizedStringResource {
-            LocalizedStringResource(substitution: .substitutions_exampleString(arg1, totalStrings: arg2, remainingStrings: arg3))
-        }
-    }
-
-    @available(*, deprecated, message: "Use the `substitution(_:)` static method instead. This property will be removed in the future.") internal static let substitution = Substitution()
-
     internal init(substitution: String.Substitution) {
         self.init(
             substitution.key,

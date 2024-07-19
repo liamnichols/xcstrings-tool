@@ -224,58 +224,6 @@ private extension LocalizedStringResource.BundleDescription {
 
 @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)
 extension LocalizedStringResource {
-    /// Constant values for the Positional Strings Catalog
-    ///
-    /// ```swift
-    /// // Accessing the localized value directly
-    /// let value = String(localized: .positional.foo)
-    /// value // "bar"
-    ///
-    /// // Working with SwiftUI
-    /// Text(.positional.foo)
-    /// ```
-    ///
-    /// - Note: Using ``LocalizedStringResource.Positional`` requires iOS 16/macOS 13 or later. See ``String.Positional`` for a backwards compatible API.
-    internal struct Positional: Sendable {
-        /// A string where the second argument is at the front of the string and the first argument is at the end
-        ///
-        /// ### Source Localization
-        ///
-        /// ```
-        /// Second: %2$@ - First: %1$lld
-        /// ```
-        @available(*, deprecated, message: "Use `String.Positional.reorder(_:_:)` instead. This method will be removed in the future.")
-        internal func reorder(_ arg1: Int, _ arg2: String) -> LocalizedStringResource {
-            LocalizedStringResource(positional: .reorder(arg1, arg2))
-        }
-
-        /// A string that uses the same argument twice
-        ///
-        /// ### Source Localization
-        ///
-        /// ```
-        /// %1$lld, I repeat: %1$lld
-        /// ```
-        @available(*, deprecated, message: "Use `String.Positional.repeatExplicit(_:)` instead. This method will be removed in the future.")
-        internal func repeatExplicit(_ arg1: Int) -> LocalizedStringResource {
-            LocalizedStringResource(positional: .repeatExplicit(arg1))
-        }
-
-        /// A string that uses the same argument twice implicitly because a positional specifier wasn't provided in one instance
-        ///
-        /// ### Source Localization
-        ///
-        /// ```
-        /// %@, are you there? %1$@?
-        /// ```
-        @available(*, deprecated, message: "Use `String.Positional.repeatImplicit(_:)` instead. This method will be removed in the future.")
-        internal func repeatImplicit(_ arg1: String) -> LocalizedStringResource {
-            LocalizedStringResource(positional: .repeatImplicit(arg1))
-        }
-    }
-
-    @available(*, deprecated, message: "Use the `positional(_:)` static method instead. This property will be removed in the future.") internal static let positional = Positional()
-
     internal init(positional: String.Positional) {
         self.init(
             positional.key,

@@ -9,32 +9,6 @@ extension AttributeSyntax {
             rightParen: .rightParenToken()
         )
     }
-
-    init(
-        _ platform: TokenSyntax,
-        deprecated version: Int?,
-        message: String
-    ) {
-        self.init(TypeSyntax(IdentifierTypeSyntax(name: .keyword(.available)))) {
-            LabeledExprSyntax(expression: DeclReferenceExprSyntax(baseName: platform))
-
-            if let version {
-                LabeledExprSyntax(
-                    label: "deprecated",
-                    expression: IntegerLiteralExprSyntax(version)
-                )
-            } else {
-                LabeledExprSyntax(
-                    expression: DeclReferenceExprSyntax(baseName: .identifier("deprecated"))
-                )
-            }
-
-            LabeledExprSyntax(
-                label: "message",
-                expression: StringLiteralExprSyntax(content: message)
-            )
-        }
-    }
 }
 
 extension AvailabilityArgumentListSyntax {
