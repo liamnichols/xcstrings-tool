@@ -12,22 +12,6 @@ struct SourceFileSnippet: Snippet {
                 StringInitializerSnippet(stringsTable: sourceFile.stringExtension.stringsTableStruct)
             }
 
-            ExtensionSnippet(extending: .type(.Bundle)) {
-                ConvertBundleDescriptionMethodSnippet.toFoundationBundle(
-                    from: sourceFile.stringExtension.stringsTableStruct.bundleDescriptionEnum
-                )
-            }
-
-            ExtensionSnippet(
-                availability: .wwdc2022,
-                accessLevel: .private,
-                extending: [.type(.LocalizedStringResource), .type(.BundleDescription)]
-            ) {
-                ConvertBundleDescriptionMethodSnippet.toLocalizedStringResourceBundleDescription(
-                    from: sourceFile.stringExtension.stringsTableStruct.bundleDescriptionEnum
-                )
-            }
-
             ExtensionSnippet(
                 availability: .wwdc2022,
                 extending: .type(.LocalizedStringResource)

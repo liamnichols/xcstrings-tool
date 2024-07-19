@@ -64,10 +64,6 @@ struct StringStringsTableResourceFunctionSnippet: Snippet {
                 label: "table",
                 expression: StringLiteralExprSyntax(content: accessor.sourceFile.tableName)
             )
-            LabeledExprSyntax(
-                label: "bundle",
-                expression: MemberAccessExprSyntax(name: "current")
-            )
         }
         .multiline()
     }

@@ -144,15 +144,7 @@ extension TextInitializerSnippet: Snippet {
             // bundle: .from(description: localizable.bundle)
             LabeledExprSyntax(
                 label: "bundle",
-                expression: FunctionCallExprSyntax(
-                    callee: MemberAccessExprSyntax(name: "from")
-                ) {
-                    // description: localizable.bundle
-                    LabeledExprSyntax(
-                        label: "description",
-                        expression: MemberAccessExprSyntax(variableToken, stringsTable.bundleProperty.name)
-                    )
-                }
+                expression: MemberAccessExprSyntax(variableToken, stringsTable.bundleProperty.name)
             )
         }
     }

@@ -46,13 +46,12 @@ extension LocalizedStringResourceInitializerSnippet: Snippet {
                 LabeledExprSyntax(
                     label: "bundle",
                     expression: FunctionCallExprSyntax(
-                        calledExpression: MemberAccessExprSyntax(name: "from"),
+                        calledExpression: MemberAccessExprSyntax(name: "atURL"),
                         leftParen: .leftParenToken(),
                         rightParen: .rightParenToken()
                     ) {
                         LabeledExprSyntax(
-                            label: "description",
-                            expression: MemberAccessExprSyntax(variableToken, stringsTable.bundleProperty.name)
+                            expression: MemberAccessExprSyntax(variableToken, stringsTable.bundleProperty.name, "bundleURL")
                         )
                     }
                 )
