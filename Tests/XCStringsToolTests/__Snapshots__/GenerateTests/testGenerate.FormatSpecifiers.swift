@@ -48,24 +48,10 @@ extension String {
     ///
     /// - SeeAlso: [XCStrings Tool Documentation - Using the generated source code](https://swiftpackageindex.com/liamnichols/xcstrings-tool/0.5.2/documentation/documentation/using-the-generated-source-code)
     internal struct FormatSpecifiers: Sendable {
-        enum BundleDescription: Sendable {
-            case main
-            case atURL(URL)
-            case forClass(AnyClass)
-
-            #if !SWIFT_PACKAGE
-            private class BundleLocator {
-            }
-            #endif
-
-            static var current: BundleDescription {
-                #if SWIFT_PACKAGE
-                .atURL(Bundle.module.bundleURL)
-                #else
-                .forClass(BundleLocator.self)
-                #endif
-            }
+        #if !SWIFT_PACKAGE
+        private class BundleLocator {
         }
+        #endif
 
         enum Argument: Sendable {
             case int(Int)
@@ -93,18 +79,15 @@ extension String {
         let key: StaticString
         let arguments: [Argument]
         let table: String?
-        let bundle: BundleDescription
 
         fileprivate init(
             key: StaticString,
             arguments: [Argument],
-            table: String?,
-            bundle: BundleDescription
+            table: String?
         ) {
             self.key = key
             self.arguments = arguments
             self.table = table
-            self.bundle = bundle
         }
 
         /// %@ should convert to a String argument
@@ -120,8 +103,7 @@ extension String {
                 arguments: [
                     .object(arg1)
                 ],
-                table: "FormatSpecifiers",
-                bundle: .current
+                table: "FormatSpecifiers"
             )
         }
 
@@ -138,8 +120,7 @@ extension String {
                 arguments: [
                     .int(arg1)
                 ],
-                table: "FormatSpecifiers",
-                bundle: .current
+                table: "FormatSpecifiers"
             )
         }
 
@@ -156,8 +137,7 @@ extension String {
                 arguments: [
                     .int(arg1)
                 ],
-                table: "FormatSpecifiers",
-                bundle: .current
+                table: "FormatSpecifiers"
             )
         }
 
@@ -174,8 +154,7 @@ extension String {
                 arguments: [
                     .double(arg1)
                 ],
-                table: "FormatSpecifiers",
-                bundle: .current
+                table: "FormatSpecifiers"
             )
         }
 
@@ -192,8 +171,7 @@ extension String {
                 arguments: [
                     .double(arg1)
                 ],
-                table: "FormatSpecifiers",
-                bundle: .current
+                table: "FormatSpecifiers"
             )
         }
 
@@ -210,8 +188,7 @@ extension String {
                 arguments: [
                     .int(arg1)
                 ],
-                table: "FormatSpecifiers",
-                bundle: .current
+                table: "FormatSpecifiers"
             )
         }
 
@@ -228,8 +205,7 @@ extension String {
                 arguments: [
                     .uint(arg1)
                 ],
-                table: "FormatSpecifiers",
-                bundle: .current
+                table: "FormatSpecifiers"
             )
         }
 
@@ -244,8 +220,7 @@ extension String {
             FormatSpecifiers(
                 key: "percentage",
                 arguments: [],
-                table: "FormatSpecifiers",
-                bundle: .current
+                table: "FormatSpecifiers"
             )
         }
 
@@ -260,8 +235,7 @@ extension String {
             FormatSpecifiers(
                 key: "percentage_escaped",
                 arguments: [],
-                table: "FormatSpecifiers",
-                bundle: .current
+                table: "FormatSpecifiers"
             )
         }
 
@@ -276,8 +250,7 @@ extension String {
             FormatSpecifiers(
                 key: "percentage_escaped_space_o",
                 arguments: [],
-                table: "FormatSpecifiers",
-                bundle: .current
+                table: "FormatSpecifiers"
             )
         }
 
@@ -292,8 +265,7 @@ extension String {
             FormatSpecifiers(
                 key: "percentage_space_o",
                 arguments: [],
-                table: "FormatSpecifiers",
-                bundle: .current
+                table: "FormatSpecifiers"
             )
         }
 
@@ -310,8 +282,7 @@ extension String {
                 arguments: [
                     .uint(arg1)
                 ],
-                table: "FormatSpecifiers",
-                bundle: .current
+                table: "FormatSpecifiers"
             )
         }
 
@@ -328,9 +299,16 @@ extension String {
                 arguments: [
                     .uint(arg1)
                 ],
-                table: "FormatSpecifiers",
-                bundle: .current
+                table: "FormatSpecifiers"
             )
+        }
+
+        var bundle: Bundle {
+            #if SWIFT_PACKAGE
+            .module
+            #else
+            Bundle(for: BundleLocator.self)
+            #endif
         }
 
         @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
@@ -356,40 +334,12 @@ extension String {
     }
 
     internal init(formatSpecifiers: FormatSpecifiers, locale: Locale? = nil) {
-        let bundle: Bundle = .from(description: formatSpecifiers.bundle) ?? .main
         let key = String(describing: formatSpecifiers.key)
         self.init(
-            format: bundle.localizedString(forKey: key, value: nil, table: formatSpecifiers.table),
+            format: formatSpecifiers.bundle.localizedString(forKey: key, value: nil, table: formatSpecifiers.table),
             locale: locale,
             arguments: formatSpecifiers.arguments.map(\.value)
         )
-    }
-}
-
-extension Bundle {
-    static func from(description: String.FormatSpecifiers.BundleDescription) -> Bundle? {
-        switch description {
-        case .main:
-            Bundle.main
-        case .atURL(let url):
-            Bundle(url: url)
-        case .forClass(let anyClass):
-            Bundle(for: anyClass)
-        }
-    }
-}
-
-@available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)
-private extension LocalizedStringResource.BundleDescription {
-    static func from(description: String.FormatSpecifiers.BundleDescription) -> Self {
-        switch description {
-        case .main:
-            .main
-        case .atURL(let url):
-            .atURL(url)
-        case .forClass(let anyClass):
-            .forClass(anyClass)
-        }
     }
 }
 
@@ -400,7 +350,7 @@ extension LocalizedStringResource {
             formatSpecifiers.key,
             defaultValue: formatSpecifiers.defaultValue,
             table: formatSpecifiers.table,
-            bundle: .from(description: formatSpecifiers.bundle)
+            bundle: .atURL(formatSpecifiers.bundle.bundleURL)
         )
     }
 
@@ -442,7 +392,7 @@ extension Text {
         var key = makeKey(stringInterpolation)
         key.overrideKeyForLookup(using: formatSpecifiers.key)
 
-        self.init(key, tableName: formatSpecifiers.table, bundle: .from(description: formatSpecifiers.bundle))
+        self.init(key, tableName: formatSpecifiers.table, bundle: formatSpecifiers.bundle)
     }
 }
 

@@ -48,24 +48,10 @@ extension String {
     ///
     /// - SeeAlso: [XCStrings Tool Documentation - Using the generated source code](https://swiftpackageindex.com/liamnichols/xcstrings-tool/0.5.2/documentation/documentation/using-the-generated-source-code)
     internal struct Substitution: Sendable {
-        enum BundleDescription: Sendable {
-            case main
-            case atURL(URL)
-            case forClass(AnyClass)
-
-            #if !SWIFT_PACKAGE
-            private class BundleLocator {
-            }
-            #endif
-
-            static var current: BundleDescription {
-                #if SWIFT_PACKAGE
-                .atURL(Bundle.module.bundleURL)
-                #else
-                .forClass(BundleLocator.self)
-                #endif
-            }
+        #if !SWIFT_PACKAGE
+        private class BundleLocator {
         }
+        #endif
 
         enum Argument: Sendable {
             case int(Int)
@@ -93,18 +79,15 @@ extension String {
         let key: StaticString
         let arguments: [Argument]
         let table: String?
-        let bundle: BundleDescription
 
         fileprivate init(
             key: StaticString,
             arguments: [Argument],
-            table: String?,
-            bundle: BundleDescription
+            table: String?
         ) {
             self.key = key
             self.arguments = arguments
             self.table = table
-            self.bundle = bundle
         }
 
         /// A string that uses substitutions as well as arguments
@@ -122,9 +105,16 @@ extension String {
                     .int(arg2),
                     .int(arg3)
                 ],
-                table: "Substitution",
-                bundle: .current
+                table: "Substitution"
             )
+        }
+
+        var bundle: Bundle {
+            #if SWIFT_PACKAGE
+            .module
+            #else
+            Bundle(for: BundleLocator.self)
+            #endif
         }
 
         @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
@@ -150,40 +140,12 @@ extension String {
     }
 
     internal init(substitution: Substitution, locale: Locale? = nil) {
-        let bundle: Bundle = .from(description: substitution.bundle) ?? .main
         let key = String(describing: substitution.key)
         self.init(
-            format: bundle.localizedString(forKey: key, value: nil, table: substitution.table),
+            format: substitution.bundle.localizedString(forKey: key, value: nil, table: substitution.table),
             locale: locale,
             arguments: substitution.arguments.map(\.value)
         )
-    }
-}
-
-extension Bundle {
-    static func from(description: String.Substitution.BundleDescription) -> Bundle? {
-        switch description {
-        case .main:
-            Bundle.main
-        case .atURL(let url):
-            Bundle(url: url)
-        case .forClass(let anyClass):
-            Bundle(for: anyClass)
-        }
-    }
-}
-
-@available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)
-private extension LocalizedStringResource.BundleDescription {
-    static func from(description: String.Substitution.BundleDescription) -> Self {
-        switch description {
-        case .main:
-            .main
-        case .atURL(let url):
-            .atURL(url)
-        case .forClass(let anyClass):
-            .forClass(anyClass)
-        }
     }
 }
 
@@ -194,7 +156,7 @@ extension LocalizedStringResource {
             substitution.key,
             defaultValue: substitution.defaultValue,
             table: substitution.table,
-            bundle: .from(description: substitution.bundle)
+            bundle: .atURL(substitution.bundle.bundleURL)
         )
     }
 
@@ -236,7 +198,7 @@ extension Text {
         var key = makeKey(stringInterpolation)
         key.overrideKeyForLookup(using: substitution.key)
 
-        self.init(key, tableName: substitution.table, bundle: .from(description: substitution.bundle))
+        self.init(key, tableName: substitution.table, bundle: substitution.bundle)
     }
 }
 

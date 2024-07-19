@@ -48,24 +48,10 @@ extension String {
     ///
     /// - SeeAlso: [XCStrings Tool Documentation - Using the generated source code](https://swiftpackageindex.com/liamnichols/xcstrings-tool/0.5.2/documentation/documentation/using-the-generated-source-code)
     internal struct Legacy: Sendable {
-        enum BundleDescription: Sendable {
-            case main
-            case atURL(URL)
-            case forClass(AnyClass)
-
-            #if !SWIFT_PACKAGE
-            private class BundleLocator {
-            }
-            #endif
-
-            static var current: BundleDescription {
-                #if SWIFT_PACKAGE
-                .atURL(Bundle.module.bundleURL)
-                #else
-                .forClass(BundleLocator.self)
-                #endif
-            }
+        #if !SWIFT_PACKAGE
+        private class BundleLocator {
         }
+        #endif
 
         enum Argument: Sendable {
             case int(Int)
@@ -93,18 +79,15 @@ extension String {
         let key: StaticString
         let arguments: [Argument]
         let table: String?
-        let bundle: BundleDescription
 
         fileprivate init(
             key: StaticString,
             arguments: [Argument],
-            table: String?,
-            bundle: BundleDescription
+            table: String?
         ) {
             self.key = key
             self.arguments = arguments
             self.table = table
-            self.bundle = bundle
         }
 
         /// ### Source Localization
@@ -119,9 +102,16 @@ extension String {
                     .object(arg1),
                     .int(arg2)
                 ],
-                table: "Legacy",
-                bundle: .current
+                table: "Legacy"
             )
+        }
+
+        var bundle: Bundle {
+            #if SWIFT_PACKAGE
+            .module
+            #else
+            Bundle(for: BundleLocator.self)
+            #endif
         }
 
         @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
@@ -147,40 +137,12 @@ extension String {
     }
 
     internal init(legacy: Legacy, locale: Locale? = nil) {
-        let bundle: Bundle = .from(description: legacy.bundle) ?? .main
         let key = String(describing: legacy.key)
         self.init(
-            format: bundle.localizedString(forKey: key, value: nil, table: legacy.table),
+            format: legacy.bundle.localizedString(forKey: key, value: nil, table: legacy.table),
             locale: locale,
             arguments: legacy.arguments.map(\.value)
         )
-    }
-}
-
-extension Bundle {
-    static func from(description: String.Legacy.BundleDescription) -> Bundle? {
-        switch description {
-        case .main:
-            Bundle.main
-        case .atURL(let url):
-            Bundle(url: url)
-        case .forClass(let anyClass):
-            Bundle(for: anyClass)
-        }
-    }
-}
-
-@available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)
-private extension LocalizedStringResource.BundleDescription {
-    static func from(description: String.Legacy.BundleDescription) -> Self {
-        switch description {
-        case .main:
-            .main
-        case .atURL(let url):
-            .atURL(url)
-        case .forClass(let anyClass):
-            .forClass(anyClass)
-        }
     }
 }
 
@@ -191,7 +153,7 @@ extension LocalizedStringResource {
             legacy.key,
             defaultValue: legacy.defaultValue,
             table: legacy.table,
-            bundle: .from(description: legacy.bundle)
+            bundle: .atURL(legacy.bundle.bundleURL)
         )
     }
 
@@ -233,7 +195,7 @@ extension Text {
         var key = makeKey(stringInterpolation)
         key.overrideKeyForLookup(using: legacy.key)
 
-        self.init(key, tableName: legacy.table, bundle: .from(description: legacy.bundle))
+        self.init(key, tableName: legacy.table, bundle: legacy.bundle)
     }
 }
 

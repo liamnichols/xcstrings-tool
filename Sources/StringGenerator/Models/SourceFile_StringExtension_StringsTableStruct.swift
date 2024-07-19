@@ -35,7 +35,7 @@ extension SourceFile.StringExtension {
         // MARK: Properites
 
         var storedProperties: [Property] {
-            [keyProperty, argumentsProperty, tableProperty, bundleProperty]
+            [keyProperty, argumentsProperty, tableProperty]
         }
 
         let keyProperty = Property(name: "key", type: .identifier(.StaticString))
@@ -44,7 +44,7 @@ extension SourceFile.StringExtension {
 
         let tableProperty = Property(name: "table", type: OptionalTypeSyntax(wrappedType: .identifier(.String)))
 
-        let bundleProperty = Property(name: "bundle", type: .identifier(.BundleDescription))
+        let bundleProperty = Property(name: "bundle", type: .identifier(.Bundle))
 
         let defaultValueProperty = Property(
             name: "defaultValue",

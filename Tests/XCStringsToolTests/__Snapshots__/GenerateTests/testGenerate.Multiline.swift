@@ -48,24 +48,10 @@ extension String {
     ///
     /// - SeeAlso: [XCStrings Tool Documentation - Using the generated source code](https://swiftpackageindex.com/liamnichols/xcstrings-tool/0.5.2/documentation/documentation/using-the-generated-source-code)
     internal struct Multiline: Sendable {
-        enum BundleDescription: Sendable {
-            case main
-            case atURL(URL)
-            case forClass(AnyClass)
-
-            #if !SWIFT_PACKAGE
-            private class BundleLocator {
-            }
-            #endif
-
-            static var current: BundleDescription {
-                #if SWIFT_PACKAGE
-                .atURL(Bundle.module.bundleURL)
-                #else
-                .forClass(BundleLocator.self)
-                #endif
-            }
+        #if !SWIFT_PACKAGE
+        private class BundleLocator {
         }
+        #endif
 
         enum Argument: Sendable {
             case int(Int)
@@ -93,18 +79,15 @@ extension String {
         let key: StaticString
         let arguments: [Argument]
         let table: String?
-        let bundle: BundleDescription
 
         fileprivate init(
             key: StaticString,
             arguments: [Argument],
-            table: String?,
-            bundle: BundleDescription
+            table: String?
         ) {
             self.key = key
             self.arguments = arguments
             self.table = table
-            self.bundle = bundle
         }
 
         /// This example tests the following:
@@ -123,9 +106,16 @@ extension String {
             Multiline(
                 key: "multiline",
                 arguments: [],
-                table: "Multiline",
-                bundle: .current
+                table: "Multiline"
             )
+        }
+
+        var bundle: Bundle {
+            #if SWIFT_PACKAGE
+            .module
+            #else
+            Bundle(for: BundleLocator.self)
+            #endif
         }
 
         @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
@@ -151,40 +141,12 @@ extension String {
     }
 
     internal init(multiline: Multiline, locale: Locale? = nil) {
-        let bundle: Bundle = .from(description: multiline.bundle) ?? .main
         let key = String(describing: multiline.key)
         self.init(
-            format: bundle.localizedString(forKey: key, value: nil, table: multiline.table),
+            format: multiline.bundle.localizedString(forKey: key, value: nil, table: multiline.table),
             locale: locale,
             arguments: multiline.arguments.map(\.value)
         )
-    }
-}
-
-extension Bundle {
-    static func from(description: String.Multiline.BundleDescription) -> Bundle? {
-        switch description {
-        case .main:
-            Bundle.main
-        case .atURL(let url):
-            Bundle(url: url)
-        case .forClass(let anyClass):
-            Bundle(for: anyClass)
-        }
-    }
-}
-
-@available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)
-private extension LocalizedStringResource.BundleDescription {
-    static func from(description: String.Multiline.BundleDescription) -> Self {
-        switch description {
-        case .main:
-            .main
-        case .atURL(let url):
-            .atURL(url)
-        case .forClass(let anyClass):
-            .forClass(anyClass)
-        }
     }
 }
 
@@ -195,7 +157,7 @@ extension LocalizedStringResource {
             multiline.key,
             defaultValue: multiline.defaultValue,
             table: multiline.table,
-            bundle: .from(description: multiline.bundle)
+            bundle: .atURL(multiline.bundle.bundleURL)
         )
     }
 
@@ -237,7 +199,7 @@ extension Text {
         var key = makeKey(stringInterpolation)
         key.overrideKeyForLookup(using: multiline.key)
 
-        self.init(key, tableName: multiline.table, bundle: .from(description: multiline.bundle))
+        self.init(key, tableName: multiline.table, bundle: multiline.bundle)
     }
 }
 

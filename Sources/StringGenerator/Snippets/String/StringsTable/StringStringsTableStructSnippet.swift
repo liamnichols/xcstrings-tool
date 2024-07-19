@@ -27,10 +27,17 @@ struct StringStringsTableStructSnippet: Snippet {
 
     var memberBlock: MemberBlockSyntax {
         MemberBlockSyntax {
-            // enum BundleDescription { ... }
-            StringStringsTableBundleDescriptionEnumSnippet(bundleDescription: stringsTable.bundleDescriptionEnum)
-                .syntax
-                .with(\.trailingTrivia, .newlines(2))
+            // #if !SWIFT_PACKAGE
+            // private class BundleLocator { ... }
+            // #endif
+            IfConfigDeclSyntax(
+                prefixOperator: "!",
+                reference: "SWIFT_PACKAGE",
+                elements: .decls(MemberBlockItemListSyntax {
+                    StringStringsTableBundleLocatorClassSnippet()
+                })
+            )
+            .with(\.trailingTrivia, .newlines(2))
 
             // enum Argument { ... }
             StringStringsTableArgumentEnumSnippet(argument: stringsTable.argumentEnum)
@@ -85,6 +92,13 @@ struct StringStringsTableStructSnippet: Snippet {
                 }
                 .with(\.trailingTrivia, .newlines(2))
             }
+
+            // var bundle: Bundle { ... }
+            StringStringsTableBundleComputedPropertySnippet(
+                stringsTable: stringsTable
+            )
+            .syntax
+            .with(\.trailingTrivia, .newlines(2))
 
             // @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
             // fileprivate var defaultValue: String.LocalizedValue { ... }

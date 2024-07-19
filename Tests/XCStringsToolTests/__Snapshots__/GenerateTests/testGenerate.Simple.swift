@@ -48,24 +48,10 @@ extension String {
     ///
     /// - SeeAlso: [XCStrings Tool Documentation - Using the generated source code](https://swiftpackageindex.com/liamnichols/xcstrings-tool/0.5.2/documentation/documentation/using-the-generated-source-code)
     internal struct Simple: Sendable {
-        enum BundleDescription: Sendable {
-            case main
-            case atURL(URL)
-            case forClass(AnyClass)
-
-            #if !SWIFT_PACKAGE
-            private class BundleLocator {
-            }
-            #endif
-
-            static var current: BundleDescription {
-                #if SWIFT_PACKAGE
-                .atURL(Bundle.module.bundleURL)
-                #else
-                .forClass(BundleLocator.self)
-                #endif
-            }
+        #if !SWIFT_PACKAGE
+        private class BundleLocator {
         }
+        #endif
 
         enum Argument: Sendable {
             case int(Int)
@@ -93,18 +79,15 @@ extension String {
         let key: StaticString
         let arguments: [Argument]
         let table: String?
-        let bundle: BundleDescription
 
         fileprivate init(
             key: StaticString,
             arguments: [Argument],
-            table: String?,
-            bundle: BundleDescription
+            table: String?
         ) {
             self.key = key
             self.arguments = arguments
             self.table = table
-            self.bundle = bundle
         }
 
         /// This is a simple key and value
@@ -118,9 +101,16 @@ extension String {
             Simple(
                 key: "SimpleKey",
                 arguments: [],
-                table: "Simple",
-                bundle: .current
+                table: "Simple"
             )
+        }
+
+        var bundle: Bundle {
+            #if SWIFT_PACKAGE
+            .module
+            #else
+            Bundle(for: BundleLocator.self)
+            #endif
         }
 
         @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
@@ -146,40 +136,12 @@ extension String {
     }
 
     internal init(simple: Simple, locale: Locale? = nil) {
-        let bundle: Bundle = .from(description: simple.bundle) ?? .main
         let key = String(describing: simple.key)
         self.init(
-            format: bundle.localizedString(forKey: key, value: nil, table: simple.table),
+            format: simple.bundle.localizedString(forKey: key, value: nil, table: simple.table),
             locale: locale,
             arguments: simple.arguments.map(\.value)
         )
-    }
-}
-
-extension Bundle {
-    static func from(description: String.Simple.BundleDescription) -> Bundle? {
-        switch description {
-        case .main:
-            Bundle.main
-        case .atURL(let url):
-            Bundle(url: url)
-        case .forClass(let anyClass):
-            Bundle(for: anyClass)
-        }
-    }
-}
-
-@available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)
-private extension LocalizedStringResource.BundleDescription {
-    static func from(description: String.Simple.BundleDescription) -> Self {
-        switch description {
-        case .main:
-            .main
-        case .atURL(let url):
-            .atURL(url)
-        case .forClass(let anyClass):
-            .forClass(anyClass)
-        }
     }
 }
 
@@ -190,7 +152,7 @@ extension LocalizedStringResource {
             simple.key,
             defaultValue: simple.defaultValue,
             table: simple.table,
-            bundle: .from(description: simple.bundle)
+            bundle: .atURL(simple.bundle.bundleURL)
         )
     }
 
@@ -232,7 +194,7 @@ extension Text {
         var key = makeKey(stringInterpolation)
         key.overrideKeyForLookup(using: simple.key)
 
-        self.init(key, tableName: simple.table, bundle: .from(description: simple.bundle))
+        self.init(key, tableName: simple.table, bundle: simple.bundle)
     }
 }
 

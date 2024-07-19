@@ -28,29 +28,6 @@ struct StringInitializerSnippet: Snippet {
                 }
             )
         ) {
-            // let bundle: Bundle = .from(description: localizable.bundle) ?? .main
-            VariableDeclSyntax(bindingSpecifier: .keyword(.let)) {
-                PatternBindingSyntax(
-                    pattern: IdentifierPatternSyntax(identifier: "bundle"),
-                    typeAnnotation: TypeAnnotationSyntax(
-                        type: IdentifierTypeSyntax(name: .type(.Bundle))
-                    ),
-                    initializer: InitializerClauseSyntax(
-                        value: InfixOperatorExprSyntax(
-                            leftOperand: FunctionCallExprSyntax(
-                                callee: MemberAccessExprSyntax(name: "from")
-                            ) {
-                                LabeledExprSyntax(
-                                    label: "description",
-                                    expression: MemberAccessExprSyntax(variableToken, stringsTable.bundleProperty.name)
-                                )
-                            },
-                            operator: BinaryOperatorExprSyntax(operator: .binaryOperator("??")),
-                            rightOperand: MemberAccessExprSyntax(name: "main")
-                        )
-                    )
-                )
-            }
             // let key = String(describing: localizable.key)
             VariableDeclSyntax(bindingSpecifier: .keyword(.let)) {
                 PatternBindingSyntax(
@@ -78,7 +55,7 @@ struct StringInitializerSnippet: Snippet {
                 LabeledExprSyntax(
                     label: "format",
                     expression: FunctionCallExprSyntax(
-                        callee: MemberAccessExprSyntax("bundle", "localizedString")
+                        callee: MemberAccessExprSyntax(variableToken, stringsTable.bundleProperty.name, "localizedString")
                     ) {
                         // forKey: key,
                         LabeledExprSyntax(

@@ -48,24 +48,10 @@ extension String {
     ///
     /// - SeeAlso: [XCStrings Tool Documentation - Using the generated source code](https://swiftpackageindex.com/liamnichols/xcstrings-tool/0.5.2/documentation/documentation/using-the-generated-source-code)
     internal struct Variations: Sendable {
-        enum BundleDescription: Sendable {
-            case main
-            case atURL(URL)
-            case forClass(AnyClass)
-
-            #if !SWIFT_PACKAGE
-            private class BundleLocator {
-            }
-            #endif
-
-            static var current: BundleDescription {
-                #if SWIFT_PACKAGE
-                .atURL(Bundle.module.bundleURL)
-                #else
-                .forClass(BundleLocator.self)
-                #endif
-            }
+        #if !SWIFT_PACKAGE
+        private class BundleLocator {
         }
+        #endif
 
         enum Argument: Sendable {
             case int(Int)
@@ -93,18 +79,15 @@ extension String {
         let key: StaticString
         let arguments: [Argument]
         let table: String?
-        let bundle: BundleDescription
 
         fileprivate init(
             key: StaticString,
             arguments: [Argument],
-            table: String?,
-            bundle: BundleDescription
+            table: String?
         ) {
             self.key = key
             self.arguments = arguments
             self.table = table
-            self.bundle = bundle
         }
 
         /// A string that should have a macOS variation to replace 'Tap' with 'Click'
@@ -118,8 +101,7 @@ extension String {
             Variations(
                 key: "String.Device",
                 arguments: [],
-                table: "Variations",
-                bundle: .current
+                table: "Variations"
             )
         }
 
@@ -134,9 +116,16 @@ extension String {
                 arguments: [
                     .int(arg1)
                 ],
-                table: "Variations",
-                bundle: .current
+                table: "Variations"
             )
+        }
+
+        var bundle: Bundle {
+            #if SWIFT_PACKAGE
+            .module
+            #else
+            Bundle(for: BundleLocator.self)
+            #endif
         }
 
         @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
@@ -162,40 +151,12 @@ extension String {
     }
 
     internal init(variations: Variations, locale: Locale? = nil) {
-        let bundle: Bundle = .from(description: variations.bundle) ?? .main
         let key = String(describing: variations.key)
         self.init(
-            format: bundle.localizedString(forKey: key, value: nil, table: variations.table),
+            format: variations.bundle.localizedString(forKey: key, value: nil, table: variations.table),
             locale: locale,
             arguments: variations.arguments.map(\.value)
         )
-    }
-}
-
-extension Bundle {
-    static func from(description: String.Variations.BundleDescription) -> Bundle? {
-        switch description {
-        case .main:
-            Bundle.main
-        case .atURL(let url):
-            Bundle(url: url)
-        case .forClass(let anyClass):
-            Bundle(for: anyClass)
-        }
-    }
-}
-
-@available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)
-private extension LocalizedStringResource.BundleDescription {
-    static func from(description: String.Variations.BundleDescription) -> Self {
-        switch description {
-        case .main:
-            .main
-        case .atURL(let url):
-            .atURL(url)
-        case .forClass(let anyClass):
-            .forClass(anyClass)
-        }
     }
 }
 
@@ -206,7 +167,7 @@ extension LocalizedStringResource {
             variations.key,
             defaultValue: variations.defaultValue,
             table: variations.table,
-            bundle: .from(description: variations.bundle)
+            bundle: .atURL(variations.bundle.bundleURL)
         )
     }
 
@@ -248,7 +209,7 @@ extension Text {
         var key = makeKey(stringInterpolation)
         key.overrideKeyForLookup(using: variations.key)
 
-        self.init(key, tableName: variations.table, bundle: .from(description: variations.bundle))
+        self.init(key, tableName: variations.table, bundle: variations.bundle)
     }
 }
 

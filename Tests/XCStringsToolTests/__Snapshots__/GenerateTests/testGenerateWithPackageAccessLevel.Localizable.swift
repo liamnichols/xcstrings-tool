@@ -48,24 +48,10 @@ extension String {
     ///
     /// - SeeAlso: [XCStrings Tool Documentation - Using the generated source code](https://swiftpackageindex.com/liamnichols/xcstrings-tool/0.5.2/documentation/documentation/using-the-generated-source-code)
     package struct Localizable: Sendable {
-        enum BundleDescription: Sendable {
-            case main
-            case atURL(URL)
-            case forClass(AnyClass)
-
-            #if !SWIFT_PACKAGE
-            private class BundleLocator {
-            }
-            #endif
-
-            static var current: BundleDescription {
-                #if SWIFT_PACKAGE
-                .atURL(Bundle.module.bundleURL)
-                #else
-                .forClass(BundleLocator.self)
-                #endif
-            }
+        #if !SWIFT_PACKAGE
+        private class BundleLocator {
         }
+        #endif
 
         enum Argument: Sendable {
             case int(Int)
@@ -93,18 +79,15 @@ extension String {
         let key: StaticString
         let arguments: [Argument]
         let table: String?
-        let bundle: BundleDescription
 
         fileprivate init(
             key: StaticString,
             arguments: [Argument],
-            table: String?,
-            bundle: BundleDescription
+            table: String?
         ) {
             self.key = key
             self.arguments = arguments
             self.table = table
-            self.bundle = bundle
         }
 
         /// A key that conflicts with a keyword in swift that isn't suitable for a variable/method and should be backticked.
@@ -118,8 +101,7 @@ extension String {
             Localizable(
                 key: "continue",
                 arguments: [],
-                table: "Localizable",
-                bundle: .current
+                table: "Localizable"
             )
         }
 
@@ -134,8 +116,7 @@ extension String {
             Localizable(
                 key: "Key",
                 arguments: [],
-                table: "Localizable",
-                bundle: .current
+                table: "Localizable"
             )
         }
 
@@ -148,8 +129,7 @@ extension String {
             Localizable(
                 key: "myDeviceVariant",
                 arguments: [],
-                table: "Localizable",
-                bundle: .current
+                table: "Localizable"
             )
         }
 
@@ -164,8 +144,7 @@ extension String {
                 arguments: [
                     .int(arg1)
                 ],
-                table: "Localizable",
-                bundle: .current
+                table: "Localizable"
             )
         }
 
@@ -181,9 +160,16 @@ extension String {
                     .int(arg1),
                     .int(arg2)
                 ],
-                table: "Localizable",
-                bundle: .current
+                table: "Localizable"
             )
+        }
+
+        var bundle: Bundle {
+            #if SWIFT_PACKAGE
+            .module
+            #else
+            Bundle(for: BundleLocator.self)
+            #endif
         }
 
         @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
@@ -209,40 +195,12 @@ extension String {
     }
 
     package init(localizable: Localizable, locale: Locale? = nil) {
-        let bundle: Bundle = .from(description: localizable.bundle) ?? .main
         let key = String(describing: localizable.key)
         self.init(
-            format: bundle.localizedString(forKey: key, value: nil, table: localizable.table),
+            format: localizable.bundle.localizedString(forKey: key, value: nil, table: localizable.table),
             locale: locale,
             arguments: localizable.arguments.map(\.value)
         )
-    }
-}
-
-extension Bundle {
-    static func from(description: String.Localizable.BundleDescription) -> Bundle? {
-        switch description {
-        case .main:
-            Bundle.main
-        case .atURL(let url):
-            Bundle(url: url)
-        case .forClass(let anyClass):
-            Bundle(for: anyClass)
-        }
-    }
-}
-
-@available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)
-private extension LocalizedStringResource.BundleDescription {
-    static func from(description: String.Localizable.BundleDescription) -> Self {
-        switch description {
-        case .main:
-            .main
-        case .atURL(let url):
-            .atURL(url)
-        case .forClass(let anyClass):
-            .forClass(anyClass)
-        }
     }
 }
 
@@ -253,7 +211,7 @@ extension LocalizedStringResource {
             localizable.key,
             defaultValue: localizable.defaultValue,
             table: localizable.table,
-            bundle: .from(description: localizable.bundle)
+            bundle: .atURL(localizable.bundle.bundleURL)
         )
     }
 
@@ -295,7 +253,7 @@ extension Text {
         var key = makeKey(stringInterpolation)
         key.overrideKeyForLookup(using: localizable.key)
 
-        self.init(key, tableName: localizable.table, bundle: .from(description: localizable.bundle))
+        self.init(key, tableName: localizable.table, bundle: localizable.bundle)
     }
 }
 
