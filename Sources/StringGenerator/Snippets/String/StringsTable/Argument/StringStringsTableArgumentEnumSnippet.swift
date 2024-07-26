@@ -20,7 +20,7 @@ struct StringStringsTableArgumentEnumSnippet: Snippet {
     }
 
     var inheritanceClause: InheritanceClauseSyntax? {
-        InheritanceClauseSyntax(.Sendable)
+        InheritanceClauseSyntax(.Equatable, .Hashable, .Sendable)
     }
 }
 

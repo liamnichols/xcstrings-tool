@@ -47,13 +47,13 @@ extension String {
     /// ```
     ///
     /// - SeeAlso: [XCStrings Tool Documentation - Using the generated source code](https://swiftpackageindex.com/liamnichols/xcstrings-tool/0.5.2/documentation/documentation/using-the-generated-source-code)
-    internal struct FormatSpecifiers: Sendable {
+    internal struct FormatSpecifiers: Equatable, Hashable, Sendable {
         #if !SWIFT_PACKAGE
         private class BundleLocator {
         }
         #endif
 
-        enum Argument: Sendable {
+        enum Argument: Equatable, Hashable, Sendable {
             case int(Int)
             case uint(UInt)
             case float(Float)
@@ -334,6 +334,16 @@ extension String {
 
         fileprivate var _key: String {
             String(describing: key)
+        }
+
+        internal func hash(into hasher: inout Hasher) {
+            hasher.combine(_key)
+            hasher.combine(arguments)
+            hasher.combine(table)
+        }
+
+        internal static func ==(lhs: FormatSpecifiers, rhs: FormatSpecifiers) -> Bool {
+            lhs._key == rhs._key && lhs.arguments == rhs.arguments && lhs.table == rhs.table
         }
     }
 

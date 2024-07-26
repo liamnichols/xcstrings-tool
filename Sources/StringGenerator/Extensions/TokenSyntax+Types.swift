@@ -22,6 +22,10 @@ extension TokenSyntax {
         case LocalizedStringKey
         case Text
         case Sendable
+        case Hasher
+        case Bool
+        case Equatable
+        case Hashable
     }
 
     static func type(_ value: MetaType) -> TokenSyntax {

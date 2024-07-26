@@ -22,7 +22,7 @@ struct StringStringsTableStructSnippet: Snippet {
     }
 
     var inheritanceClause: InheritanceClauseSyntax? {
-        InheritanceClauseSyntax(.Sendable)
+        InheritanceClauseSyntax(.Equatable, .Hashable, .Sendable)
     }
 
     var memberBlock: MemberBlockSyntax {
@@ -110,6 +110,20 @@ struct StringStringsTableStructSnippet: Snippet {
 
             // fileprivate var _key: String { String(describing: key) }
             StringStringsTableUnderscoredKeyComputedPropertySnippet(
+                stringsTable: stringsTable
+            )
+            .syntax
+            .with(\.trailingTrivia, .newlines(2))
+
+            // func hash(into hasher: Hasher) { ... }
+            StringStringsTableHashIntoFunctionSnippet(
+                stringsTable: stringsTable
+            )
+            .syntax
+            .with(\.trailingTrivia, .newlines(2))
+
+            // static func ==(lhs: Localizable, rhs: Localizable) -> Bool { ... }
+            StringStringsTableComparisonFunctionSnippet(
                 stringsTable: stringsTable
             )
         }
