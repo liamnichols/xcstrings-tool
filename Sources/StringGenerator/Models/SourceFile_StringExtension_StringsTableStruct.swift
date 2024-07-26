@@ -38,6 +38,10 @@ extension SourceFile.StringExtension {
             [keyProperty, argumentsProperty, tableProperty]
         }
 
+        var comparableProperties: [Property] {
+            [_keyProperty, argumentsProperty, tableProperty]
+        }
+
         let keyProperty = Property(name: "key", type: .identifier(.StaticString))
 
         let argumentsProperty = Property(name: "arguments", type: ArrayTypeSyntax(element: .identifier(.Argument)))
@@ -45,6 +49,8 @@ extension SourceFile.StringExtension {
         let tableProperty = Property(name: "table", type: OptionalTypeSyntax(wrappedType: .identifier(.String)))
 
         let bundleProperty = Property(name: "bundle", type: .identifier(.Bundle))
+
+        let _keyProperty = Property(name: "_key", type: .identifier(.String))
 
         let defaultValueProperty = Property(
             name: "defaultValue",

@@ -105,6 +105,13 @@ struct StringStringsTableStructSnippet: Snippet {
             StringStringsTableDefaultValueComputedPropertySnippet(
                 stringsTable: stringsTable
             )
+            .syntax
+            .with(\.trailingTrivia, .newlines(2))
+
+            // fileprivate var _key: String { String(describing: key) }
+            StringStringsTableUnderscoredKeyComputedPropertySnippet(
+                stringsTable: stringsTable
+            )
         }
     }
 

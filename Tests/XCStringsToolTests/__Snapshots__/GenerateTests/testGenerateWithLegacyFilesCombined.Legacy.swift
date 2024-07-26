@@ -209,6 +209,10 @@ extension String {
             let makeDefaultValue = String.LocalizationValue.init(stringInterpolation:)
             return makeDefaultValue(stringInterpolation)
         }
+
+        fileprivate var _key: String {
+            String(describing: key)
+        }
     }
 
     internal init(legacy: Legacy, locale: Locale? = nil) {
@@ -268,7 +272,7 @@ extension Text {
         let makeKey = LocalizedStringKey.init(stringInterpolation:)
 
         var key = makeKey(stringInterpolation)
-        key.overrideKeyForLookup(using: legacy.key)
+        key.overrideKeyForLookup(using: legacy._key)
 
         self.init(key, tableName: legacy.table, bundle: legacy.bundle)
     }
@@ -305,11 +309,11 @@ extension LocalizedStringKey {
     ///
     /// This method allows you to change the key after initialization in order
     /// to match the value that might be defined in the strings table.
-    fileprivate mutating func overrideKeyForLookup(using key: StaticString) {
+    fileprivate mutating func overrideKeyForLookup(using key: String) {
         withUnsafeMutablePointer(to: &self) { pointer in
             let raw = UnsafeMutableRawPointer(pointer)
             let bound = raw.assumingMemoryBound(to: String.self)
-            bound.pointee = String(describing: key)
+            bound.pointee = key
         }
     }
 }

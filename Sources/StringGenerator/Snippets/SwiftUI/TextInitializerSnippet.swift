@@ -91,7 +91,7 @@ extension TextInitializerSnippet: Snippet {
             ) {
                 LabeledExprSyntax(
                     label: "using",
-                    expression: MemberAccessExprSyntax(variableToken, stringsTable.keyProperty.name)
+                    expression: MemberAccessExprSyntax(variableToken, stringsTable._keyProperty.name)
                 )
             }
             .with(\.trailingTrivia, .newlines(2))
