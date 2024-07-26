@@ -5,7 +5,7 @@ import XCTest
 
 final class GenerateTests: FixtureTestCase {
     override func invokeTest() {
-        withSnapshotTesting(record: .failed) {
+        withSnapshotTesting(record: .missing) {
             super.invokeTest()
         }
     }

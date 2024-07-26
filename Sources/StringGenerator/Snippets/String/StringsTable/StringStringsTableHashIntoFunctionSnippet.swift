@@ -14,17 +14,28 @@ struct StringStringsTableHashIntoFunctionSnippet: Snippet {
                     FunctionParameterSyntax(
                         firstName: "into",
                         secondName: hasherToken,
-                        type: AttributedTypeSyntax(
-                            specifiers: TypeSpecifierListSyntax {
-                                SimpleTypeSpecifierSyntax(specifier: .keyword(.inout))
-                            },
-                            baseType: IdentifierTypeSyntax(name: .type(.Hasher))
-                        )
+                        type: hasherType
                     )
                 }
             ),
             body: CodeBlockSyntax(statements: body)
         )
+    }
+
+    var hasherType: AttributedTypeSyntax {
+        #if canImport(SwiftSyntax600)
+        AttributedTypeSyntax(
+            specifiers: TypeSpecifierListSyntax {
+                SimpleTypeSpecifierSyntax(specifier: .keyword(.inout))
+            },
+            baseType: IdentifierTypeSyntax(name: .type(.Hasher))
+        )
+        #else
+        AttributedTypeSyntax(
+            specifier: .keyword(.inout),
+            baseType: IdentifierTypeSyntax(name: .type(.Hasher))
+        )
+        #endif
     }
 
     @DeclModifierListBuilder
