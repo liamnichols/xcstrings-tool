@@ -22,7 +22,7 @@ struct StringStringsTableStructSnippet: Snippet {
     }
 
     var inheritanceClause: InheritanceClauseSyntax? {
-        InheritanceClauseSyntax(.Equatable, .Hashable, .Sendable)
+        InheritanceClauseSyntax(.Hashable, .Sendable)
     }
 
     var memberBlock: MemberBlockSyntax {

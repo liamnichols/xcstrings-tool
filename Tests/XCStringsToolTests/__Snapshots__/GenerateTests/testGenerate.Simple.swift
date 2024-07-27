@@ -47,13 +47,13 @@ extension String {
     /// ```
     ///
     /// - SeeAlso: [XCStrings Tool Documentation - Using the generated source code](https://swiftpackageindex.com/liamnichols/xcstrings-tool/0.5.2/documentation/documentation/using-the-generated-source-code)
-    internal struct Simple: Equatable, Hashable, Sendable {
+    internal struct Simple: Hashable, Sendable {
         #if !SWIFT_PACKAGE
         private class BundleLocator {
         }
         #endif
 
-        enum Argument: Equatable, Hashable, Sendable {
+        enum Argument: Hashable, Sendable {
             case int(Int)
             case uint(UInt)
             case float(Float)
