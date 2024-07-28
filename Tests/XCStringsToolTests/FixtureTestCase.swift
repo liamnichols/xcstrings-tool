@@ -9,12 +9,10 @@ class FixtureTestCase: XCTestCase {
         test: (URL) throws -> Void
     ) throws {
         for fileURL in try fixtures(withExtension: ext) {
-            try XCTContext.runActivity(named: fileURL.lastPathComponent) { activity in
-                do {
-                    try test(fileURL)
-                } catch {
-                    throw error
-                }
+            do {
+                try test(fileURL)
+            } catch {
+                throw error
             }
         }
     }

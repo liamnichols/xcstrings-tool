@@ -115,9 +115,6 @@ let package = Package(
             ],
             resources: [
                 .copy("__Fixtures__")
-            ],
-            swiftSettings: [
-                .swiftLanguageVersion(.v5)
             ]
         ),
 
