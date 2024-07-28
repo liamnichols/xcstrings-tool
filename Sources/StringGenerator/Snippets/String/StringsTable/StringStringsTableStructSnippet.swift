@@ -22,7 +22,7 @@ struct StringStringsTableStructSnippet: Snippet {
     }
 
     var inheritanceClause: InheritanceClauseSyntax? {
-        InheritanceClauseSyntax(.Sendable)
+        InheritanceClauseSyntax(.Hashable, .Sendable)
     }
 
     var memberBlock: MemberBlockSyntax {
@@ -103,6 +103,27 @@ struct StringStringsTableStructSnippet: Snippet {
             // @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
             // fileprivate var defaultValue: String.LocalizedValue { ... }
             StringStringsTableDefaultValueComputedPropertySnippet(
+                stringsTable: stringsTable
+            )
+            .syntax
+            .with(\.trailingTrivia, .newlines(2))
+
+            // fileprivate var _key: String { String(describing: key) }
+            StringStringsTableUnderscoredKeyComputedPropertySnippet(
+                stringsTable: stringsTable
+            )
+            .syntax
+            .with(\.trailingTrivia, .newlines(2))
+
+            // func hash(into hasher: Hasher) { ... }
+            StringStringsTableHashIntoFunctionSnippet(
+                stringsTable: stringsTable
+            )
+            .syntax
+            .with(\.trailingTrivia, .newlines(2))
+
+            // static func ==(lhs: Localizable, rhs: Localizable) -> Bool { ... }
+            StringStringsTableComparisonFunctionSnippet(
                 stringsTable: stringsTable
             )
         }

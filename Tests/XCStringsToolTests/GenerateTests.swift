@@ -4,6 +4,12 @@ import SnapshotTesting
 import XCTest
 
 final class GenerateTests: FixtureTestCase {
+    override func invokeTest() {
+        withSnapshotTesting(record: .missing) {
+            super.invokeTest()
+        }
+    }
+
     func testGenerate() throws {
         try eachFixture { inputURL in
             if !inputURL.lastPathComponent.hasPrefix("!") {
@@ -78,7 +84,6 @@ private extension GenerateTests {
     func snapshot(
         for inputURLs: URL...,
         accessLevel: String? = nil,
-        record: Bool = false,
         file: StaticString = #file,
         testName: String = #function,
         line: UInt = #line
@@ -87,7 +92,6 @@ private extension GenerateTests {
             of: try run(for: inputURLs, accessLevel: accessLevel),
             as: .sourceCode,
             named: inputURLs.first!.stem,
-            record: record,
             file: file,
             testName: testName,
             line: line

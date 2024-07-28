@@ -47,13 +47,13 @@ extension String {
     /// ```
     ///
     /// - SeeAlso: [XCStrings Tool Documentation - Using the generated source code](https://swiftpackageindex.com/liamnichols/xcstrings-tool/0.5.2/documentation/documentation/using-the-generated-source-code)
-    internal struct Substitution: Sendable {
+    internal struct Substitution: Hashable, Sendable {
         #if !SWIFT_PACKAGE
         private class BundleLocator {
         }
         #endif
 
-        enum Argument: Sendable {
+        enum Argument: Hashable, Sendable {
             case int(Int)
             case uint(UInt)
             case float(Float)
@@ -137,6 +137,20 @@ extension String {
             let makeDefaultValue = String.LocalizationValue.init(stringInterpolation:)
             return makeDefaultValue(stringInterpolation)
         }
+
+        fileprivate var _key: String {
+            String(describing: key)
+        }
+
+        internal func hash(into hasher: inout Hasher) {
+            hasher.combine(_key)
+            hasher.combine(arguments)
+            hasher.combine(table)
+        }
+
+        internal static func ==(lhs: Substitution, rhs: Substitution) -> Bool {
+            lhs._key == rhs._key && lhs.arguments == rhs.arguments && lhs.table == rhs.table
+        }
     }
 
     internal init(substitution: Substitution, locale: Locale? = nil) {
@@ -196,7 +210,7 @@ extension Text {
         let makeKey = LocalizedStringKey.init(stringInterpolation:)
 
         var key = makeKey(stringInterpolation)
-        key.overrideKeyForLookup(using: substitution.key)
+        key.overrideKeyForLookup(using: substitution._key)
 
         self.init(key, tableName: substitution.table, bundle: substitution.bundle)
     }
@@ -233,11 +247,11 @@ extension LocalizedStringKey {
     ///
     /// This method allows you to change the key after initialization in order
     /// to match the value that might be defined in the strings table.
-    fileprivate mutating func overrideKeyForLookup(using key: StaticString) {
+    fileprivate mutating func overrideKeyForLookup(using key: String) {
         withUnsafeMutablePointer(to: &self) { pointer in
             let raw = UnsafeMutableRawPointer(pointer)
             let bound = raw.assumingMemoryBound(to: String.self)
-            bound.pointee = String(describing: key)
+            bound.pointee = key
         }
     }
 }

@@ -65,4 +65,14 @@ final class PluginTests: XCTestCase {
             "Hello John, I have 1 plural"
         )
     }
+
+    func testComparisons() {
+        let foo1 = String.Localizable.demoBasic
+        let foo2 = String.Localizable.demoBasic
+        XCTAssertEqual(foo1, foo2)
+
+        let bar1 = String.Localizable.multiline(1)
+        let bar2 = String.Localizable.multiline(2)
+        XCTAssertNotEqual(bar1, bar2)
+    }
 }

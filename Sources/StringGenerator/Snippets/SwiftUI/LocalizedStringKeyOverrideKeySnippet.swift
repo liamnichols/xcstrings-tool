@@ -12,11 +12,11 @@ struct LocalizedStringKeyOverrideKeySnippet: Snippet {
         ///
         /// This method allows you to change the key after initialization in order
         /// to match the value that might be defined in the strings table.
-        fileprivate mutating func overrideKeyForLookup(using key: StaticString) {
+        fileprivate mutating func overrideKeyForLookup(using key: String) {
             withUnsafeMutablePointer(to: &self) { pointer in
                 let raw = UnsafeMutableRawPointer(pointer)
                 let bound = raw.assumingMemoryBound(to: String.self)
-                bound.pointee = String(describing: key)
+                bound.pointee = key
             }
         }
         """)
