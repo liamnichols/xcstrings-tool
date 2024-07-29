@@ -60,7 +60,7 @@ let package = Package(
             ],
             swiftSettings: [
                 .enableUpcomingFeature("BareSlashRegexLiterals"),
-                .swiftLanguageVersion(.v5)
+//                .swiftLanguageVersion(.v5)
             ]
         ),
 
