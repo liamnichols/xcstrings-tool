@@ -47,7 +47,7 @@ You might want to check that you have the correct version of xcstrings-tool inst
 
 ```bash
 $ xcstrings-tool --version
-0.5.2
+1.0.0
 ```
 
 #### Generate
