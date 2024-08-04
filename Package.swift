@@ -57,6 +57,10 @@ let package = Package(
                 .product(name: "SwiftSyntax", package: "swift-syntax"),
                 .product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
                 .target(name: "XCStringsToolConstants")
+            ],
+            swiftSettings: [
+                // TODO: Remove when updating for Swift 6 language mode
+                .enableUpcomingFeature("BareSlashRegexLiterals")
             ]
         ),
 
