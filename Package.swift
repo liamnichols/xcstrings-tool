@@ -57,10 +57,6 @@ let package = Package(
                 .product(name: "SwiftSyntax", package: "swift-syntax"),
                 .product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
                 .target(name: "XCStringsToolConstants")
-            ],
-            swiftSettings: [
-                // TODO: Remove when updating for Swift 6 language mode
-                .enableUpcomingFeature("BareSlashRegexLiterals")
             ]
         ),
 
@@ -140,7 +136,8 @@ let package = Package(
                 .copy("__Fixtures__")
             ]
         )
-    ]
+    ],
+    swiftLanguageVersions: [.v5, .version("6")]
 )
 
 // https://swiftpackageindex.com/swiftpackageindex/spimanifest/0.19.0/documentation/spimanifest/validation
@@ -170,12 +167,4 @@ if ProcessInfo.processInfo.environment.keys.contains("BENCHMARK_PACKAGE") {
             ]
         )
     )
-}
-
-// TODO: Remove when updating for Swift 6 language mode
-for target in package.targets where target.type == .regular {
-    target.swiftSettings = target.swiftSettings ?? []
-    target.swiftSettings?.append(contentsOf: [
-        .enableExperimentalFeature("StrictConcurrency")
-    ])
 }
