@@ -29,7 +29,38 @@ struct StringParser {
         var segments: [ParsedSegment] = []
         var lastIndex = input.startIndex
 
-        let regex = Regex {
+        for match in input.matches(of: Self.regex) {
+            // Create a segment from the previous bound to here
+            if match.range.lowerBound != lastIndex {
+                let string = String(input[lastIndex ..< match.range.lowerBound])
+                segments.append(.string(contents: string))
+            }
+
+            // Now create a segment for the match itself
+            let output: (rawValue: Substring, position: Int?, type: String?) = match.output
+            segments.append(.placeholder(Placeholder(
+                rawValue: String(output.rawValue),
+                position: output.position,
+                type: output.type
+            )))
+
+            // Update the last index for the next iteration
+            lastIndex = match.range.upperBound
+        }
+
+        // If there was more content after the last match, append it to the final output
+        if input.endIndex != lastIndex {
+            let string = String(input[lastIndex ..< input.endIndex])
+            segments.append(.string(contents: string))
+        }
+
+        return segments
+    }
+}
+
+extension StringParser {
+    static var regex: Regex<Regex<(Substring, Int?, String)>.RegexOutput> {
+        Regex {
             // The start of the specifier
             "%"
 
@@ -78,34 +109,5 @@ struct StringParser {
                 String(rawValue)
             }
         }
-
-        for match in input.matches(of: regex) {
-            // Create a segment from the previous bound to here
-            if match.range.lowerBound != lastIndex {
-                let string = String(input[lastIndex ..< match.range.lowerBound])
-                segments.append(.string(contents: string))
-            }
-
-            // Now create a segment for the match itself
-            let output: (rawValue: Substring, position: Int?, type: String?) = match.output
-            segments.append(.placeholder(Placeholder(
-                rawValue: String(output.rawValue),
-                position: output.position,
-                type: output.type
-            )))
-
-            // Update the last index for the next iteration
-            lastIndex = match.range.upperBound
-        }
-
-        // If there was more content after the last match, append it to the final output
-        if input.endIndex != lastIndex {
-            let string = String(input[lastIndex ..< input.endIndex])
-            segments.append(.string(contents: string))
-        }
-
-        return segments
     }
 }
-
-
