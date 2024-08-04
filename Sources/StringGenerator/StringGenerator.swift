@@ -32,15 +32,9 @@ private extension String {
     // https://github.com/liamnichols/xcstrings-tool/issues/97
     func patchingSwift6CompatibilityIssuesIfNeeded() -> String {
         #if !canImport(SwiftSyntax600)
-        #if hasFeature(BareSlashRegexLiterals)
-        replacing(/(?:[#@]available|==)\s\(/, with: { match in
-            match.output.filter { !$0.isWhitespace }
-        })
-        #else
         replacing(#/(?:[#@]available|==)\s\(/#, with: { match in
             match.output.filter { !$0.isWhitespace }
         })
-        #endif
         #else
         self
         #endif
