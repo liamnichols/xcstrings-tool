@@ -1,4 +1,4 @@
-// swift-tools-version: 6.0
+// swift-tools-version: 5.9
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import Foundation
@@ -57,10 +57,6 @@ let package = Package(
                 .product(name: "SwiftSyntax", package: "swift-syntax"),
                 .product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
                 .target(name: "XCStringsToolConstants")
-            ],
-            swiftSettings: [
-                .enableUpcomingFeature("BareSlashRegexLiterals"),
-//                .swiftLanguageVersion(.v5)
             ]
         ),
 
@@ -140,8 +136,7 @@ let package = Package(
                 .copy("__Fixtures__")
             ]
         )
-    ],
-    swiftLanguageVersions: [.v5, .v6]
+    ]
 )
 
 // https://swiftpackageindex.com/swiftpackageindex/spimanifest/0.19.0/documentation/spimanifest/validation
