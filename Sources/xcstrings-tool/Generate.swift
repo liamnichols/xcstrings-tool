@@ -48,30 +48,30 @@ struct Generate: ParsableCommand {
     // MARK: - Program
     
     func run() throws {
-        isVerboseLoggingEnabled = verbose
+        let logger = Logger(isVerboseLoggingEnabled: verbose)
 
         // Parse the input from the invocation arguments
         let input = try withThrownErrorsAsDiagnostics {
-            try InputParser.parse(from: inputs, developmentLanguage: resolvedDevelopmentLanguage)
+            try InputParser.parse(from: inputs, developmentLanguage: resolvedDevelopmentLanguage, logger: logger)
         }
 
         // Collect the results for each input file
         let results = try input.files.map { input in
             try withThrownErrorsAsDiagnostics(at: input) {
-                debug("collecting results for ‘\(input.absoluteURL.path())‘")
+                logger.debug("collecting results for ‘\(input.absoluteURL.path())‘")
 
                 // Load the source content
-                debug("  loading source file")
+                logger.debug("  loading source file")
                 let source = try StringSource(contentsOf: input)
 
                 // Extract any resources from this input
-                debug("  extracting resources")
+                logger.debug("  extracting resources")
                 let result = try StringExtractor.extractResources(from: source)
 
                 // Validate the extraction result
-                debug("  validating contents")
-                result.issues.forEach { warning($0.description, sourceFile: input) }
-                try ResourceValidator.validateResources(result.resources, in: input)
+                logger.debug("  validating contents")
+                result.issues.forEach { logger.warning($0.description, sourceFile: input) }
+                try ResourceValidator.validateResources(result.resources, in: input, logger: logger)
 
                 // Return the resources
                 return result
@@ -79,10 +79,10 @@ struct Generate: ParsableCommand {
         }
 
         // Merge the resources together, ensure that they are uniquely keyed and sorted
-        let resources = try StringExtractor.mergeAndEnsureUnique(results)
+        let resources = try StringExtractor.mergeAndEnsureUnique(results, logger: logger)
 
         // Generate the associated Swift source
-        debug("generating Swift source code")
+        logger.debug("generating Swift source code")
         let source = StringGenerator.generateSource(
             for: resources,
             tableName: input.tableName,
@@ -90,14 +90,14 @@ struct Generate: ParsableCommand {
         )
 
         // Write the output and catch errors in a diagnostic format
-        debug("writing output")
+        logger.debug("writing output")
         try withThrownErrorsAsDiagnostics {
             // Create the directory if it doesn't exist
             try createDirectoryIfNeeded(for: output)
 
             // Write the source to disk
             try source.write(to: output, atomically: false, encoding: .utf8)
-            note("Output written to ‘\(output.path(percentEncoded: false))‘")
+            logger.note("Output written to ‘\(output.path(percentEncoded: false))‘")
         }
     }
 

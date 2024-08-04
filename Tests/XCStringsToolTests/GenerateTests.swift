@@ -1,5 +1,5 @@
 import Foundation
-import SnapshotTesting
+@preconcurrency import SnapshotTesting
 @testable import xcstrings_tool
 import XCTest
 
@@ -84,7 +84,7 @@ private extension GenerateTests {
     func snapshot(
         for inputURLs: URL...,
         accessLevel: String? = nil,
-        file: StaticString = #file,
+        file: StaticString = #filePath,
         testName: String = #function,
         line: UInt = #line
     ) throws {
@@ -101,7 +101,7 @@ private extension GenerateTests {
     func assertError(
         for inputURLs: URL...,
         localizedDescription expected: String,
-        file: StaticString = #file,
+        file: StaticString = #filePath,
         line: UInt = #line
     ) {
         XCTAssertThrowsError(try run(for: inputURLs), file: file, line: line) { error in
@@ -128,6 +128,7 @@ private extension GenerateTests {
 
         // Cleanup any temporary output
         addTeardownBlock {
+            let fileManager = FileManager.default
             if fileManager.fileExists(atPath: outputURL.path()) {
                 try? fileManager.removeItem(at: outputURL)
             }

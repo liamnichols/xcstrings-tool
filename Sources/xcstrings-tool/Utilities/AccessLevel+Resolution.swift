@@ -31,5 +31,8 @@ extension AccessLevel {
     }
 }
 
-extension AccessLevel: ExpressibleByArgument {
-}
+#if compiler(>=6.0)
+extension AccessLevel: @retroactive ExpressibleByArgument {}
+#else
+extension AccessLevel: ExpressibleByArgument {}
+#endif

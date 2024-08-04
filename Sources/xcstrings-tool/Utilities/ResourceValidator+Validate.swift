@@ -3,7 +3,7 @@ import StringResource
 import StringValidator
 
 extension ResourceValidator {
-    static func validateResources(_ resources: [Resource], in fileURL: URL) throws {
+    static func validateResources(_ resources: [Resource], in fileURL: URL, logger: Logger) throws {
         let issues: [ResourceValidator.Issue] = validateResources(resources)
 
         if issues.isEmpty {
@@ -11,7 +11,7 @@ extension ResourceValidator {
         }
 
         for issue in issues {
-            warning(issue.description, sourceFile: fileURL)
+            logger.warning(issue.description, sourceFile: fileURL)
         }
 
         throw Diagnostic(

@@ -1,7 +1,5 @@
 import Foundation
 
-var isVerboseLoggingEnabled = false
-
 struct Diagnostic: CustomStringConvertible {
     enum Severity {
         case error, warning, note
@@ -67,40 +65,54 @@ func withThrownErrorsAsDiagnostics<T>(
     }
 }
 
-/// Log a diagnostic with the note severity only when in verbose mode
-func debug(_ message: @autoclosure () -> String, sourceFile: URL? = nil) {
-    guard isVerboseLoggingEnabled else { return }
-    note(message(), sourceFile: sourceFile)
-}
+struct Logger: Sendable {
+    var isVerboseLoggingEnabled = false
 
-/// Log a diagnostic with the note severity
-func note(_ message: String, sourceFile: URL? = nil) {
-    log(.note, message, sourceFile: sourceFile)
-}
+    /// Log a diagnostic with the note severity only when in verbose mode
+    func debug(_ message: @autoclosure () -> String, sourceFile: URL? = nil) {
+        guard isVerboseLoggingEnabled else { return }
+        note(message(), sourceFile: sourceFile)
+    }
 
-/// Log a diagnostic with the warning severity
-func warning(_ message: String, sourceFile: URL? = nil) {
-    log(.warning, message, sourceFile: sourceFile)
-}
+    /// Log a diagnostic with the note severity
+    func note(_ message: String, sourceFile: URL? = nil) {
+        log(.note, message, sourceFile: sourceFile)
+    }
 
-/// Log a diagnostic with the error severity
-func error(_ message: String, sourceFile: URL? = nil) {
-    log(.error, message, sourceFile: sourceFile)
-}
+    /// Log a diagnostic with the warning severity
+    func warning(_ message: String, sourceFile: URL? = nil) {
+        log(.warning, message, sourceFile: sourceFile)
+    }
 
-func log(_ severity: Diagnostic.Severity, _ message: String, sourceFile: URL? = nil) {
-    print(
-        Diagnostic(
-            severity: severity,
-            sourceFile: sourceFile,
-            message: message
+    /// Log a diagnostic with the error severity
+    func error(_ message: String, sourceFile: URL? = nil) {
+        log(.error, message, sourceFile: sourceFile)
+    }
+
+    func log(_ severity: Diagnostic.Severity, _ message: String, sourceFile: URL? = nil) {
+        print(
+            Diagnostic(
+                severity: severity,
+                sourceFile: sourceFile,
+                message: message
+            )
         )
-    )
+    }
 }
 
 // MARK: - Better Errors
+#if compiler(>=6.0)
+extension DecodingError: @retroactive CustomDebugStringConvertible {
+    public var debugDescription: String { _debugDescription }
+}
+#else
 extension DecodingError: CustomDebugStringConvertible {
-    public var debugDescription: String {
+    public var debugDescription: String { _debugDescription }
+}
+#endif
+
+private extension DecodingError {
+    var _debugDescription: String {
         guard let context else { return localizedDescription }
 
         if context.codingPath.isEmpty {

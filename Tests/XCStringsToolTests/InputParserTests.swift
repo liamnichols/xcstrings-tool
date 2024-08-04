@@ -6,7 +6,7 @@ final class InputParserTests: XCTestCase {
     func testParse_noInputs() {
         let inputs: [URL] = []
 
-        XCTAssertThrowsError(try InputParser.parse(from: inputs, developmentLanguage: nil)) { error in
+        XCTAssertThrowsError(try parse(from: inputs, developmentLanguage: nil)) { error in
             XCTAssertEqual(error.localizedDescription, "You must provide at least one input file.")
         }
     }
@@ -17,7 +17,7 @@ final class InputParserTests: XCTestCase {
             URL(filePath: "/Source/Bar.strings")
         ]
 
-        XCTAssertThrowsError(try InputParser.parse(from: inputs, developmentLanguage: nil)) { error in
+        XCTAssertThrowsError(try parse(from: inputs, developmentLanguage: nil)) { error in
             XCTAssertEqual(error.localizedDescription, """
             Attempting to generate for inputs that represent multiple different \
             strings tables (Bar and Foo). This is not supported.
@@ -30,7 +30,7 @@ final class InputParserTests: XCTestCase {
             URL(filePath: "/Source/Localizable.strings")
         ]
 
-        let result = try InputParser.parse(from: inputs, developmentLanguage: nil)
+        let result = try parse(from: inputs, developmentLanguage: nil)
 
         XCTAssertEqual(result.tableName, "Localizable")
         XCTAssertEqual(result.files, inputs)
@@ -42,7 +42,7 @@ final class InputParserTests: XCTestCase {
             URL(filePath: "/Source/Localizable.stringsdict")
         ]
 
-        let result = try InputParser.parse(from: inputs, developmentLanguage: nil)
+        let result = try parse(from: inputs, developmentLanguage: nil)
 
         XCTAssertEqual(result.tableName, "Localizable")
         XCTAssertEqual(result.files, inputs)
@@ -53,7 +53,7 @@ final class InputParserTests: XCTestCase {
             URL(filePath: "/Source/Localizable.xcstrings")
         ]
 
-        let result = try InputParser.parse(from: inputs, developmentLanguage: nil)
+        let result = try parse(from: inputs, developmentLanguage: nil)
 
         XCTAssertEqual(result.tableName, "Localizable")
         XCTAssertEqual(result.files, inputs)
@@ -67,7 +67,7 @@ final class InputParserTests: XCTestCase {
             URL(filePath: "/Source/fr.lproj/Localizable.stringsdict"),
         ]
 
-        XCTAssertThrowsError(try InputParser.parse(from: inputs, developmentLanguage: nil)) { error in
+        XCTAssertThrowsError(try parse(from: inputs, developmentLanguage: nil)) { error in
             XCTAssertEqual(error.localizedDescription, """
             Multiple inputs point to the same file but inputs should only include the development language.
 
@@ -89,7 +89,7 @@ final class InputParserTests: XCTestCase {
             URL(filePath: "/Source/fr.lproj/Localizable.stringsdict"),
         ]
 
-        let result = try InputParser.parse(from: inputs, developmentLanguage: "en")
+        let result = try parse(from: inputs, developmentLanguage: "en")
 
         XCTAssertEqual(result.tableName, "Localizable")
         XCTAssertEqual(result.files, [
@@ -103,7 +103,7 @@ final class InputParserTests: XCTestCase {
             URL(filePath: "/Source/Foo.strings")
         ]
 
-        XCTAssertThrowsError(try InputParser.parse(from: inputs, developmentLanguage: "en")) { error in
+        XCTAssertThrowsError(try parse(from: inputs, developmentLanguage: "en")) { error in
             XCTAssertEqual(error.localizedDescription, """
             A development language was specified, but the input ‘/Source/Foo.strings‘ \
             was not contained within a localized resource (.lproj) directory.
@@ -116,9 +116,13 @@ final class InputParserTests: XCTestCase {
             URL(filePath: "/Source/Foo.xcstrings")
         ]
 
-        let result = try InputParser.parse(from: inputs, developmentLanguage: "en")
+        let result = try parse(from: inputs, developmentLanguage: "en")
 
         XCTAssertEqual(result.tableName, "Foo")
         XCTAssertEqual(result.files, inputs)
+    }
+
+    private func parse(from inputs: [URL], developmentLanguage: String? = nil) throws -> InputParser.Parsed {
+        try InputParser.parse(from: inputs, developmentLanguage: developmentLanguage, logger: Logger())
     }
 }
