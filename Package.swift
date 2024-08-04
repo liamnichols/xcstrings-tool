@@ -171,3 +171,11 @@ if ProcessInfo.processInfo.environment.keys.contains("BENCHMARK_PACKAGE") {
         )
     )
 }
+
+// TODO: Remove when updating for Swift 6 language mode
+for target in package.targets where target.type != .system {
+    target.swiftSettings = target.swiftSettings ?? []
+    target.swiftSettings?.append(contentsOf: [
+        .enableExperimentalFeature("StrictConcurrency")
+    ])
+}
