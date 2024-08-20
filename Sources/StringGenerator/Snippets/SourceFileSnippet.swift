@@ -10,6 +10,10 @@ struct SourceFileSnippet: Snippet {
             ExtensionSnippet(extending: .type(.String)) {
                 StringStringsTableStructSnippet(stringsTable: sourceFile.stringExtension.stringsTableStruct)
                 StringInitializerSnippet(stringsTable: sourceFile.stringExtension.stringsTableStruct)
+                StringsTableConversionStaticMethodSnippet(
+                    stringsTable: sourceFile.stringExtension.stringsTableStruct,
+                    returnType: .type(.String)
+                )
             }
 
             ExtensionSnippet(

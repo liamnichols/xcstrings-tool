@@ -8,6 +8,10 @@ final class PluginTests: XCTestCase {
             String(localizable: .demoBasic),
             "A basic string"
         )
+        XCTAssertEqual(
+            .localizable(.demoBasic),
+            "A basic string"
+        )
 
         XCTAssertEqual(
             String(localized: .localizable(.multiline(2))),
@@ -23,6 +27,13 @@ final class PluginTests: XCTestCase {
             spans 2 lines
             """
         )
+        XCTAssertEqual(
+            .localizable(.multiline(2)),
+            """
+            A string that
+            spans 2 lines
+            """
+        )
 
         XCTAssertEqual(
             String(localized: .featureOne(.pluralExample(1))),
@@ -32,6 +43,10 @@ final class PluginTests: XCTestCase {
             String(featureOne: .pluralExample(1)),
             "1 string remaining"
         )
+        XCTAssertEqual(
+            .featureOne(.pluralExample(1)),
+            "1 string remaining"
+        )
 
         XCTAssertEqual(
             String(localized: .featureOne(.pluralExample(10))),
@@ -39,6 +54,10 @@ final class PluginTests: XCTestCase {
         )
         XCTAssertEqual(
             String(featureOne: .pluralExample(10)),
+            "10 strings remaining"
+        )
+        XCTAssertEqual(
+            .featureOne(.pluralExample(10)),
             "10 strings remaining"
         )
     }
@@ -59,9 +78,17 @@ final class PluginTests: XCTestCase {
             String(legacy: .simpleString("foo")),
             "This simple string: foo"
         )
+        XCTAssertEqual(
+            .legacy(.simpleString("foo")),
+            "This simple string: foo"
+        )
 
         XCTAssertEqual(
             String(legacy: .plural("John", 1)),
+            "Hello John, I have 1 plural"
+        )
+        XCTAssertEqual(
+            .legacy(.plural("John", 1)),
             "Hello John, I have 1 plural"
         )
     }

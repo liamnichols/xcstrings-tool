@@ -161,6 +161,11 @@ extension String {
             arguments: substitution.arguments.map(\.value)
         )
     }
+
+    /// Creates a `String` that represents a localized value in the ‘Substitution‘ strings table.
+    internal static func substitution(_ substitution: String.Substitution) -> String {
+        String(substitution: substitution)
+    }
 }
 
 @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)

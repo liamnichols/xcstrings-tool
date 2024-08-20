@@ -172,6 +172,11 @@ extension String {
             arguments: variations.arguments.map(\.value)
         )
     }
+
+    /// Creates a `String` that represents a localized value in the ‘Variations‘ strings table.
+    internal static func variations(_ variations: String.Variations) -> String {
+        String(variations: variations)
+    }
 }
 
 @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)

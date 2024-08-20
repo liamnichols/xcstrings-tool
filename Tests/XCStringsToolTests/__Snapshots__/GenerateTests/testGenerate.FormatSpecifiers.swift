@@ -355,6 +355,11 @@ extension String {
             arguments: formatSpecifiers.arguments.map(\.value)
         )
     }
+
+    /// Creates a `String` that represents a localized value in the ‘FormatSpecifiers‘ strings table.
+    internal static func formatSpecifiers(_ formatSpecifiers: String.FormatSpecifiers) -> String {
+        String(formatSpecifiers: formatSpecifiers)
+    }
 }
 
 @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)

@@ -194,6 +194,11 @@ extension String {
             arguments: positional.arguments.map(\.value)
         )
     }
+
+    /// Creates a `String` that represents a localized value in the ‘Positional‘ strings table.
+    internal static func positional(_ positional: String.Positional) -> String {
+        String(positional: positional)
+    }
 }
 
 @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)
