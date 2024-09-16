@@ -162,6 +162,11 @@ extension String {
             arguments: multiline.arguments.map(\.value)
         )
     }
+
+    /// Creates a `String` that represents a localized value in the ‘Multiline‘ strings table.
+    internal static func multiline(_ multiline: String.Multiline) -> String {
+        String(multiline: multiline)
+    }
 }
 
 @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)

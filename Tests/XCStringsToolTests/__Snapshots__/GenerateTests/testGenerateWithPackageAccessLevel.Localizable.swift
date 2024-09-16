@@ -216,6 +216,11 @@ extension String {
             arguments: localizable.arguments.map(\.value)
         )
     }
+
+    /// Creates a `String` that represents a localized value in the ‘Localizable‘ strings table.
+    package static func localizable(_ localizable: String.Localizable) -> String {
+        String(localizable: localizable)
+    }
 }
 
 @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)

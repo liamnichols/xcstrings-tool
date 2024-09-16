@@ -217,6 +217,11 @@ extension String {
             arguments: legacy.arguments.map(\.value)
         )
     }
+
+    /// Creates a `String` that represents a localized value in the ‘Legacy‘ strings table.
+    internal static func legacy(_ legacy: String.Legacy) -> String {
+        String(legacy: legacy)
+    }
 }
 
 @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)

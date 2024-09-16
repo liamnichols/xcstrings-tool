@@ -157,6 +157,11 @@ extension String {
             arguments: simple.arguments.map(\.value)
         )
     }
+
+    /// Creates a `String` that represents a localized value in the ‘Simple‘ strings table.
+    internal static func simple(_ simple: String.Simple) -> String {
+        String(simple: simple)
+    }
 }
 
 @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)
