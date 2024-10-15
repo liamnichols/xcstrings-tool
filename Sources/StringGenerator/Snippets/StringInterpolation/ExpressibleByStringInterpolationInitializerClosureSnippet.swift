@@ -1,12 +1,12 @@
 import SwiftSyntax
 
-struct ExpressibleByStringInterplationInitializerClosureSnippet<T: ExprSyntaxProtocol> {
+struct ExpressibleByStringInterpolationInitializerClosureSnippet<T: ExprSyntaxProtocol> {
     var bindingSpecifier: Keyword = .let
     let variableName: TokenSyntax
     let type: T
 }
 
-extension ExpressibleByStringInterplationInitializerClosureSnippet: Snippet {
+extension ExpressibleByStringInterpolationInitializerClosureSnippet: Snippet {
     var syntax: some DeclSyntaxProtocol {
         // let {variableName} = {type}.init(stringInterpolation:)
         VariableDeclSyntax(bindingSpecifier: .keyword(bindingSpecifier)) {

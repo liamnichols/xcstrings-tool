@@ -63,7 +63,7 @@ extension TextInitializerSnippet: Snippet {
                 variableName: "stringInterpolation"
             )
 
-            ExpressibleByStringInterplationInitializerClosureSnippet(
+            ExpressibleByStringInterpolationInitializerClosureSnippet(
                 variableName: "makeKey",
                 type: DeclReferenceExprSyntax(baseName: .type(.LocalizedStringKey))
             )
