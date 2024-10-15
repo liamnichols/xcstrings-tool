@@ -13,7 +13,7 @@ extension String {
     ///
     /// In Foundation, you can resolve the localized string using the system language
     /// with the `String`.``Swift/String/init(substitution:locale:)``
-    /// intializer:
+    /// initializer:
     ///
     /// ```swift
     /// // Accessing the localized value directly

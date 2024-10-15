@@ -85,7 +85,7 @@ extension SourceFile.StringExtension {
 
         In Foundation, you can resolve the localized string using the system language
         with the `String`.``Swift/String/init(\(sourceFile.tableVariableIdentifier):locale:)``
-        intializer:
+        initializer:
 
         ```swift
         // Accessing the localized value directly
