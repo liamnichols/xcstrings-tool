@@ -54,7 +54,7 @@ struct InputParser {
                 throw Error.notALocalizedResource(fileURL)
             }
 
-            // Include the file if the language matches the developmentLaguage
+            // Include the file if the language matches the developmentLanguage
             let language = lprojDir.replacingOccurrences(of: ".lproj", with: "", options: .caseInsensitive)
             return language.localizedCaseInsensitiveCompare(developmentLanguage) == .orderedSame
         }
