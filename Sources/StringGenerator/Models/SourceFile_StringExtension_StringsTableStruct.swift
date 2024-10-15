@@ -32,7 +32,7 @@ extension SourceFile.StringExtension {
             BundleDescriptionEnum(stringsTable: self)
         }
 
-        // MARK: Properites
+        // MARK: Properties
 
         var storedProperties: [Property] {
             [keyProperty, argumentsProperty, tableProperty]
