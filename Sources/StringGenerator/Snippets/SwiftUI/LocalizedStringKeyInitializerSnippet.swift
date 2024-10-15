@@ -76,7 +76,7 @@ extension LocalizedStringKeyInitializerSnippet: Snippet {
 
             // let makeKey = LocalizedStringKey.init(stringInterpolation:)
             // self = makeKey(stringInterpolation)
-            ExpressibleByStringInterplationInitializerClosureSnippet(
+            ExpressibleByStringInterpolationInitializerClosureSnippet(
                 variableName: "makeKey",
                 type: DeclReferenceExprSyntax(baseName: .type(.LocalizedStringKey))
             )

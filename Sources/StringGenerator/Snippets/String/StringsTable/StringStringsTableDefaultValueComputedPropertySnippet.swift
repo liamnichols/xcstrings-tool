@@ -61,7 +61,7 @@ struct StringStringsTableDefaultValueComputedPropertySnippet: Snippet {
             )
 
             // let makeDefaultValue = String.LocalizationValue.init(stringInterpolation:)
-            ExpressibleByStringInterplationInitializerClosureSnippet(
+            ExpressibleByStringInterpolationInitializerClosureSnippet(
                 variableName: "makeDefaultValue",
                 type: MemberAccessExprSyntax(
                     .type(.String), .type(.LocalizationValue)
