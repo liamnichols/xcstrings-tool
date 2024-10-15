@@ -80,7 +80,7 @@ If you wish, you can open the file printed in the log output to review the gener
 
 This code is compiled as part of your target, so is accessible just like code you would write yourself:
 
-![A screenshot of the new constants being used in some Foundation-baed model code](SPM-Usage)
+![A screenshot of the new constants being used in some Foundation-based model code](SPM-Usage)
 
 ## See Also
 
