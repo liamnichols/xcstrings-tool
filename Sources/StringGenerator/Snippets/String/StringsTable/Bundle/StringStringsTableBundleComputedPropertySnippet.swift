@@ -25,19 +25,23 @@ struct StringStringsTableBundleComputedPropertySnippet: Snippet {
 
     @CodeBlockItemListBuilder
     var body: CodeBlockItemListSyntax {
-        // #if SWIFT_PACKAGE
-        // .module
-        // #else
-        // Bundle(for: BundleLocator.self)
-        // #endif
-        IfConfigDeclSyntax(
-            reference: "SWIFT_PACKAGE",
-            elements: .statements([
-                CodeBlockItemSyntax(item: .expr(ExprSyntax(".module")))
-            ]),
-            else: .statements([
-                CodeBlockItemSyntax(item: .expr(ExprSyntax("Bundle(for: BundleLocator.self)")))
-            ])
-        )
+        if let bundleExpression = stringsTable.bundleExpression {
+            CodeBlockItemSyntax(item: .expr(ExprSyntax(stringLiteral: bundleExpression)))
+        } else {
+            // #if SWIFT_PACKAGE
+            // .module
+            // #else
+            // Bundle(for: BundleLocator.self)
+            // #endif
+            IfConfigDeclSyntax(
+                reference: "SWIFT_PACKAGE",
+                elements: .statements([
+                    CodeBlockItemSyntax(item: .expr(ExprSyntax(".module")))
+                ]),
+                else: .statements([
+                    CodeBlockItemSyntax(item: .expr(ExprSyntax("Bundle(for: BundleLocator.self)")))
+                ])
+            )
+        }
     }
 }

@@ -13,6 +13,9 @@ struct SourceFile {
 
     /// The string resources that make up the strings table
     let resources: [Resource]
+
+    /// The custom bundle expression
+    let bundleExpression: String?
 }
 
 extension SourceFile {
