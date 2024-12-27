@@ -27,17 +27,19 @@ struct StringStringsTableStructSnippet: Snippet {
 
     var memberBlock: MemberBlockSyntax {
         MemberBlockSyntax {
-            // #if !SWIFT_PACKAGE
-            // private class BundleLocator { ... }
-            // #endif
-            IfConfigDeclSyntax(
-                prefixOperator: "!",
-                reference: "SWIFT_PACKAGE",
-                elements: .decls(MemberBlockItemListSyntax {
-                    StringStringsTableBundleLocatorClassSnippet()
-                })
-            )
-            .with(\.trailingTrivia, .newlines(2))
+            if stringsTable.bundleExpression == nil {
+                // #if !SWIFT_PACKAGE
+                // private class BundleLocator { ... }
+                // #endif
+                IfConfigDeclSyntax(
+                    prefixOperator: "!",
+                    reference: "SWIFT_PACKAGE",
+                    elements: .decls(MemberBlockItemListSyntax {
+                        StringStringsTableBundleLocatorClassSnippet()
+                    })
+                )
+                .with(\.trailingTrivia, .newlines(2))
+            }
 
             // enum Argument { ... }
             StringStringsTableArgumentEnumSnippet(argument: stringsTable.argumentEnum)

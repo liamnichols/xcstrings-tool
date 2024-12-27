@@ -38,6 +38,12 @@ struct Generate: ParsableCommand {
 
     @Option(
         name: .shortAndLong,
+        help: "Modify bundle expression for the generated source code"
+    )
+    var bundleExpression: String?
+
+    @Option(
+        name: .shortAndLong,
         help: "The development language (defaultLocalization in Package.swift) used when filtering legacy .strings and .stringsdict files from the input paths"
     )
     var developmentLanguage: String?
@@ -86,7 +92,8 @@ struct Generate: ParsableCommand {
         let source = StringGenerator.generateSource(
             for: resources,
             tableName: input.tableName,
-            accessLevel: resolvedAccessLevel
+            accessLevel: resolvedAccessLevel,
+            bundleExpression: bundleExpression
         )
 
         // Write the output and catch errors in a diagnostic format
