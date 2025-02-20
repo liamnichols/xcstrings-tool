@@ -68,7 +68,7 @@ extension AvailabilityArgumentListSyntax {
 
     static var wwdc2019: AvailabilityArgumentListSyntax {
         [
-            AvailabilityArgumentSyntax(argument: .platformVersionRestriction("macOS", versionMajor: 10, versionMinor: 5))
+            AvailabilityArgumentSyntax(argument: .platformVersionRestriction("macOS", versionMajor: 10, versionMinor: 15))
                 .with(\.trailingComma, .commaToken()),
 
             AvailabilityArgumentSyntax(argument: .platformVersionRestriction("iOS", versionMajor: 13))
