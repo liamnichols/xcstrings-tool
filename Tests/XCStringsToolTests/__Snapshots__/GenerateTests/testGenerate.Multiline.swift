@@ -189,7 +189,7 @@ extension LocalizedStringResource {
 #if canImport(SwiftUI)
 import SwiftUI
 
-@available(macOS 10.5, iOS 13, tvOS 13, watchOS 6, *)
+@available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
 extension Text {
     /// Creates a text view that displays a localized string defined in the ‘Multiline‘ strings table.
     internal init(multiline: String.Multiline) {
@@ -222,7 +222,7 @@ extension Text {
     }
 }
 
-@available(macOS 10.5, iOS 13, tvOS 13, watchOS 6, *)
+@available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
 extension LocalizedStringKey {
     /// Creates a localized string key that represents a localized value in the ‘Multiline‘ strings table.
     @available(macOS 11, iOS 14, tvOS 14, watchOS 7, *)
