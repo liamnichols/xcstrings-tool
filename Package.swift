@@ -123,9 +123,6 @@ let package = Package(
             ],
             resources: [
                 .process("Resources")
-            ],
-            swiftSettings: [
-                .define("XCSTRINGS_TOOL_ACCESS_LEVEL_PUBLIC")
             ]
         ),
 
