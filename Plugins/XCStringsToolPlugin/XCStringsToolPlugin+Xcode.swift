@@ -11,7 +11,12 @@ extension XCStringsToolPlugin: XcodeBuildToolPlugin {
             .inputFiles
             .stringTables
             .map { tableName, files in
-                try .xcstringstool(forTableName: tableName, files: files, using: context)
+                try .xcstringstool(
+                    forTableName: tableName,
+                    files: files,
+                    using: context,
+                    config: findConfig(in: context.xcodeProject.directory)
+                )
             }
     }
 }

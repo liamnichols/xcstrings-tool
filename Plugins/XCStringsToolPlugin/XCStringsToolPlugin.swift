@@ -16,7 +16,25 @@ struct XCStringsToolPlugin: BuildToolPlugin {
             .sourceFiles
             .stringTables
             .map { tableName, files in
-                try .xcstringstool(forTableName: tableName, files: files, using: context)
+                try .xcstringstool(
+                    forTableName: tableName,
+                    files: files,
+                    using: context,
+                    config: findConfig(in: target.directory, context.package.directory)
+                )
             }
+    }
+
+    func findConfig(in directories: Path..., using fileManager: FileManager = .default) -> Path? {
+        let filenames = ["xcstrings-tool.yml", "xcstrings-tool.yaml", "xcstrings-tool.json", ".xcstrings-tool.yml", ".xcstrings-tool.yaml", ".xcstrings-tool.json"]
+        for directory in directories {
+            for filename in filenames {
+                let path = directory.appending(filename)
+                if fileManager.fileExists(atPath: path.string) {
+                    return path
+                }
+            }
+        }
+        return nil
     }
 }

@@ -17,15 +17,23 @@ extension Command {
     static func xcstringstool(
         forTableName tableName: String,
         files: [File],
-        using context: PluginContextProtocol
+        using context: PluginContextProtocol,
+        config: Path?
     ) throws -> Command {
-        .buildCommand(
+        var inputFiles: [Path] = files.map(\.path)
+        var arguments: [any CustomStringConvertible] = files.map(\.path.string)
+        arguments.append(contentsOf: ["--output", context.outputPath(for: tableName)])
+
+        if let config {
+            arguments.append(contentsOf: ["--config", config])
+            inputFiles.append(config)
+        }
+
+        return .buildCommand(
             displayName: "XCStringsTool: Generate Swift code for ‘\(tableName)‘",
             executable: try context.tool(named: "xcstrings-tool").path,
-            arguments: files.map(\.path.string) + [
-                "--output", context.outputPath(for: tableName)
-            ],
-            inputFiles: files.map(\.path),
+            arguments: arguments,
+            inputFiles: inputFiles,
             outputFiles: [
                 context.outputPath(for: tableName)
             ]
