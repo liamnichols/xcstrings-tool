@@ -32,6 +32,14 @@ struct Generate: ParsableCommand {
 
     @Option(
         name: .shortAndLong,
+        help: "File path to a xcstrings-tool.yml configuration file",
+        completion: .file(extensions: ["yml", "yaml", "json"]),
+        transform: { URL(filePath: $0, directoryHint: .notDirectory) }
+    )
+    var config: URL?
+
+    @Option(
+        name: .shortAndLong,
         help: "Modify the Access Control for the generated source code"
     )
     var accessLevel: AccessLevel?
@@ -49,10 +57,13 @@ struct Generate: ParsableCommand {
     
     func run() throws {
         let logger = Logger(isVerboseLoggingEnabled: verbose)
+        let configuration = try withThrownErrorsAsDiagnostics(at: config) {
+            try Configuration(command: self, environment: ProcessInfo.processInfo.environment)
+        }
 
         // Parse the input from the invocation arguments
         let input = try withThrownErrorsAsDiagnostics {
-            try InputParser.parse(from: inputs, developmentLanguage: resolvedDevelopmentLanguage, logger: logger)
+            try InputParser.parse(from: inputs, developmentLanguage: configuration.developmentLanguage, logger: logger)
         }
 
         // Collect the results for each input file
@@ -86,7 +97,7 @@ struct Generate: ParsableCommand {
         let source = StringGenerator.generateSource(
             for: resources,
             tableName: input.tableName,
-            accessLevel: resolvedAccessLevel
+            accessLevel: configuration.accessLevel
         )
 
         // Write the output and catch errors in a diagnostic format
@@ -99,13 +110,5 @@ struct Generate: ParsableCommand {
             try source.write(to: output, atomically: false, encoding: .utf8)
             logger.note("Output written to ‘\(output.path(percentEncoded: false))‘")
         }
-    }
-
-    var resolvedAccessLevel: AccessLevel {
-        .resolveFromEnvironment(or: accessLevel) ?? .internal
-    }
-
-    var resolvedDevelopmentLanguage: String? {
-        developmentLanguage ?? ProcessInfo.processInfo.environment["DEVELOPMENT_LANGUAGE"]
     }
 }

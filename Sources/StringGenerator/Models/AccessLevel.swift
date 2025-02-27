@@ -1,6 +1,6 @@
 import SwiftSyntax
 
-public enum AccessLevel: String, CaseIterable {
+public enum AccessLevel: String, CaseIterable, Codable {
     case `internal`, `public`, `package`
 }
 
