@@ -32,6 +32,10 @@ extension SourceFile.StringExtension {
             BundleDescriptionEnum(stringsTable: self)
         }
 
+        var bundleExpression: String? {
+            sourceFile.bundleExpression
+        }
+
         // MARK: Properties
 
         var storedProperties: [Property] {
