@@ -10,10 +10,16 @@ public struct StringGenerator {
     public static func generateSource(
         for resources: [Resource],
         tableName: String,
-        accessLevel: AccessLevel
+        accessLevel: AccessLevel,
+        bundleOverride: String?
     ) -> String {
         generateSource(
-            for: SourceFile(tableName: tableName, accessLevel: accessLevel, resources: resources)
+            for: SourceFile(
+                tableName: tableName,
+                accessLevel: accessLevel,
+                bundleOverride: bundleOverride,
+                resources: resources
+            )
         )
     }
 

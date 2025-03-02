@@ -24,6 +24,10 @@ extension SourceFile.StringExtension {
             sourceFile.accessLevel
         }
 
+        var bundleOverride: String? {
+            sourceFile.bundleOverride
+        }
+
         var argumentEnum: ArgumentEnum {
             ArgumentEnum(stringsTable: self)
         }

@@ -1,2 +1,3 @@
 access_level: public
 development_language: en
+bundle_override: Bundle.current

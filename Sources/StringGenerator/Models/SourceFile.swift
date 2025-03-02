@@ -11,6 +11,9 @@ struct SourceFile {
     /// The access level to be used when generating non-private interfaces
     let accessLevel: AccessLevel
 
+    /// An optional bundle identifier that overrides the default bundle for resource lookup.
+    let bundleOverride: String?
+
     /// The string resources that make up the strings table
     let resources: [Resource]
 }

@@ -50,6 +50,12 @@ struct Generate: ParsableCommand {
     )
     var developmentLanguage: String?
 
+    @Option(
+        name: .shortAndLong,
+        help: "The bundle override. Used to override the default bundle (Bundle.module) for resource lookup."
+    )
+    var bundleOverride: String?
+
     @Flag(name: .shortAndLong)
     var verbose: Bool = false
 
@@ -97,7 +103,8 @@ struct Generate: ParsableCommand {
         let source = StringGenerator.generateSource(
             for: resources,
             tableName: input.tableName,
-            accessLevel: configuration.accessLevel
+            accessLevel: configuration.accessLevel,
+            bundleOverride: configuration.bundleOverride
         )
 
         // Write the output and catch errors in a diagnostic format
