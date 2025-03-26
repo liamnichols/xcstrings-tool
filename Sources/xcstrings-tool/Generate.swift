@@ -56,10 +56,10 @@ struct Generate: ParsableCommand {
     // MARK: - Program
     
     func run() throws {
-        let logger = Logger(isVerboseLoggingEnabled: verbose)
         let configuration = try withThrownErrorsAsDiagnostics(at: config) {
             try Configuration(command: self, environment: ProcessInfo.processInfo.environment)
         }
+        let logger = Logger(isVerboseLoggingEnabled: configuration.verbose)
 
         // Parse the input from the invocation arguments
         let input = try withThrownErrorsAsDiagnostics {

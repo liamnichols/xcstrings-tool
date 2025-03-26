@@ -7,14 +7,17 @@ struct Configuration {
         enum CodingKeys: String, CodingKey {
             case accessLevel = "access_level"
             case developmentLanguage = "development_language"
+            case verbose
         }
 
         var accessLevel: AccessLevel?
         var developmentLanguage: String?
+        var verbose: Bool?
     }
 
     var accessLevel: AccessLevel
     var developmentLanguage: String?
+    var verbose: Bool
 }
 
 extension Configuration {
@@ -32,10 +35,12 @@ extension Configuration {
         // Resolve values from either the config file, environment, or arguments
         let accessLevel = file?.accessLevel ?? .resolveFromEnvironment(environment, or: command.accessLevel) ?? .internal
         let developmentLanguage = file?.developmentLanguage ?? command.developmentLanguage ?? environment["DEVELOPMENT_LANGUAGE"]
+        let verbose = file?.verbose ?? command.verbose
 
         self.init(
             accessLevel: accessLevel,
-            developmentLanguage: developmentLanguage
+            developmentLanguage: developmentLanguage,
+            verbose: verbose
         )
     }
 }
