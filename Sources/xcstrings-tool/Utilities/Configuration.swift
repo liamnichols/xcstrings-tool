@@ -4,12 +4,6 @@ import Yams
 
 struct Configuration {
     struct File: Codable {
-        enum CodingKeys: String, CodingKey {
-            case accessLevel = "access_level"
-            case developmentLanguage = "development_language"
-            case verbose
-        }
-
         var accessLevel: AccessLevel?
         var developmentLanguage: String?
         var verbose: Bool?

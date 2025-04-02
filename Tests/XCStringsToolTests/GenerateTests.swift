@@ -50,10 +50,10 @@ final class GenerateTests: FixtureTestCase {
         assertError(
             for: try fixture(named: "Localizable"),
             config: """
-            access_level: private
+            accessLevel: private
             """,
             localizedDescription: """
-            Decoding error at ‘access_level‘ - The data couldn’t be read because it isn’t in the correct format.
+            Decoding error at ‘accessLevel‘ - The data couldn’t be read because it isn’t in the correct format.
             """
         )
     }
@@ -69,7 +69,7 @@ final class GenerateTests: FixtureTestCase {
         try snapshot(
             for: try fixture(named: "Localizable"),
             config: """
-            access_level: package
+            accessLevel: package
             """
         )
     }
