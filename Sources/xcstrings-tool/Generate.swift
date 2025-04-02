@@ -32,7 +32,7 @@ struct Generate: ParsableCommand {
 
     @Option(
         name: .shortAndLong,
-        help: "File path to a xcstrings-tool.yml configuration file",
+        help: "File path to a xcstrings-tool-config.yml configuration file",
         completion: .file(extensions: ["yml", "yaml", "json"]),
         transform: { URL(filePath: $0, directoryHint: .notDirectory) }
     )

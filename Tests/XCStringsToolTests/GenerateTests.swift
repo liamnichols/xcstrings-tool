@@ -143,7 +143,7 @@ private extension GenerateTests {
         let uuid = UUID().uuidString
         let directoryURL = fileManager.temporaryDirectory.appending(component: "XCStringsToolTests").appending(component: uuid)
         let outputURL = directoryURL.appending(component: "Output.swift")
-        let configURL = directoryURL.appending(component: "xcstrings-tool.yml")
+        let configURL = directoryURL.appending(component: "xcstrings-tool-config.yml")
 
         if let config {
             if !fileManager.fileExists(atPath: directoryURL.path()) {
