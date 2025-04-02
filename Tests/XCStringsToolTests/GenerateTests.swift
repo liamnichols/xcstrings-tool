@@ -44,6 +44,18 @@ final class GenerateTests: FixtureTestCase {
             String ‘Key‘ is not supported: The placeholder format specifier ‘%c‘ is not supported.
             """
         )
+
+        // Scenario where yaml is malformed
+        // TODO: Improve the diagnostic messages?
+        assertError(
+            for: try fixture(named: "Localizable"),
+            config: """
+            accessLevel: private
+            """,
+            localizedDescription: """
+            Decoding error at ‘accessLevel‘ - The data couldn’t be read because it isn’t in the correct format.
+            """
+        )
     }
 
     func testGenerateWithPublicAccessLevel() throws {
@@ -56,7 +68,9 @@ final class GenerateTests: FixtureTestCase {
     func testGenerateWithPackageAccessLevel() throws {
         try snapshot(
             for: try fixture(named: "Localizable"),
-            accessLevel: "package"
+            config: """
+            accessLevel: package
+            """
         )
     }
 
@@ -84,12 +98,13 @@ private extension GenerateTests {
     func snapshot(
         for inputURLs: URL...,
         accessLevel: String? = nil,
+        config: String? = nil,
         file: StaticString = #filePath,
         testName: String = #function,
         line: UInt = #line
     ) throws {
         assertSnapshot(
-            of: try run(for: inputURLs, accessLevel: accessLevel),
+            of: try run(for: inputURLs, accessLevel: accessLevel, config: config),
             as: .sourceCode,
             named: inputURLs.first!.stem,
             file: file,
@@ -100,11 +115,13 @@ private extension GenerateTests {
 
     func assertError(
         for inputURLs: URL...,
+        accessLevel: String? = nil,
+        config: String? = nil,
         localizedDescription expected: String,
         file: StaticString = #filePath,
         line: UInt = #line
     ) {
-        XCTAssertThrowsError(try run(for: inputURLs), file: file, line: line) { error in
+        XCTAssertThrowsError(try run(for: inputURLs, accessLevel: accessLevel, config: config), file: file, line: line) { error in
             let actual = if let error = error as? Diagnostic {
                 error.message
             } else {
@@ -118,19 +135,28 @@ private extension GenerateTests {
     // Helper for running the generate command
     func run(
         for inputURLs: [URL],
-        accessLevel: String? = nil
+        accessLevel: String? = nil,
+        config: String? = nil
     ) throws -> String {
         // Create a temporary output file
         let fileManager = FileManager.default
-        let outputURL = fileManager.temporaryDirectory
-            .appending(component: "XCStringsToolTests")
-            .appending(component: UUID().uuidString + ".swift")
+        let uuid = UUID().uuidString
+        let directoryURL = fileManager.temporaryDirectory.appending(component: "XCStringsToolTests").appending(component: uuid)
+        let outputURL = directoryURL.appending(component: "Output.swift")
+        let configURL = directoryURL.appending(component: "xcstrings-tool-config.yml")
+
+        if let config {
+            if !fileManager.fileExists(atPath: directoryURL.path()) {
+                try? fileManager.createDirectory(at: directoryURL, withIntermediateDirectories: true)
+            }
+            try config.write(to: configURL, atomically: true, encoding: .utf8)
+        }
 
         // Cleanup any temporary output
         addTeardownBlock {
             let fileManager = FileManager.default
-            if fileManager.fileExists(atPath: outputURL.path()) {
-                try? fileManager.removeItem(at: outputURL)
+            if fileManager.fileExists(atPath: directoryURL.path()) {
+                try? fileManager.removeItem(at: directoryURL)
             }
         }
 
@@ -139,6 +165,9 @@ private extension GenerateTests {
         arguments.append(contentsOf: ["--output", outputURL.absoluteURL.path()])
         if let accessLevel {
             arguments += ["--access-level", accessLevel]
+        }
+        if config != nil {
+            arguments += ["--config", configURL.path()]
         }
 
         // Run the generator

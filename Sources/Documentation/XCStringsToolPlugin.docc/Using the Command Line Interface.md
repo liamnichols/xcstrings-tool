@@ -97,3 +97,33 @@ note: Output written to ‘./App/Sources/Localizable.swift‘
 > This is because unlike the Strings Catalog format, the development language is not part of the legacy inputs.
 
 
+##### Help Information
+
+To view the complete set of available options, specify the `--help` flag:
+
+```bash
+$ xcstrings-tool generate --help
+
+USAGE: xcstrings-tool generate <inputs> ... --output <output> [--config <config>] [--access-level <access-level>] [--development-language <development-language>] [--verbose]
+
+ARGUMENTS:
+  <inputs>                Path to xcstrings String Catalog file
+        You can also pass multiple file paths to the same Strings Table. For
+        example, a path to Localizable.strings as well as
+        Localizable.stringsdict. An error will be thrown if you pass inputs to
+        multiple different Strings Tables.
+
+OPTIONS:
+  -o, --output <output>   Path to write generated Swift output
+  -c, --config <config>   File path to a xcstrings-tool-config.yml configuration file
+  -a, --access-level <access-level>
+                          Modify the Access Control for the generated source
+                          code (values: internal, public, package)
+  -d, --development-language <development-language>
+                          The development language (defaultLocalization in
+                          Package.swift) used when filtering legacy .strings
+                          and .stringsdict files from the input paths
+  -v, --verbose
+  --version               Show the version.
+  -h, --help              Show help information.
+```

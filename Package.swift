@@ -20,6 +20,7 @@ let package = Package(
         .package(url: "https://github.com/swiftlang/swift-syntax", "509.0.0" ..< "601.0.0-prerelease"),
         .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.17.0"),
         .package(url: "https://github.com/swiftlang/swift-docc-plugin", from: "1.0.0"),
+        .package(url: "https://github.com/jpsim/Yams", from: "5.3.1")
     ],
     targets: [
         .target(
@@ -30,6 +31,7 @@ let package = Package(
             name: "xcstrings-tool",
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
+                .product(name: "Yams", package: "yams"),
                 .target(name: "StringCatalog"),
                 .target(name: "StringExtractor"),
                 .target(name: "StringGenerator"),
@@ -121,9 +123,6 @@ let package = Package(
             ],
             resources: [
                 .process("Resources")
-            ],
-            swiftSettings: [
-                .define("XCSTRINGS_TOOL_ACCESS_LEVEL_PUBLIC")
             ]
         ),
 

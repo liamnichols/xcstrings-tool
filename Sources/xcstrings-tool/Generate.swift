@@ -32,6 +32,14 @@ struct Generate: ParsableCommand {
 
     @Option(
         name: .shortAndLong,
+        help: "File path to a xcstrings-tool-config.yml configuration file",
+        completion: .file(extensions: ["yml", "yaml", "json"]),
+        transform: { URL(filePath: $0, directoryHint: .notDirectory) }
+    )
+    var config: URL?
+
+    @Option(
+        name: .shortAndLong,
         help: "Modify the Access Control for the generated source code"
     )
     var accessLevel: AccessLevel?
@@ -48,11 +56,14 @@ struct Generate: ParsableCommand {
     // MARK: - Program
     
     func run() throws {
-        let logger = Logger(isVerboseLoggingEnabled: verbose)
+        let configuration = try withThrownErrorsAsDiagnostics(at: config) {
+            try Configuration(command: self, environment: ProcessInfo.processInfo.environment)
+        }
+        let logger = Logger(isVerboseLoggingEnabled: configuration.verbose)
 
         // Parse the input from the invocation arguments
         let input = try withThrownErrorsAsDiagnostics {
-            try InputParser.parse(from: inputs, developmentLanguage: resolvedDevelopmentLanguage, logger: logger)
+            try InputParser.parse(from: inputs, developmentLanguage: configuration.developmentLanguage, logger: logger)
         }
 
         // Collect the results for each input file
@@ -61,17 +72,20 @@ struct Generate: ParsableCommand {
                 logger.debug("collecting results for ‘\(input.absoluteURL.path())‘")
 
                 // Load the source content
-                logger.debug("  loading source file")
-                let source = try StringSource(contentsOf: input)
+                let source = try logger.measure("  loading source file") {
+                    try StringSource(contentsOf: input)
+                }
 
                 // Extract any resources from this input
-                logger.debug("  extracting resources")
-                let result = try StringExtractor.extractResources(from: source)
+                let result = try logger.measure("  extracting resources") {
+                    try StringExtractor.extractResources(from: source)
+                }
 
                 // Validate the extraction result
-                logger.debug("  validating contents")
-                result.issues.forEach { logger.warning($0.description, sourceFile: input) }
-                try ResourceValidator.validateResources(result.resources, in: input, logger: logger)
+                try logger.measure("  validating contents") {
+                    result.issues.forEach { logger.warning($0.description, sourceFile: input) }
+                    try ResourceValidator.validateResources(result.resources, in: input, logger: logger)
+                }
 
                 // Return the resources
                 return result
@@ -82,30 +96,24 @@ struct Generate: ParsableCommand {
         let resources = try StringExtractor.mergeAndEnsureUnique(results, logger: logger)
 
         // Generate the associated Swift source
-        logger.debug("generating Swift source code")
-        let source = StringGenerator.generateSource(
-            for: resources,
-            tableName: input.tableName,
-            accessLevel: resolvedAccessLevel
-        )
+        let source = try logger.measure("generating Swift source code") {
+            StringGenerator.generateSource(
+                for: resources,
+                tableName: input.tableName,
+                accessLevel: configuration.accessLevel
+            )
+        }
 
         // Write the output and catch errors in a diagnostic format
-        logger.debug("writing output")
         try withThrownErrorsAsDiagnostics {
-            // Create the directory if it doesn't exist
-            try createDirectoryIfNeeded(for: output)
+            try logger.measure("writing output") {
+                // Create the directory if it doesn't exist
+                try createDirectoryIfNeeded(for: output)
 
-            // Write the source to disk
-            try source.write(to: output, atomically: false, encoding: .utf8)
+                // Write the source to disk
+                try source.write(to: output, atomically: false, encoding: .utf8)
+            }
             logger.note("Output written to ‘\(output.path(percentEncoded: false))‘")
         }
-    }
-
-    var resolvedAccessLevel: AccessLevel {
-        .resolveFromEnvironment(or: accessLevel) ?? .internal
-    }
-
-    var resolvedDevelopmentLanguage: String? {
-        developmentLanguage ?? ProcessInfo.processInfo.environment["DEVELOPMENT_LANGUAGE"]
     }
 }

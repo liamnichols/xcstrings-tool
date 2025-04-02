@@ -98,6 +98,23 @@ struct Logger: Sendable {
             )
         )
     }
+
+    func measure<T>(_ message: @autoclosure () -> String, work: () throws -> T) throws -> T {
+        guard isVerboseLoggingEnabled else {
+            return try work()
+        }
+
+        print(message(), terminator: "")
+
+        let startDate = Date()
+        let result = Result { try work() }
+        let timeInterval = Date().timeIntervalSince(startDate)
+        let duration = Duration.microseconds(Int(timeInterval * 1_000_000))
+
+        print(" (\(duration.formatted(.units(allowed: [.seconds, .milliseconds, .microseconds]))))")
+
+        return try result.get()
+    }
 }
 
 // MARK: - Better Errors

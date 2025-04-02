@@ -64,4 +64,4 @@ This code is compiled as part of your target, so is accessible just like code yo
 
 ## See Also
 
-- <doc:Changing-the-Access-Level>
+- <doc:Configuring-the-generator>
