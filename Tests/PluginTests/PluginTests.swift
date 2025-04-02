@@ -2,6 +2,11 @@ import Foundation
 import SwiftUI
 import XCTest
 
+// Will fail to compile if `String.Localizable` doesn't generate with xcstrings-tool-config.yml settings
+public struct AccessLevelTest {
+    public let testToEnsureAccessLevel: String.Localizable
+}
+
 final class PluginTests: XCTestCase {
     func testPluginGeneratedSources() {
         XCTAssertEqual(
