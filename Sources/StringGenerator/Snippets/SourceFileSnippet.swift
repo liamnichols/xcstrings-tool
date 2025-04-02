@@ -64,6 +64,10 @@ struct SourceFileSnippet: Snippet {
                 }
             }
         }
+        #if canImport(SwiftSyntax601)
+        .spacingStatements(1)
+        #else
         .spacingStatements()
+        #endif
     }
 }
