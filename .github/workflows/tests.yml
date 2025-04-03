@@ -82,8 +82,8 @@ jobs:
           revision: 303e5c5c36d6a558407d364878df131c3546fad8
         - swift-syntax: "600.0.1"
           revision: 0687f71944021d616d34d922343dcef086855920
-        - swift-syntax: "601.0.0"
-          revision: 1103c45ece4f7fe160b8f75b4ea1ee2e5fac1841
+        - swift-syntax: "601.0.1"
+          revision: f99ae8aa18f0cf0d53481901f88a0991dc3bd4a2
     runs-on: macOS-15
     env:
       DEVELOPER_DIR: /Applications/Xcode_16.1.app/Contents/Developer
