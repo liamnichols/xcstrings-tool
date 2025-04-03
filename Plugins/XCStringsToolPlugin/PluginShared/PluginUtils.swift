@@ -13,6 +13,7 @@ enum PluginUtils {
 
         let tool: PluginContext.Tool
         let config: Path?
+        let cache: Path?
         let invocations: [Invocation]
     }
 
@@ -22,19 +23,19 @@ enum PluginUtils {
         sourceFiles: FileList,
         targetName: String
     ) throws -> ValidatedInputs {
+        let pluginWorkDirectory = pluginWorkDirectory.appending("XCStringsTool")
         let tool = try tool("xcstrings-tool")
         let config = try findConfig(inputFiles: sourceFiles, targetName: targetName)
+        let cache = pluginWorkDirectory.appending("Cache")
         let invocations = sourceFiles.stringTables.map { tableName, strings in
             ValidatedInputs.Invocation(
                 strings: strings,
                 tableName: tableName,
-                output: pluginWorkDirectory
-                    .appending(subpath: "XCStringsTool")
-                    .appending("\(tableName).swift")
+                output: pluginWorkDirectory.appending("Generated", "\(tableName).swift")
             )
         }
 
-        return ValidatedInputs(tool: tool, config: config, invocations: invocations)
+        return ValidatedInputs(tool: tool, config: config, cache: cache, invocations: invocations)
     }
 
     private static func findConfig(inputFiles: FileList, targetName: String) throws -> Path? {
@@ -75,6 +76,12 @@ extension PluginUtils.ValidatedInputs {
         if let config {
             arguments.append(contentsOf: [
                 "--config", config.string
+            ])
+        }
+
+        if let cache {
+            arguments.append(contentsOf: [
+                "--cache", cache.string
             ])
         }
 
