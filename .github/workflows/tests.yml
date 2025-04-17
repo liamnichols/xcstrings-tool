@@ -70,11 +70,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        swift-syntax:
-        - "509.0.2"
-        - "509.1.1"
-        - "510.0.2"
-        - "600.0.1"
         include:
         - swift-syntax: "509.0.2"
           revision: 6ad4ea24b01559dde0773e3d091f1b9e36175036
@@ -86,6 +81,8 @@ jobs:
           revision: 0687f71944021d616d34d922343dcef086855920
         - swift-syntax: "601.0.1"
           revision: f99ae8aa18f0cf0d53481901f88a0991dc3bd4a2
+        - swift-syntax: "602.0.0-prerelease-2025-04-16"
+          revision: 340f8400262d494c7c659cd838223990195d7fed
     runs-on: macOS-15
     env:
       DEVELOPER_DIR: /Applications/Xcode_16.1.app/Contents/Developer
