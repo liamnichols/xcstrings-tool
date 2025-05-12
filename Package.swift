@@ -12,10 +12,10 @@ let package = Package(
     ],
     products: [
         .executable(name: "xcstrings-tool", targets: ["xcstrings-tool"]),
-        .plugin(name: "XCStringsToolPlugin", targets: ["XCStringsToolPlugin"]),
-        .library(name: "StringCatalog", targets: ["StringCatalog"])
+        .plugin(name: "XCStringsToolPlugin", targets: ["XCStringsToolPlugin"])
     ],
     dependencies: [
+        .package(url: "https://github.com/liamnichols/swift-localized-strings", branch: "main"),
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.2.3"),
         .package(url: "https://github.com/swiftlang/swift-syntax", "509.0.0" ..< "602.0.0-prerelease"),
         .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.17.0"),
@@ -32,12 +32,12 @@ let package = Package(
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 .product(name: "Yams", package: "yams"),
-                .target(name: "StringCatalog"),
-                .target(name: "StringExtractor"),
+                .product(name: "StringCatalog", package: "swift-localized-strings"),
+                .product(name: "StringExtractor", package: "swift-localized-strings"),
+                .product(name: "StringResource", package: "swift-localized-strings"),
+                .product(name: "StringSource", package: "swift-localized-strings"),
+                .product(name: "StringValidator", package: "swift-localized-strings"),
                 .target(name: "StringGenerator"),
-                .target(name: "StringResource"),
-                .target(name: "StringSource"),
-                .target(name: "StringValidator"),
                 .target(name: "XCStringsToolConstants")
             ]
         ),
@@ -53,8 +53,8 @@ let package = Package(
         .target(
             name: "StringGenerator",
             dependencies: [
-                .target(name: "StringExtractor"),
-                .target(name: "SwiftIdentifier"),
+                .product(name: "StringExtractor", package: "swift-localized-strings"),
+                .product(name: "SwiftIdentifier", package: "swift-localized-strings"),
                 .product(name: "SwiftBasicFormat", package: "swift-syntax"),
                 .product(name: "SwiftSyntax", package: "swift-syntax"),
                 .product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
@@ -63,43 +63,7 @@ let package = Package(
         ),
 
         .target(
-            name: "StringResource"
-        ),
-
-        .target(
-            name: "StringSource",
-            dependencies: [
-                .target(name: "StringCatalog"),
-            ]
-        ),
-
-        .target(
-            name: "StringCatalog"
-        ),
-
-        .target(
-            name: "SwiftIdentifier"
-        ),
-
-        .target(
             name: "XCStringsToolConstants"
-        ),
-
-        .target(
-            name: "StringExtractor",
-            dependencies: [
-                .target(name: "StringCatalog"),
-                .target(name: "StringResource"),
-                .target(name: "StringSource"),
-                .target(name: "SwiftIdentifier")
-            ]
-        ),
-
-        .target(
-            name: "StringValidator",
-            dependencies: [
-                .target(name: "StringResource")
-            ]
         ),
 
         .testTarget(
@@ -123,16 +87,6 @@ let package = Package(
             ],
             resources: [
                 .process("Resources")
-            ]
-        ),
-
-        .testTarget(
-            name: "StringCatalogTests",
-            dependencies: [
-                .target(name: "StringCatalog")
-            ],
-            resources: [
-                .copy("__Fixtures__")
             ]
         )
     ],

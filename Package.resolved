@@ -37,6 +37,15 @@
       }
     },
     {
+      "identity" : "swift-localized-strings",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/liamnichols/swift-localized-strings",
+      "state" : {
+        "branch" : "main",
+        "revision" : "c7a52b6f804cde3f8c4b7f46f2cb040a545783c4"
+      }
+    },
+    {
       "identity" : "swift-snapshot-testing",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-snapshot-testing",
