@@ -41,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/liamnichols/swift-localized-strings",
       "state" : {
-        "branch" : "main",
-        "revision" : "c7a52b6f804cde3f8c4b7f46f2cb040a545783c4"
+        "revision" : "248192c447a40ebdb428412140a8edbd96906a31",
+        "version" : "1.0.0"
       }
     },
     {
