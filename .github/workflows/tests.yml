@@ -64,7 +64,7 @@ jobs:
     - name: Checkout Repo
       uses: actions/checkout@v4
     - name: Run Tests
-      run: xcodebuild clean test -scheme XCStringsTool-Package -destination platform=macOS
+      run: xcodebuild clean test -scheme XCStringsTool -destination platform=macOS
   unit-test-swift-syntax:
     name: Unit Tests (Swift Syntax ${{ matrix.swift-syntax }})
     strategy:
@@ -94,4 +94,4 @@ jobs:
         jq '(.pins[] | select(.identity == "swift-syntax") | .state.revision) = "${{ matrix.revision }}" | (.pins[] | select(.identity == "swift-syntax") | .state.version) = "${{ matrix.swift-syntax }}"' Package.resolved | sed 's/": /" : /g' > Package.resolved.tmp && mv Package.resolved.tmp Package.resolved
         git diff Package.resolved
     - name: Run Tests
-      run: xcodebuild clean test -scheme XCStringsTool-Package -destination platform=macOS
+      run: xcodebuild clean test -scheme XCStringsTool -destination platform=macOS
