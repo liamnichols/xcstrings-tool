@@ -73,6 +73,15 @@ final class GenerateTests: FixtureTestCase {
             """
         )
     }
+    
+    func testGenerateWithPackageConvertFromSnakeCase() throws {
+        try snapshot(
+            for: try fixture(named: "Localizable"),
+            config: """
+            convertFromSnakeCase: true
+            """
+        )
+    }
 
     func testGenerateWithLegacyStrings() throws {
         try snapshot(

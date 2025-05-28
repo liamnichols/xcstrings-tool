@@ -32,6 +32,28 @@
         }
       }
     },
+    "my_snake_case" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "My snake case"
+          }
+        }
+      }
+    },
+    "my.snake_case.with-multiple-separators" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "My snake case with multiple separators"
+          }
+        }
+      }
+    },
     "myDeviceVariant" : {
       "extractionState" : "manual",
       "localizations" : {
