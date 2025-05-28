@@ -32,7 +32,7 @@ extension Configuration {
         let accessLevel = file?.accessLevel ?? .resolveFromEnvironment(environment, or: command.accessLevel) ?? .internal
         let developmentLanguage = file?.developmentLanguage ?? command.developmentLanguage ?? environment["DEVELOPMENT_LANGUAGE"]
         let verbose = file?.verbose ?? command.verbose
-        let convertFromSnakeCase = file?.convertFromSnakeCase ?? command.convertFromSnakeCase ?? false
+        let convertFromSnakeCase = file?.convertFromSnakeCase ?? command.convertFromSnakeCase
 
         self.init(
             accessLevel: accessLevel,

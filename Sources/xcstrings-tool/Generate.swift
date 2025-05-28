@@ -44,11 +44,11 @@ struct Generate: ParsableCommand {
     )
     var accessLevel: AccessLevel?
     
-    @Option(
-        name: .customShort("s"),
+    @Flag(
+        name: .long,
         help: "Treat underscores the same as other separators when converting keys to camel case."
     )
-    var convertFromSnakeCase: Bool?
+    var convertFromSnakeCase: Bool = false
 
     @Option(
         name: .shortAndLong,
