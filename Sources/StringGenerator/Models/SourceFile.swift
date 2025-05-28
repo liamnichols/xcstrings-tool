@@ -10,6 +10,9 @@ struct SourceFile {
 
     /// The access level to be used when generating non-private interfaces
     let accessLevel: AccessLevel
+    
+    /// Option to convert resource identifiers from snake case
+    let convertFromSnakeCase: Bool
 
     /// The string resources that make up the strings table
     let resources: [Resource]
