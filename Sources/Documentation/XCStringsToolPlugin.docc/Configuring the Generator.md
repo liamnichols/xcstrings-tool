@@ -28,6 +28,7 @@ The configuration file has the following keys:
   - `public`: Generated code is accessible from other modules and other packages (if included in a product).
   - `package`: Generated code is accessible from other modules within the same package or project.
   - `internal`: Generated code is accessible from the containing module only (the default).
+- `convertFromSnakeCase` (optional): a boolean. Used to convert string keys containing snake case to camel case in code.
 - `developmentLanguage` (optional): a string. Used to filter input files when working with legacy localizable .strings and .stringsdict files. This value should match the value of the `DEVELOPMENT_LANGUAGE` build setting (in Xcode projects) or the `defaultLocalization` (in Swift Packages)
 - `verbose` (optional): a boolean. Used to enable verbose logging when invoking the generator and can help to configuration issues.
 
@@ -46,6 +47,22 @@ accessLevel: public
 ```json
 {
     "accessLevel": "public"
+}
+```
+
+##### To convert snake case as camel case:
+
+**xcstrings-tool-config.yaml**
+
+```yaml
+convertFromSnakeCase: true
+```
+
+**xcstrings-tool-config.json**
+
+```json
+{
+    "convertFromSnakeCase": true
 }
 ```
 
