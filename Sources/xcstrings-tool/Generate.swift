@@ -43,6 +43,12 @@ struct Generate: ParsableCommand {
         help: "Modify the Access Control for the generated source code"
     )
     var accessLevel: AccessLevel?
+    
+    @Flag(
+        name: .long,
+        help: "Treat underscores the same as other separators when converting keys to camel case."
+    )
+    var convertFromSnakeCase: Bool = false
 
     @Option(
         name: .shortAndLong,
@@ -100,7 +106,8 @@ struct Generate: ParsableCommand {
             StringGenerator.generateSource(
                 for: resources,
                 tableName: input.tableName,
-                accessLevel: configuration.accessLevel
+                accessLevel: configuration.accessLevel,
+                convertFromSnakeCase: configuration.convertFromSnakeCase
             )
         }
 

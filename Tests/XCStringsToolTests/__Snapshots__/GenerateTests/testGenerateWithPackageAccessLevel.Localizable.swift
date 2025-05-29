@@ -123,6 +123,19 @@ extension String {
         /// ### Source Localization
         ///
         /// ```
+        /// My snake case
+        /// ```
+        package static var my_snake_case: Localizable {
+            Localizable(
+                key: "my_snake_case",
+                arguments: [],
+                table: "Localizable"
+            )
+        }
+
+        /// ### Source Localization
+        ///
+        /// ```
         /// Multiplatform Original
         /// ```
         package static var myDeviceVariant: Localizable {
@@ -144,6 +157,19 @@ extension String {
                 arguments: [
                     .int(arg1)
                 ],
+                table: "Localizable"
+            )
+        }
+
+        /// ### Source Localization
+        ///
+        /// ```
+        /// My snake case with multiple separators
+        /// ```
+        package static var mySnake_caseWithMultipleSeparators: Localizable {
+            Localizable(
+                key: "my.snake_case.with-multiple-separators",
+                arguments: [],
                 table: "Localizable"
             )
         }

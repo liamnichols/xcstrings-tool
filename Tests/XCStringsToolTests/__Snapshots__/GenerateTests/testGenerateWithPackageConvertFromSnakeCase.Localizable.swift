@@ -125,7 +125,7 @@ extension String {
         /// ```
         /// My snake case
         /// ```
-        internal static var my_snake_case: Localizable {
+        internal static var mySnakeCase: Localizable {
             Localizable(
                 key: "my_snake_case",
                 arguments: [],
@@ -166,7 +166,7 @@ extension String {
         /// ```
         /// My snake case with multiple separators
         /// ```
-        internal static var mySnake_caseWithMultipleSeparators: Localizable {
+        internal static var mySnakeCaseWithMultipleSeparators: Localizable {
             Localizable(
                 key: "my.snake_case.with-multiple-separators",
                 arguments: [],

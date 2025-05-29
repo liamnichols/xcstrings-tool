@@ -1,5 +1,6 @@
 import StringResource
 import SwiftSyntax
+import SwiftIdentifier
 
 extension SourceFile.StringExtension.StringsTableStruct {
     struct ResourceAccessor {
@@ -11,7 +12,10 @@ extension SourceFile.StringExtension.StringsTableStruct {
         }
 
         var variableName: TokenSyntax {
-            .identifier(resource.identifier.backtickedVariableNameIfNeeded)
+            .identifier(resource.identifier
+                .snakeCaseConverted(sourceFile.convertFromSnakeCase)
+                .backtickedVariableNameIfNeeded
+            )
         }
 
         var type: TokenSyntax {
