@@ -39,6 +39,14 @@ struct Generate: ParsableCommand {
     var config: URL?
 
     @Option(
+        name: [.customShort("C"), .long],
+        help: "Path to a directory used for storing cached outputs",
+        completion: .directory,
+        transform: { URL(filePath: $0, directoryHint: .isDirectory) }
+    )
+    var cache: URL?
+
+    @Option(
         name: .shortAndLong,
         help: "Modify the Access Control for the generated source code"
     )
@@ -66,12 +74,64 @@ struct Generate: ParsableCommand {
             try Configuration(command: self, environment: ProcessInfo.processInfo.environment)
         }
         let logger = Logger(isVerboseLoggingEnabled: configuration.verbose)
+        let fileManager = FileManager.default
 
         // Parse the input from the invocation arguments
         let input = try withThrownErrorsAsDiagnostics {
             try InputParser.parse(from: inputs, developmentLanguage: configuration.developmentLanguage, logger: logger)
         }
 
+        // If a cache dir was specified, compute the cache key and init the cache
+        let cache = try cache.flatMap { directoryURL in
+            let key = try withThrownErrorsAsDiagnostics {
+                try logger.measure("computing cache key") {
+                    try Cache.Key(input: input, configuration: configuration)
+                }
+            }
+            return Cache(directoryURL: directoryURL, key: key, fileManager: fileManager)
+        }
+
+        // Either read the source from the cache, or generate it from the inputs/configuration
+        let (cacheHit, source) = if let cache, cache.hasEntry {
+            try read(from: cache, logger: logger)
+        } else {
+            try generate(from: input, configuration: configuration, logger: logger)
+        }
+
+        try withThrownErrorsAsDiagnostics {
+            // Write the generated (or cached) source to the output file, but only if the contents has changed
+            // This is done to avoid 'touching' the output file and causing Xcode to mark the source code as dirty
+            try logger.measure("writing output") {
+                try fileManager.write(source, to: output, skipIfMatches: true)
+            }
+
+            // If the source was generated without a cache hit, cache the source file as well
+            if let cache, !cacheHit {
+                try logger.measure("caching output") {
+                    try cache.write(source)
+                }
+            }
+
+            logger.note("Output written to ‘\(output.path(percentEncoded: false))‘")
+        }
+    }
+
+    private func read(
+        from cache: Cache,
+        logger: Logger
+    ) throws -> (cacheHit: Bool, source: String) {
+        let source = try logger.measure("reading from cache") {
+            try cache.read()
+        }
+
+        return (true, source)
+    }
+
+    private func generate(
+        from input: InputParser.Parsed,
+        configuration: Configuration,
+        logger: Logger
+    ) throws -> (cacheHit: Bool, source: String) {
         // Collect the results for each input file
         let results = try input.files.map { input in
             try withThrownErrorsAsDiagnostics(at: input) {
@@ -111,16 +171,6 @@ struct Generate: ParsableCommand {
             )
         }
 
-        // Write the output and catch errors in a diagnostic format
-        try withThrownErrorsAsDiagnostics {
-            try logger.measure("writing output") {
-                // Create the directory if it doesn't exist
-                try createDirectoryIfNeeded(for: output)
-
-                // Write the source to disk
-                try source.write(to: output, atomically: false, encoding: .utf8)
-            }
-            logger.note("Output written to ‘\(output.path(percentEncoded: false))‘")
-        }
+        return (false, source)
     }
 }

@@ -104,7 +104,7 @@ struct Logger: Sendable {
             return try work()
         }
 
-        print(message(), terminator: "")
+        print("note:", message(), terminator: "")
 
         let startDate = Date()
         let result = Result { try work() }
