@@ -46,7 +46,7 @@ extension String {
     /// }
     /// ```
     ///
-    /// - SeeAlso: [XCStrings Tool Documentation - Using the generated source code](https://swiftpackageindex.com/liamnichols/xcstrings-tool/1.0.0/documentation/documentation/using-the-generated-source-code)
+    /// - SeeAlso: [XCStrings Tool Documentation - Using the generated source code](https://swiftpackageindex.com/liamnichols/xcstrings-tool/1.2.0/documentation/documentation/using-the-generated-source-code)
     public struct Localizable: Hashable, Sendable {
         #if !SWIFT_PACKAGE
         private class BundleLocator {
