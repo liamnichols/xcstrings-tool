@@ -4,12 +4,14 @@ import StringGenerator
 import StringResource
 
 let benchmarks = {
-    Benchmark("StringGenerator.generateSource(for:tableName:accessLevel:)", configuration: .custom) { _, resources in
+    Benchmark("StringGenerator.generateSource(for:tableName:accessLevel:convertFromSnakeCase:importsUseExplicitAccessLevel:)", configuration: .custom) { _, resources in
         blackHole(
             StringGenerator.generateSource(
                 for: resources,
                 tableName: "Localizable",
-                accessLevel: .internal
+                accessLevel: .internal,
+                convertFromSnakeCase: false,
+                importsUseExplicitAccessLevel: false
             )
         )
     } setup: {

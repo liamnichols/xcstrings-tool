@@ -29,6 +29,7 @@ The configuration file has the following keys:
   - `package`: Generated code is accessible from other modules within the same package or project.
   - `internal`: Generated code is accessible from the containing module only (the default).
 - `convertFromSnakeCase` (optional): a boolean. Used to convert string keys containing snake case to camel case in code.
+- `importsUseExplicitAccessLevel`: Generated code specifies the appropriate access level on module imports as per [SE-0409](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0409-access-level-on-imports.md).
 - `developmentLanguage` (optional): a string. Used to filter input files when working with legacy localizable .strings and .stringsdict files. This value should match the value of the `DEVELOPMENT_LANGUAGE` build setting (in Xcode projects) or the `defaultLocalization` (in Swift Packages)
 - `verbose` (optional): a boolean. Used to enable verbose logging when invoking the generator and can help to configuration issues.
 

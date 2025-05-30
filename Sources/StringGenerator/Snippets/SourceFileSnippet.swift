@@ -5,7 +5,7 @@ struct SourceFileSnippet: Snippet {
 
     var syntax: SourceFileSyntax {
         SourceFileSyntax {
-            ImportSnippet(module: .Foundation)
+            ComplexImportSnippet(module: .Foundation, sourceFile: sourceFile)
 
             ExtensionSnippet(extending: .type(.String)) {
                 StringStringsTableStructSnippet(stringsTable: sourceFile.stringExtension.stringsTableStruct)
@@ -31,7 +31,7 @@ struct SourceFileSnippet: Snippet {
             }
 
             IfCanImportSnippet(module: .SwiftUI) {
-                ImportSnippet(module: .SwiftUI)
+                ComplexImportSnippet(module: .SwiftUI, sourceFile: sourceFile)
                     .syntax
                     .with(\.trailingTrivia, .newlines(2))
 

@@ -8,12 +8,14 @@ struct Configuration {
         var developmentLanguage: String?
         var verbose: Bool?
         var convertFromSnakeCase: Bool?
+        var importsUseExplicitAccessLevel: Bool?
     }
 
     var accessLevel: AccessLevel
     var developmentLanguage: String?
     var verbose: Bool
     var convertFromSnakeCase: Bool
+    var importsUseExplicitAccessLevel: Bool
 }
 
 extension Configuration {
@@ -33,12 +35,14 @@ extension Configuration {
         let developmentLanguage = file?.developmentLanguage ?? command.developmentLanguage ?? environment["DEVELOPMENT_LANGUAGE"]
         let verbose = file?.verbose ?? command.verbose
         let convertFromSnakeCase = file?.convertFromSnakeCase ?? command.convertFromSnakeCase
+        let importsUseExplicitAccessLevel = file?.importsUseExplicitAccessLevel ?? command.importsUseExplicitAccessLevel
 
         self.init(
             accessLevel: accessLevel,
             developmentLanguage: developmentLanguage,
             verbose: verbose,
-            convertFromSnakeCase: convertFromSnakeCase
+            convertFromSnakeCase: convertFromSnakeCase,
+            importsUseExplicitAccessLevel: importsUseExplicitAccessLevel
         )
     }
 }

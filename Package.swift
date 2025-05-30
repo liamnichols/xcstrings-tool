@@ -87,6 +87,9 @@ let package = Package(
             ],
             resources: [
                 .process("Resources")
+            ],
+            swiftSettings: [
+                .enableUpcomingFeature("InternalImportsByDefault")
             ]
         )
     ],
