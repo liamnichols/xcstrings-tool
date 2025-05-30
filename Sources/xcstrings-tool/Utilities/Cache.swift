@@ -40,8 +40,10 @@ extension Cache.Key {
         // Include the input table name
         components.append(input.tableName.lowercased())
 
-        // Include the access level
+        // Include the access level, case conversion and import preferences
         components.append(configuration.accessLevel.rawValue)
+        components.append(configuration.convertFromSnakeCase ? "convertFromSnakeCase" : "")
+        components.append(configuration.importsUseExplicitAccessLevel ? "importsUseExplicitAccessLevel" : "")
 
         // Include a hash of each input file (in a stable order)
         for fileURL in input.files.sorted(using: KeyPathComparator(\.absoluteString)) {
@@ -49,7 +51,7 @@ extension Cache.Key {
         }
 
         // Compute the checksum of all components
-        let data = Data(components.joined(separator: "_").utf8) // v1_localizable_internal_fffffffffff
+        let data = Data(components.joined(separator: "_").utf8) // v1_localizable_internal_convertFromSnakeCase__fffffffffff
         let rawValue = computeSHAChecksum(for: data)
 
         self.init(rawValue: rawValue)

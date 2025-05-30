@@ -74,11 +74,20 @@ final class GenerateTests: FixtureTestCase {
         )
     }
     
-    func testGenerateWithPackageConvertFromSnakeCase() throws {
+    func testGenerateWithConvertFromSnakeCase() throws {
         try snapshot(
             for: try fixture(named: "Localizable"),
             config: """
             convertFromSnakeCase: true
+            """
+        )
+    }
+
+    func testGenerateWithImportsUseExplicitAccessLevel() throws {
+        try snapshot(
+            for: try fixture(named: "Localizable"),
+            config: """
+            importsUseExplicitAccessLevel: true
             """
         )
     }

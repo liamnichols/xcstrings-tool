@@ -1,3 +1,4 @@
 accessLevel: public
 developmentLanguage: en
+importsUseExplicitAccessLevel: true
 verbose: true

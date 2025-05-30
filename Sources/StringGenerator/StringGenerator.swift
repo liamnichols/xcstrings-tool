@@ -11,10 +11,17 @@ public struct StringGenerator {
         for resources: [Resource],
         tableName: String,
         accessLevel: AccessLevel,
-        convertFromSnakeCase: Bool
+        convertFromSnakeCase: Bool,
+        importsUseExplicitAccessLevel: Bool
     ) -> String {
         generateSource(
-            for: SourceFile(tableName: tableName, accessLevel: accessLevel, convertFromSnakeCase: convertFromSnakeCase, resources: resources)
+            for: SourceFile(
+                tableName: tableName,
+                accessLevel: accessLevel,
+                convertFromSnakeCase: convertFromSnakeCase,
+                importsUseExplicitAccessLevel: importsUseExplicitAccessLevel,
+                resources: resources
+            )
         )
     }
 
