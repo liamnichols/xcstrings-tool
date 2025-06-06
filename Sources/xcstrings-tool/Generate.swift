@@ -58,6 +58,9 @@ struct Generate: ParsableCommand {
     )
     var convertFromSnakeCase: Bool = false
 
+    @Flag(name: .long)
+    var importsUseExplicitAccessLevel: Bool = false
+
     @Option(
         name: .shortAndLong,
         help: "The development language (defaultLocalization in Package.swift) used when filtering legacy .strings and .stringsdict files from the input paths"
@@ -167,7 +170,8 @@ struct Generate: ParsableCommand {
                 for: resources,
                 tableName: input.tableName,
                 accessLevel: configuration.accessLevel,
-                convertFromSnakeCase: configuration.convertFromSnakeCase
+                convertFromSnakeCase: configuration.convertFromSnakeCase,
+                importsUseExplicitAccessLevel: configuration.importsUseExplicitAccessLevel
             )
         }
 

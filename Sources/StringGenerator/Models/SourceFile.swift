@@ -14,6 +14,9 @@ struct SourceFile {
     /// Option to convert resource identifiers from snake case
     let convertFromSnakeCase: Bool
 
+    /// Supporting SE0409
+    let importsUseExplicitAccessLevel: Bool
+
     /// The string resources that make up the strings table
     let resources: [Resource]
 }
