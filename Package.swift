@@ -114,8 +114,8 @@ if ProcessInfo.processInfo.environment.keys.contains("BENCHMARK_PACKAGE") {
             name: "XCStringsToolBenchmarks",
             dependencies: [
                 .product(name: "Benchmark", package: "package-benchmark"),
-                .target(name: "StringGenerator"),
-                .target(name: "StringResource")
+                .product(name: "StringResource", package: "swift-localized-strings"),
+                .target(name: "StringGenerator")
             ],
             path: "Benchmarks/XCStringsToolBenchmarks",
             plugins: [
