@@ -13,7 +13,7 @@ jobs:
     name: Validate SPI Manifest
     runs-on: macos-15
     env:
-      DEVELOPER_DIR: /Applications/Xcode_16.1.app/Contents/Developer
+      DEVELOPER_DIR: /Applications/Xcode_16.4.app/Contents/Developer
       VALIDATE_SPI_MANIFEST: YES
     steps:
     - name: Checkout Repo
@@ -28,7 +28,7 @@ jobs:
       matrix:
         swift-version: ["5", "6"]
     env:
-      DEVELOPER_DIR: /Applications/Xcode_16.1.app/Contents/Developer
+      DEVELOPER_DIR: /Applications/Xcode_16.4.app/Contents/Developer
       SWIFT_VERSION: ${{ matrix.swift-version }}
     steps:
     - name: Checkout Repo
@@ -56,6 +56,8 @@ jobs:
         - xcode: "16.2"
           macos: macOS-15
         - xcode: "16.3"
+          macos: macOS-15
+        - xcode: "16.4"
           macos: macOS-15
     runs-on: ${{ matrix.macos }}
     env:
@@ -85,7 +87,7 @@ jobs:
           revision: 0dff260d3d1bb99c382d8dfcd6bb093e5e9cbd36
     runs-on: macOS-15
     env:
-      DEVELOPER_DIR: /Applications/Xcode_16.1.app/Contents/Developer
+      DEVELOPER_DIR: /Applications/Xcode_16.4.app/Contents/Developer
     steps:
     - name: Checkout Repo
       uses: actions/checkout@v4
