@@ -83,8 +83,10 @@ jobs:
           revision: 0687f71944021d616d34d922343dcef086855920
         - swift-syntax: "601.0.1"
           revision: f99ae8aa18f0cf0d53481901f88a0991dc3bd4a2
-        - swift-syntax: "602.0.0-prerelease-2025-05-29"
-          revision: 0dff260d3d1bb99c382d8dfcd6bb093e5e9cbd36
+        - swift-syntax: "602.0.0-prerelease-2025-08-11"
+          revision: 21b3b45635decd1a0b89968f81b6d9a93128f773
+        - swift-syntax: "603.0.0-prerelease-2025-08-11"
+          revision: 07bf225e198119c23b2b9a0a3432bdb534498873
     runs-on: macOS-15
     env:
       DEVELOPER_DIR: /Applications/Xcode_16.4.app/Contents/Developer
