@@ -15,8 +15,8 @@ struct LocalizedStringKeyOverrideKeySnippet: Snippet {
         fileprivate mutating func overrideKeyForLookup(using key: String) {
             withUnsafeMutablePointer(to: &self) { pointer in
                 let raw = UnsafeMutableRawPointer(pointer)
-                raw.withMemoryRebound(to: String.self, capacity: 1) { rebound in
-                  rebound.pointee = key
+                raw.withMemoryRebound(to: String.self, capacity: 1) { bound in
+                  bound.pointee = key
                 }
             }
         }
