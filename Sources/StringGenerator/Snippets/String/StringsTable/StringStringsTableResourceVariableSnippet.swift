@@ -3,6 +3,9 @@ import SwiftSyntaxBuilder
 
 struct StringStringsTableResourceVariableSnippet: Snippet {
     let accessor: SourceFile.StringExtension.StringsTableStruct.ResourceAccessor
+    var nameOverride: TokenSyntax? = nil
+
+    var effectiveName: TokenSyntax { nameOverride ?? accessor.variableName }
 
     var syntax: some DeclSyntaxProtocol {
         VariableDeclSyntax(
@@ -11,7 +14,7 @@ struct StringStringsTableResourceVariableSnippet: Snippet {
             bindingSpecifier: .keyword(.var),
             bindings: [
                 PatternBindingSyntax(
-                    pattern: IdentifierPatternSyntax(identifier: accessor.variableName),
+                    pattern: IdentifierPatternSyntax(identifier: effectiveName),
                     typeAnnotation: TypeAnnotationSyntax(type: IdentifierTypeSyntax(name: accessor.type)),
                     accessorBlock: AccessorBlockSyntax(
                         accessors: .getter(getter)

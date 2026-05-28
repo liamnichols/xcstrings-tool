@@ -82,15 +82,33 @@ struct StringStringsTableStructSnippet: Snippet {
             }
             .with(\.trailingTrivia, .newlines(2))
 
-            for accessor in stringsTable.accessors {
-                MemberBlockItemListSyntax {
-                    if accessor.hasArguments {
-                        StringStringsTableResourceFunctionSnippet(accessor: accessor)
-                    } else {
-                        StringStringsTableResourceVariableSnippet(accessor: accessor)
-                    }
+            if let groups = stringsTable.namespaceGroups {
+                for group in groups {
+                    StringStringsTableNamespaceEnumSnippet(group: group, stringsTable: stringsTable)
+                        .syntax
+                        .with(\.trailingTrivia, .newlines(2))
                 }
-                .with(\.trailingTrivia, .newlines(2))
+                for accessor in stringsTable.ungroupedAccessors {
+                    MemberBlockItemListSyntax {
+                        if accessor.hasArguments {
+                            StringStringsTableResourceFunctionSnippet(accessor: accessor)
+                        } else {
+                            StringStringsTableResourceVariableSnippet(accessor: accessor)
+                        }
+                    }
+                    .with(\.trailingTrivia, .newlines(2))
+                }
+            } else {
+                for accessor in stringsTable.accessors {
+                    MemberBlockItemListSyntax {
+                        if accessor.hasArguments {
+                            StringStringsTableResourceFunctionSnippet(accessor: accessor)
+                        } else {
+                            StringStringsTableResourceVariableSnippet(accessor: accessor)
+                        }
+                    }
+                    .with(\.trailingTrivia, .newlines(2))
+                }
             }
 
             // var bundle: Bundle { ... }

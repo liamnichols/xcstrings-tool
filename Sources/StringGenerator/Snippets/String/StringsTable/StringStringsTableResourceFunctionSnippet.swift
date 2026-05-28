@@ -3,12 +3,15 @@ import SwiftSyntaxBuilder
 
 struct StringStringsTableResourceFunctionSnippet: Snippet {
     let accessor: SourceFile.StringExtension.StringsTableStruct.ResourceAccessor
+    var nameOverride: TokenSyntax? = nil
+
+    var effectiveName: TokenSyntax { nameOverride ?? accessor.variableName }
 
     var syntax: some DeclSyntaxProtocol {
         FunctionDeclSyntax(
             leadingTrivia: leadingTrivia,
             modifiers: modifiers,
-            name: accessor.variableName,
+            name: effectiveName,
             signature: FunctionSignatureSyntax(
                 parameterClause: FunctionParameterClauseSyntax {
                     for argument in accessor.resource.arguments {

@@ -12,7 +12,8 @@ public struct StringGenerator {
         tableName: String,
         accessLevel: AccessLevel,
         convertFromSnakeCase: Bool,
-        importsUseExplicitAccessLevel: Bool
+        importsUseExplicitAccessLevel: Bool,
+        namespaceGrouping: Bool = false
     ) -> String {
         generateSource(
             for: SourceFile(
@@ -20,6 +21,7 @@ public struct StringGenerator {
                 accessLevel: accessLevel,
                 convertFromSnakeCase: convertFromSnakeCase,
                 importsUseExplicitAccessLevel: importsUseExplicitAccessLevel,
+                namespaceGrouping: namespaceGrouping,
                 resources: resources
             )
         )

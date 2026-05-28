@@ -61,6 +61,9 @@ struct Generate: ParsableCommand {
     @Flag(name: .long)
     var importsUseExplicitAccessLevel: Bool = false
 
+    @Flag(name: .long, help: "Group string accessors into nested enums by the first dot-component of each key")
+    var namespaceGrouping: Bool = false
+
     @Option(
         name: .shortAndLong,
         help: "The development language (defaultLocalization in Package.swift) used when filtering legacy .strings and .stringsdict files from the input paths"
@@ -171,7 +174,8 @@ struct Generate: ParsableCommand {
                 tableName: input.tableName,
                 accessLevel: configuration.accessLevel,
                 convertFromSnakeCase: configuration.convertFromSnakeCase,
-                importsUseExplicitAccessLevel: configuration.importsUseExplicitAccessLevel
+                importsUseExplicitAccessLevel: configuration.importsUseExplicitAccessLevel,
+                namespaceGrouping: configuration.namespaceGrouping
             )
         }
 

@@ -17,6 +17,9 @@ struct SourceFile {
     /// Supporting SE0409
     let importsUseExplicitAccessLevel: Bool
 
+    /// Group accessors into nested enums by the first dot-component of each key
+    let namespaceGrouping: Bool
+
     /// The string resources that make up the strings table
     let resources: [Resource]
 }

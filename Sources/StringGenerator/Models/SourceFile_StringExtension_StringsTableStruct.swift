@@ -1,4 +1,5 @@
 import StringResource
+import SwiftIdentifier
 import SwiftSyntax
 import XCStringsToolConstants
 
@@ -18,6 +19,51 @@ extension SourceFile.StringExtension {
             sourceFile.resources.map { resource in
                 ResourceAccessor(sourceFile: sourceFile, resource: resource)
             }
+        }
+
+        struct NamespaceGroup {
+            let enumName: TokenSyntax
+            let members: [(accessor: ResourceAccessor, memberName: TokenSyntax)]
+        }
+
+        var namespaceGroups: [NamespaceGroup]? {
+            guard sourceFile.namespaceGrouping else { return nil }
+
+            var groupOrder: [String] = []
+            var groupedMembers: [String: [(ResourceAccessor, TokenSyntax)]] = [:]
+
+            for accessor in accessors {
+                let key = accessor.resource.key
+                guard let dotIndex = key.firstIndex(of: ".") else { continue }
+
+                let namespace = String(key[key.startIndex..<dotIndex])
+                let memberKey = String(key[key.index(after: dotIndex)...])
+                let memberName = TokenSyntax.identifier(
+                    SwiftIdentifier.variableIdentifier(for: memberKey)
+                        .snakeCaseConverted(sourceFile.convertFromSnakeCase)
+                        .backtickedVariableNameIfNeeded
+                )
+
+                if groupedMembers[namespace] == nil {
+                    groupOrder.append(namespace)
+                    groupedMembers[namespace] = []
+                }
+                groupedMembers[namespace]!.append((accessor, memberName))
+            }
+
+            guard !groupOrder.isEmpty else { return nil }
+
+            return groupOrder.map { namespace in
+                NamespaceGroup(
+                    enumName: .identifier(SwiftIdentifier.identifier(from: namespace)),
+                    members: groupedMembers[namespace]!
+                )
+            }
+        }
+
+        var ungroupedAccessors: [ResourceAccessor] {
+            guard sourceFile.namespaceGrouping else { return accessors }
+            return accessors.filter { !$0.resource.key.contains(".") }
         }
 
         var accessLevel: AccessLevel {

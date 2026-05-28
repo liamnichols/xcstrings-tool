@@ -9,6 +9,7 @@ struct Configuration {
         var verbose: Bool?
         var convertFromSnakeCase: Bool?
         var importsUseExplicitAccessLevel: Bool?
+        var namespaceGrouping: Bool?
     }
 
     var accessLevel: AccessLevel
@@ -16,6 +17,7 @@ struct Configuration {
     var verbose: Bool
     var convertFromSnakeCase: Bool
     var importsUseExplicitAccessLevel: Bool
+    var namespaceGrouping: Bool
 }
 
 extension Configuration {
@@ -36,13 +38,15 @@ extension Configuration {
         let verbose = file?.verbose ?? command.verbose
         let convertFromSnakeCase = file?.convertFromSnakeCase ?? command.convertFromSnakeCase
         let importsUseExplicitAccessLevel = file?.importsUseExplicitAccessLevel ?? command.importsUseExplicitAccessLevel
+        let namespaceGrouping = file?.namespaceGrouping ?? command.namespaceGrouping
 
         self.init(
             accessLevel: accessLevel,
             developmentLanguage: developmentLanguage,
             verbose: verbose,
             convertFromSnakeCase: convertFromSnakeCase,
-            importsUseExplicitAccessLevel: importsUseExplicitAccessLevel
+            importsUseExplicitAccessLevel: importsUseExplicitAccessLevel,
+            namespaceGrouping: namespaceGrouping
         )
     }
 }
